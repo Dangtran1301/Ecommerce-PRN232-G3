@@ -8,5 +8,6 @@ public abstract class AggregateRoot<TKey> : BaseEntity<TKey>
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     protected void RaiseEvent(IDomainEvent @event) => _domainEvents.Add(@event);
+
     public void ClearEvents() => _domainEvents.Clear();
 }

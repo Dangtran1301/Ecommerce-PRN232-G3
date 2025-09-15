@@ -13,13 +13,15 @@ public abstract class BaseEntity<TKey> : IEntity<TKey>, IAuditable, ISoftDelete
     public DateTime? DeletedAt { get; protected set; }
     public string? DeletedBy { get; protected set; }
 
-    protected BaseEntity () { }
+    protected BaseEntity()
+    { }
 
     protected BaseEntity(TKey id) => Id = id;
+
     public void SetCreated(string? user = null)
     {
-        CreatedAt= DateTime.UtcNow;
-        CreatedBy= user;
+        CreatedAt = DateTime.UtcNow;
+        CreatedBy = user;
     }
 
     public void SetUpdated(string? user = null)

@@ -21,7 +21,9 @@ where TEntity : BaseEntity<TKey>
         await _dbSet.AddAsync(entity, cancellationToken);
 
     public void Update(TEntity entity) => _dbSet.Update(entity);
+
     public void Remove(TEntity entity) => _dbSet.Remove(entity);
+
     public async Task<PagedResult<TEntity>> GetPagedAsync(PagedRequest request, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsNoTracking();

@@ -7,5 +7,6 @@ public interface ISoftDelete
     string? DeletedBy { get; }
 
     void MarkAsDeleted(string? user = null);
+
     void Restore();
 }

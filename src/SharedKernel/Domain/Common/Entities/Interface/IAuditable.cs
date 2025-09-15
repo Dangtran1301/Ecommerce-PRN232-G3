@@ -9,5 +9,6 @@ public interface IAuditable
     string? UpdatedBy { get; }
 
     void SetCreated(string? user = null);
+
     void SetUpdated(string? user = null);
 }

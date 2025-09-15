@@ -7,8 +7,6 @@ public class PagedRequest
 
     public int Skip => (PageNumber - 1) * PageSize;
     public int Take => PageSize;
-
-
 }
 
 public class PagedResult<T>(IReadOnlyList<T> items, int totalCount, int pageNumber, int pageSize)

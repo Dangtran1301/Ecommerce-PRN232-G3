@@ -6,7 +6,9 @@ namespace SharedKernel.Infrastructure.Data;
 
 public class BaseDbContext : DbContext, IDbContext
 {
-    protected BaseDbContext(DbContextOptions options) : base(options) { }
+    protected BaseDbContext(DbContextOptions options) : base(options)
+    {
+    }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
