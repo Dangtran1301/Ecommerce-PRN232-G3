@@ -2,11 +2,12 @@
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Entities;
 using SharedKernel.Infrastructure.Data.Interfaces;
+using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 
 namespace SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
 public class EfRepository<TEntity, TKey>(IDbContext dbContext) : IRepository<TEntity, TKey>
-where TEntity : BaseEntity<TKey>
+where TEntity : Entity<TKey>
 {
     protected readonly IDbContext DbContext = dbContext;
     private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();

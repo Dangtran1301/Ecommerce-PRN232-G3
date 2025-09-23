@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "..\SharedKernel\SharedKernel.csproj", "{CE741086-68A8-231B-1E42-2C5008C0EB3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.API", "UserService.API\UserService.API.csproj", "{04E13BBA-FC1E-7394-4AB5-E46BD1A6170D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE741086-68A8-231B-1E42-2C5008C0EB3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE741086-68A8-231B-1E42-2C5008C0EB3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE741086-68A8-231B-1E42-2C5008C0EB3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE741086-68A8-231B-1E42-2C5008C0EB3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04E13BBA-FC1E-7394-4AB5-E46BD1A6170D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04E13BBA-FC1E-7394-4AB5-E46BD1A6170D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04E13BBA-FC1E-7394-4AB5-E46BD1A6170D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04E13BBA-FC1E-7394-4AB5-E46BD1A6170D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {107E2CAA-A806-497C-B06E-014CBFD9E47F}
+	EndGlobalSection
+EndGlobal
