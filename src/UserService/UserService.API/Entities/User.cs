@@ -12,6 +12,7 @@ public class User : AuditableEntity<Guid>
     public string PasswordHash { get; private set; } = string.Empty;
 
     public string Email { get; private set; } = string.Empty;
+
     //public bool EmailConfirmed { get; private set; } = false;
     public string? PhoneNumber { get; private set; } = string.Empty;
 
@@ -25,7 +26,8 @@ public class User : AuditableEntity<Guid>
     public Role Role { get; set; } = Role.Customer;
     public ICollection<UserSession> AccountTokens { get; set; } = [];
 
-    protected User() { }
+    protected User()
+    { }
 
     public User(string userName, string email, string passwordHash, string? phoneNumber = null)
     {
@@ -36,6 +38,7 @@ public class User : AuditableEntity<Guid>
         PhoneNumber = phoneNumber;
         SetCreated("system");
     }
+
     //public void ConfirmEmail() => EmailConfirmed = true;
     public void ChangePassword(string newHash) => PasswordHash = newHash;
 }
