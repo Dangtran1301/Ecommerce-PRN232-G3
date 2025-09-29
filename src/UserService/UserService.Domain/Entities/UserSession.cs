@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Domain.Common.Entities;
 
-namespace UserService.API.Entities;
+namespace UserService.Domain.Entities;
 
 public class UserSession : AuditableEntity<Guid>
 {

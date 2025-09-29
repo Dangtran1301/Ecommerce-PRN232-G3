@@ -26,7 +26,7 @@ public static class QueryableExtensions
             .First(m => m.Name == methodName && m.GetParameters().Length == 2);
         var generic = method.MakeGenericMethod(typeof(T), prop.PropertyType);
 
-        var result = (IQueryable<T>)generic.Invoke(null, new object[] { source, lambda })!;
+        var result = (IQueryable<T>)generic.Invoke(null, [source, lambda])!;
         return result;
     }
 
@@ -89,7 +89,7 @@ public static class QueryableExtensions
                 case FilterOperator.EndsWith:
                     if (targetType != typeof(string)) throw new InvalidOperationException($"Operator {f.Operator} only valid for string properties.");
                     var methodName = f.Operator == FilterOperator.Contains ? "Contains" : f.Operator == FilterOperator.StartsWith ? "StartsWith" : "EndsWith";
-                    var method = typeof(string).GetMethod(methodName, new[] { typeof(string) })!;
+                    var method = typeof(string).GetMethod(methodName, [typeof(string)])!;
                     exp = Expression.Call(member, method, Expression.Constant(converted, typeof(string)));
                     break;
 
@@ -101,10 +101,10 @@ public static class QueryableExtensions
                         var list = (System.Collections.IList)Activator.CreateInstance(listType)!;
                         foreach (var item in enumerable)
                         {
-                            list.Add(ConvertToType(item, targetType)!);
+                            list.Add(ConvertToType(item, targetType));
                         }
                         var constList = Expression.Constant(list);
-                        var containsMethod = listType.GetMethod("Contains", new[] { targetType })!;
+                        var containsMethod = listType.GetMethod("Contains", [targetType])!;
                         exp = Expression.Call(constList, containsMethod, member);
                     }
                     else
@@ -149,7 +149,7 @@ public static class QueryableExtensions
 
         // fallback to TypeConverter/Convert.ChangeType
         var converter = TypeDescriptor.GetConverter(dest);
-        return converter.ConvertFromInvariantString(value.ToString());
+        return converter.ConvertFromInvariantString(value.ToString() ?? string.Empty);
     }
 
     // ToPagedResultAsync for IQueryable

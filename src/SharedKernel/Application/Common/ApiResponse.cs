@@ -15,11 +15,11 @@ public class ApiResponse
         Timestamp = DateTime.UtcNow;
     }
 
-    public static ApiResponse FromResult(Result result)
+    public static implicit operator ApiResponse(Result result)
         => new(result.IsSuccess, result.Error);
 
     public static ApiResponse<T> FromResult<T>(Result<T> result)
-        => ApiResponse<T>.FromResult(result);
+        => result;
 }
 
 public class ApiResponse<T>
@@ -37,6 +37,9 @@ public class ApiResponse<T>
         Timestamp = DateTime.UtcNow;
     }
 
-    public static ApiResponse<T> FromResult(Result<T> result)
+    public static implicit operator ApiResponse<T>(Result<T> result)
         => new(result.IsSuccess, result.Error, result.Value);
+
+    public static implicit operator ApiResponse<T>(T value)
+        => new(true, null, value);
 }
