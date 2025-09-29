@@ -2,7 +2,7 @@ using SharedKernel.Domain.Common.Entities;
 
 namespace CatalogService.Entities
 {
-    public class Brand : AuditableEntity<int>
+    public class Brand : AuditableEntity<Guid>
     {
         public string BrandName { get; set; } = null!;
         public string? BrandDescription { get; set; }
