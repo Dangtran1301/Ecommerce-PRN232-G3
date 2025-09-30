@@ -27,15 +27,18 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
 
     public async Task<Result<UserDto>> CreateAsync(CreateUserRequest request)
     {
-        var existing = await repository.GetByEmailAsync(request.Email);
-        if (existing is not null)
+        if (await repository.AnyAsync(x => x.Email.Equals(request.Email)))
             return UserErrors.EmailTaken(request.Email);
 
-        var user = new User(request.UserName, request.Email, BCrypt.Net.BCrypt.HashPassword(request.Password),
-            request.PhoneNumber);
+        var user = new User(
+            request.UserName,
+            request.Email,
+            BCrypt.Net.BCrypt.HashPassword(request.Password),
+            request.PhoneNumber
+            );
 
         await repository.AddAsync(user);
-        return Result.Success(mapper.Map<UserDto>(user));
+        return mapper.Map<UserDto>(user);
     }
 
     public async Task<Result<UserDto>> UpdateAsync(Guid id, UpdateUserRequest request)
@@ -45,9 +48,9 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
             return UserErrors.NotFound(id);
 
         mapper.Map(request, user);
-        repository.Update(user);
+        await repository.Update(user);
 
-        return Result.Success(mapper.Map<UserDto>(user));
+        return mapper.Map<UserDto>(user);
     }
 
     public async Task<Result> DeleteAsync(Guid id)
@@ -56,7 +59,7 @@ public class UserService(IUserRepository repository, IMapper mapper) : IUserServ
         if (user is null)
             return UserErrors.NotFound(id);
 
-        repository.Remove(user);
+        await repository.Remove(user);
         return Result<object>.Success(id);
     }
 }

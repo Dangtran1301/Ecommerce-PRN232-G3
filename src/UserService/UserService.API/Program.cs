@@ -1,30 +1,20 @@
-using SharedKernel.Infrastructure.Data.Interfaces;
-using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
-using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
-using UserService.Application.DTOs;
-using UserService.Application.Services.Interfaces;
-using UserService.Infrastructure.Data;
-using UserService.Infrastructure.UnitOfWorks.Interfaces;
-using UserService.Infrastructure.UnitOfWorks.Repositories;
+﻿using UserService.API;
+using UserService.Application;
+using UserService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 // Add services to the container.
 
-services.AddControllers();
+// 🟢 Presentation (API)
+services.AddApiPresentation();
 
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+// 🟢 Application Layer
+services.AddApplicationServices();
 
-services.AddDbContextService(configuration);
-
-services.AddAutoMapper(typeof(UserProfile).Assembly);
-services.AddScoped<IUserService, UserService.Application.Services.UserService>();
-services.AddScoped<IUserRepository, UserRepository>();
-services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
-services.AddScoped<IDbContext, UserDbContext>();
-services.AddScoped<UserDbContext>();
+// 🟢 Infrastructure Layer
+services.AddInfrastructureServices(configuration);
 
 var app = builder.Build();
 
