@@ -1,4 +1,4 @@
-using SharedKernel.Domain.Common.Entities;
+﻿using SharedKernel.Domain.Common.Entities;
 
 namespace CatalogService.Entities
 {
