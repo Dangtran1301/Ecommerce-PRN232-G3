@@ -1,4 +1,7 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Application.Common;
+using SharedKernel.Domain.Common.Results;
 
 namespace UserService.API;
 
@@ -28,7 +31,23 @@ public static class DependencyInjection
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        services.Configure<ApiBehaviorOptions>(static options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                var errors = context.ModelState
+                    .Where(ms => ms.Value?.Errors.Count > 0)
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
 
+                var error = Error.Validation("One or more validation errors occurred", errors);
+                var response = new ApiResponse(false, error);
+
+                return new BadRequestObjectResult(response);
+            };
+        });
         return services;
     }
 }

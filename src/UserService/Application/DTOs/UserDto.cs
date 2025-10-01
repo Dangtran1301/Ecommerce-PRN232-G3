@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using UserService.Domain.Entities.Enums;
 
 namespace UserService.Application.DTOs;
 
@@ -41,3 +42,17 @@ public record UpdateUserRequest(
     [StringLength(255, ErrorMessage = "Avatar URL cannot exceed 255 characters")]
     string? Avatar
 );
+
+public class UserFilterDto
+{
+    public string? Keyword { get; set; }
+    public Role? Role { get; set; }
+    public AccountStatus? Status { get; set; }
+    public Gender? Gender { get; set; }
+    public DateTime? DobFrom { get; set; }
+    public DateTime? DobTo { get; set; }
+    public int? PageIndex { get; set; } = 1;
+    public int? PageSize { get; set; } = 25;
+    public string? OrderBy { get; set; } = "CreatedAt";
+    public bool Descending { get; set; } = false;
+}
