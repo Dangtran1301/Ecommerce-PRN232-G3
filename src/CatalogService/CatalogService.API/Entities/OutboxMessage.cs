@@ -12,4 +12,11 @@ namespace CatalogService.Entities
         public DateTime? ProcessedOn { get; set; }
         public string Status { get; set; } = "Pending";
     }
+    public enum OutboxStatus
+    {
+        Pending = 0,
+        Processing = 1,
+        Completed = 2,
+        Failed = 3
+    }
 }
