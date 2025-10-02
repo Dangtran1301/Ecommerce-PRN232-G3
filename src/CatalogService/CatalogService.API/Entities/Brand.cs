@@ -8,7 +8,5 @@ namespace CatalogService.Entities
         public string? BrandDescription { get; set; }
         public string? LogoUrl { get; set; }
         public string? WebsiteUrl { get; set; }
-
-        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
