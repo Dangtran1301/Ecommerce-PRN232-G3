@@ -42,7 +42,10 @@ public class UserService(
             request.Email,
             BCrypt.Net.BCrypt.HashPassword(request.Password),
             request.PhoneNumber
-            );
+            )
+        {
+            FullName = request.FullName
+        };
 
         await repository.AddAsync(user);
         return true;

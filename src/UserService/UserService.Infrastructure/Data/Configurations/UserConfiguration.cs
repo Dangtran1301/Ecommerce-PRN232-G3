@@ -51,11 +51,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Avatar)
             .HasMaxLength(255);
 
-        builder.HasMany(u => u.UserSessions)
-            .WithOne(s => s.User)
-            .HasForeignKey(s => s.AccountId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasIndex(u => u.Email).IsUnique();
         builder.HasIndex(u => u.UserName).IsUnique();
     }

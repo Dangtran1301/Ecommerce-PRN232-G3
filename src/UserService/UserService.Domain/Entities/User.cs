@@ -24,7 +24,6 @@ public class User : AuditableEntity<Guid>
     public string? Avatar { get; set; } = string.Empty;
     public AccountStatus AccountStatus { get; set; } = AccountStatus.Active;
     public Role Role { get; set; } = Role.Customer;
-    public ICollection<UserSession> UserSessions { get; set; } = [];
 
     protected User()
     { }
