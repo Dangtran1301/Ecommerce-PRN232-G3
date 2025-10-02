@@ -16,7 +16,7 @@ public enum FilterOperator
     In
 }
 
-public abstract class FilterDescriptor
+public class FilterDescriptor
 {
     public string? Field { get; set; } = string.Empty;
     public FilterOperator Operator { get; set; } = FilterOperator.Equals;

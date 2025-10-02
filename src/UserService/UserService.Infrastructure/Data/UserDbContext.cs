@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Infrastructure.Data;
 using System.Reflection;
 using UserService.Domain.Entities;

@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using SharedKernel.Domain.Common.Results;
+﻿using SharedKernel.Domain.Common.Results;
+using System.Text.Json.Serialization;
 
 namespace SharedKernel.Application.Common;
 
@@ -7,8 +7,10 @@ public class ApiResponse(bool success, Error? error)
 {
     [JsonPropertyOrder(1)]
     public bool Success { get; } = success;
+
     [JsonPropertyOrder(2)]
     public Error? Error { get; } = error;
+
     [JsonPropertyOrder(4)]
     public DateTime Timestamp { get; } = DateTime.UtcNow;
 

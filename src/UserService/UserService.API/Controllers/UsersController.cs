@@ -6,6 +6,7 @@ using UserService.Application.DTOs;
 using UserService.Application.Services.Interfaces;
 
 namespace UserService.API.Controllers;
+
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
@@ -109,5 +110,4 @@ public class UsersController(IUserService service) : ControllerBase
             }
         });
     }
-
 }

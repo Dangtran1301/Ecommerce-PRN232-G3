@@ -17,6 +17,8 @@ public interface IUserService
     Task<Result> DeleteAsync(Guid id);
 
     Task<Result<IReadOnlyList<UserDto>>> FilterBySpecification(UserFilterDto filter);
+
     Task<Result<PagedResult<UserDto>>> FilterByDynamic(DynamicQuery query);
+
     Task<Result<PagedResult<UserDto>>> FilterPaged(PagedRequest request);
 }

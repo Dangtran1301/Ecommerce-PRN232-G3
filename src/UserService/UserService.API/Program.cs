@@ -16,8 +16,6 @@ services.AddApplicationServices();
 // 🟢 Infrastructure Layer
 services.AddInfrastructureServices(configuration);
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

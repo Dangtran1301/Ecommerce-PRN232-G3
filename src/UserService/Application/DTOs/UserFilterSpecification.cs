@@ -19,7 +19,6 @@ public class UserFilterSpecification : BaseSpecification<User>
             (!filter.DobFrom.HasValue || u.DayOfBirth >= filter.DobFrom.Value) &&
             (!filter.DobTo.HasValue || u.DayOfBirth <= filter.DobTo.Value);
 
-
         if (!string.IsNullOrEmpty(filter.OrderBy))
         {
             switch (filter.OrderBy.ToLower())
@@ -51,6 +50,7 @@ public class UserFilterSpecification : BaseSpecification<User>
         var take = filter.PageSize.Value;
         ApplyPaging(skip, take);
     }
+
     public static implicit operator UserFilterSpecification(UserFilterDto filter)
         => new UserFilterSpecification(filter);
 }

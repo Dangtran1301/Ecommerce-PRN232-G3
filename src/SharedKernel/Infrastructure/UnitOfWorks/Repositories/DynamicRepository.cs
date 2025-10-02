@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
-using SharedKernel.Domain.Common.Entities;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 
