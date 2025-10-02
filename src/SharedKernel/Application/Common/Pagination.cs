@@ -48,4 +48,14 @@ public class PagedResult<T>
 
     public int From => ((PageNumber - 1) * PageSize) + 1;
     public int To => Math.Min(PageNumber * PageSize, TotalCount);
+
+    public PagedResult<TDestination> Map<TDestination>(IReadOnlyList<TDestination> newItems)
+    {
+        return new PagedResult<TDestination>(
+            newItems,
+            TotalCount,
+            PageNumber,
+            PageSize
+        );
+    }
 }

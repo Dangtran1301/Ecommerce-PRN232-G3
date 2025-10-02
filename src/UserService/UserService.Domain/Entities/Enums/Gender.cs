@@ -1,4 +1,4 @@
-﻿namespace UserService.API.Entities.Enums;
+﻿namespace UserService.Domain.Entities.Enums;
 
 public enum Gender
 {

@@ -1,0 +1,16 @@
+﻿using SharedKernel.Application.Common.Enums;
+using SharedKernel.Domain.Common.Results;
+
+namespace UserService.Application.Errors;
+
+public static class UserErrors
+{
+    public static Error NotFound(Guid id) =>
+        Error.NotFound($"User not found with ID: {id}");
+
+    public static Error EmailTaken(string email) =>
+        Error.Conflict($"Email already exists: {email}");
+
+    public static Error InvalidData(string? message = null) =>
+        Error.Failure(ErrorCodes.BadRequest, message ?? "Invalid user data");
+}
