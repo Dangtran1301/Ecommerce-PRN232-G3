@@ -1,22 +1,12 @@
-using CatalogService.Data;
-using Microsoft.EntityFrameworkCore;
+using CatalogService;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Register TestApiContext with DI container
-builder.Services.AddDbContext<CatalogDbContext>(options =>
-    options.UseSqlServer(connectionString));
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddCatalogServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
