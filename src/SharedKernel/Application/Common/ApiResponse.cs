@@ -1,42 +1,34 @@
 ﻿using SharedKernel.Domain.Common.Results;
+using System.Text.Json.Serialization;
 
 namespace SharedKernel.Application.Common;
 
-public class ApiResponse
+public class ApiResponse(bool success, Error? error)
 {
-    public bool Success { get; }
-    public Error? Error { get; }
-    public DateTime Timestamp { get; }
+    [JsonPropertyOrder(1)]
+    public bool Success { get; } = success;
 
-    private ApiResponse(bool success, Error? error)
-    {
-        Success = success;
-        Error = error;
-        Timestamp = DateTime.UtcNow;
-    }
+    [JsonPropertyOrder(2)]
+    public Error? Error { get; } = error;
 
-    public static ApiResponse FromResult(Result result)
+    [JsonPropertyOrder(4)]
+    public DateTime Timestamp { get; } = DateTime.UtcNow;
+
+    public static implicit operator ApiResponse(Result result)
         => new(result.IsSuccess, result.Error);
 
     public static ApiResponse<T> FromResult<T>(Result<T> result)
-        => ApiResponse<T>.FromResult(result);
+        => result;
 }
 
-public class ApiResponse<T>
+public class ApiResponse<T>(bool success, Error? error, T? data) : ApiResponse(success, error)
 {
-    public bool Success { get; }
-    public Error? Error { get; }
-    public T? Data { get; }
-    public DateTime Timestamp { get; }
+    [JsonPropertyOrder(3)]
+    public T? Data { get; } = data;
 
-    private ApiResponse(bool success, Error? error, T? data)
-    {
-        Success = success;
-        Error = error;
-        Data = data;
-        Timestamp = DateTime.UtcNow;
-    }
-
-    public static ApiResponse<T> FromResult(Result<T> result)
+    public static implicit operator ApiResponse<T>(Result<T> result)
         => new(result.IsSuccess, result.Error, result.Value);
+
+    public static implicit operator ApiResponse<T>(T value)
+        => new(true, null, value);
 }

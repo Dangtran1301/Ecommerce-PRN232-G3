@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.Application.Extensions;
 using SharedKernel.Application.Interfaces;
-using SharedKernel.Domain.Common.Entities;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 
 namespace SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
-public class SpecificationRepository<TEntity, TKey>(IDbContext dbContext) : EfRepository<TEntity, TKey>(dbContext), ISpecificationRepository<TEntity, TKey>
-    where TEntity : Entity<TKey>
+public class SpecificationRepository<TEntity>(IDbContext dbContext) : ISpecificationRepository<TEntity>
+    where TEntity : class
 {
     private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
 

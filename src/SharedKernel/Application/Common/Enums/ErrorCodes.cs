@@ -1,0 +1,11 @@
+﻿namespace SharedKernel.Application.Common.Enums;
+
+public static class ErrorCodes
+{
+    public const string NotFound = "NOT_FOUND";
+    public const string Unauthorized = "UNAUTHORIZED";
+    public const string Forbidden = "FORBIDDEN";
+    public const string Conflict = "CONFLICT";
+    public const string BadRequest = "BAD_REQUEST";
+    public const string InternalServerError = "INTERNAL_SERVER_ERROR";
+}

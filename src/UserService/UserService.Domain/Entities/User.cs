@@ -1,7 +1,7 @@
 ﻿using SharedKernel.Domain.Common.Entities;
-using UserService.API.Entities.Enums;
+using UserService.Domain.Entities.Enums;
 
-namespace UserService.API.Entities;
+namespace UserService.Domain.Entities;
 
 public class User : AuditableEntity<Guid>
 {
@@ -18,13 +18,12 @@ public class User : AuditableEntity<Guid>
 
     public Gender Gender { get; set; } = Gender.Unknown;
 
-    public DateTime? DayOfBirth { get; set; } = default!;
+    public DateTime? DayOfBirth { get; set; }
 
-    public string? Address = string.Empty;
+    public string? Address { get; set; } = string.Empty;
     public string? Avatar { get; set; } = string.Empty;
     public AccountStatus AccountStatus { get; set; } = AccountStatus.Active;
     public Role Role { get; set; } = Role.Customer;
-    public ICollection<UserSession> AccountTokens { get; set; } = [];
 
     protected User()
     { }
@@ -40,5 +39,13 @@ public class User : AuditableEntity<Guid>
     }
 
     //public void ConfirmEmail() => EmailConfirmed = true;
+    public void ChangeEmail(string newEmail) => Email = newEmail;
+
+    public void ChangePhone(string? newPhone) => PhoneNumber = newPhone;
+
     public void ChangePassword(string newHash) => PasswordHash = newHash;
+
+    public void ActiveUser() => AccountStatus = AccountStatus.Active;
+
+    public void InactiveUser() => AccountStatus = AccountStatus.Inactive;
 }

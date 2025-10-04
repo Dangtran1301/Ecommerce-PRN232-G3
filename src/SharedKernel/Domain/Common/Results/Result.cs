@@ -18,9 +18,15 @@ public class Result
     public static Result<T> Success<T>(T value) => Result<T>.Success(value);
 
     public static Result<T> Failure<T>(Error error) => Result<T>.Failure(error);
+
+    public static implicit operator Result(bool success)
+        => success ? Success() : Failure(Error.None);
+
+    public static implicit operator Result(Error error)
+        => Failure(error);
 }
 
-public class Result<T> : Result
+public sealed class Result<T> : Result
 {
     public T? Value { get; }
 
