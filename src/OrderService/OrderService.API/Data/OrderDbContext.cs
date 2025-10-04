@@ -13,13 +13,13 @@ namespace OrderService.API.Data
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OutboxMessage> OutboxMessages { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // gọi base để áp dụng soft delete filter + logic chung
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); // gọi logic soft delete & audit
 
-            // Config Order
+            // Order
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(o => o.Id);
@@ -33,13 +33,24 @@ namespace OrderService.API.Data
                       .HasColumnType("decimal(18,2)");
             });
 
-            // Config OrderItem
+            // OrderItem
             modelBuilder.Entity<OrderItem>(entity =>
             {
                 entity.HasKey(oi => oi.Id);
 
                 entity.Property(oi => oi.Price)
                       .HasColumnType("decimal(18,2)");
+            });
+
+            // OutboxMessage
+            modelBuilder.Entity<OutboxMessage>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.EventType).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.AggregateType).HasMaxLength(200);
+                entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Payload).IsRequired();
+                entity.Property(e => e.Metadata).HasColumnType("nvarchar(max)");
             });
         }
     }
