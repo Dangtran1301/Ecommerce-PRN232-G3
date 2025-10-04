@@ -2,10 +2,8 @@
 
 namespace CatalogService.API.DTOs
 {
-    public class CategoryDto
+    public record CreateCategoryRequest
     {
-        public Guid Id { get; set; }
-
         [Required(ErrorMessage = "Category name is required")]
         [StringLength(255, ErrorMessage = "Category name must not exceed 255 characters")]
         public string CategoryName { get; set; } = null!;
@@ -15,5 +13,31 @@ namespace CatalogService.API.DTOs
         [Required(ErrorMessage = "Category image is required")]
         [StringLength(255, ErrorMessage = "Image URL must not exceed 255 characters")]
         public string? ImageUrl { get; set; }
+    }
+    public record CategoryDto
+    {
+        public Guid Id { get; set; }
+        public string CategoryName { get; set; } = null!;
+        public string? CategoryDescription { get; set; }
+        public string? ImageUrl { get; set; }
+    }
+    public record UpdateCategoryRequest
+    {
+        [StringLength(255, ErrorMessage = "Category name must not exceed 255 characters")]
+        public string? CategoryName { get; set; }
+
+        [StringLength(1000, ErrorMessage = "Category description must not exceed 1000 characters")]
+        public string? CategoryDescription { get; set; }
+
+        [StringLength(255, ErrorMessage = "Image URL must not exceed 255 characters")]
+        public string? ImageUrl { get; set; }
+    }
+    public class CategoryFilterDto
+    {
+        public string? Keyword { get; set; }
+        public int? PageIndex { get; set; } = 1;
+        public int? PageSize { get; set; } = 25;
+        public string? OrderBy { get; set; } = "CreatedAt";
+        public bool Descending { get; set; } = false;
     }
 }
