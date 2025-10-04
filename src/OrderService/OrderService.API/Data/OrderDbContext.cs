@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderService.API.Models;
+using SharedKernel.Domain.Common.Events;
 using SharedKernel.Infrastructure.Data;
 
 namespace OrderService.API.Data
