@@ -104,7 +104,7 @@ namespace CatalogService.API.Data.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.OutboxMessage", b =>
+            modelBuilder.Entity("SharedKernel.Domain.Common.Events.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

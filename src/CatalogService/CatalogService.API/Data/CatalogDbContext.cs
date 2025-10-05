@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel.Infrastructure.Data;
 using System.Reflection;
 using CatalogService.Entities;
+using SharedKernel.Domain.Common.Events;
 
 namespace CatalogService.Data
 {
