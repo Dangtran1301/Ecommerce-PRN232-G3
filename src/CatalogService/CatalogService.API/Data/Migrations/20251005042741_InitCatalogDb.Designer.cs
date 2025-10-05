@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CatalogService.API.Data.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20251002143243_InitCatalogDb")]
+    [Migration("20251005042741_InitCatalogDb")]
     partial class InitCatalogDb
     {
         /// <inheritdoc />
@@ -107,7 +107,7 @@ namespace CatalogService.API.Data.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.OutboxMessage", b =>
+            modelBuilder.Entity("SharedKernel.Domain.Common.Events.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
