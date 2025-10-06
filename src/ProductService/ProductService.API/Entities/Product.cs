@@ -13,7 +13,6 @@ namespace CatalogService.Entities
         public string? ImageUrl { get; set; }
         public string? Specifications { get; set; }
 
-        // Quan hệ
         public Guid BrandId { get; set; }
         public Brand Brand { get; set; } = null!;
 

@@ -8,6 +8,6 @@ namespace CatalogService.Entities
         public Product Product { get; set; } = null!;
 
         public int Quantity { get; set; }
-        public string? Location { get; set; } // Ví dụ: "Kho HN", "Kho HCM"
+        public string? Location { get; set; } 
     }
 }

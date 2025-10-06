@@ -1,4 +1,4 @@
-﻿namespace CatalogService.DTOs.ProductVariant
+﻿namespace ProductService.API.DTOs.ProductVariants
 {
     
     public class ProductVariantResponseDto
