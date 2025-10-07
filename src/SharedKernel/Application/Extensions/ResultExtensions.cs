@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
+using SharedKernel.Application.Common.Enums;
 using SharedKernel.Domain.Common.Results;
 
 namespace SharedKernel.Application.Extensions;
@@ -8,33 +10,36 @@ public static class ResultExtensions
 {
     public static IActionResult ToActionResult<T>(this Result<T> result)
     {
-        var response = ApiResponse<T>.FromResult(result);
+        ApiResponse<T> response = result;
 
-        return result.IsSuccess ? new OkObjectResult(response) : MapErrorToActionResult(response, result.Error!);
+        return result.IsSuccess
+            ? new OkObjectResult(response)
+            : MapErrorToActionResult(response, result.Error!);
     }
 
     public static IActionResult ToActionResult(this Result result)
     {
-        if (result.IsSuccess)
-        {
-            var successResponse = ApiResponse<object>.FromResult(Result<object>.Success(null!));
-            return new OkObjectResult(successResponse);
-        }
+        ApiResponse response = result;
 
-        var errorResult = Result<object>.Failure(result.Error!);
-        var response = ApiResponse<object>.FromResult(errorResult);
-        return MapErrorToActionResult(response, result.Error!);
+        return result.IsSuccess
+            ? new OkObjectResult(response)
+            : MapErrorToActionResult(response, result.Error!);
     }
 
-    private static IActionResult MapErrorToActionResult<T>(ApiResponse<T> response, Error error)
+    private static IActionResult MapErrorToActionResult(object response, Error error)
     {
         return error.Code switch
         {
-            "NOT_FOUND" => new NotFoundObjectResult(response),
-            "UNAUTHORIZED" => new UnauthorizedObjectResult(response),
-            "FORBIDDEN" => new ForbidResult(),
-            "CONFLICT" => new ConflictObjectResult(response),
-            _ => new BadRequestObjectResult(response)
+            ErrorCodes.NotFound => new NotFoundObjectResult(response),
+            ErrorCodes.Unauthorized => new UnauthorizedObjectResult(response),
+            ErrorCodes.Forbidden => new ForbidResult(),
+            ErrorCodes.Conflict => new ConflictObjectResult(response),
+            ErrorCodes.BadRequest => new BadRequestObjectResult(response),
+
+            _ => new ObjectResult(response)
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            }
         };
     }
 }

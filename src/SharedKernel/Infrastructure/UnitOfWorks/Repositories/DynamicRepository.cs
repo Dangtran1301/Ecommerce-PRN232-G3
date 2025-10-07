@@ -1,14 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
-using SharedKernel.Domain.Common.Entities;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 
 namespace SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
-public class DynamicRepository<TEntity, TKey>(IDbContext dbContext) : EfRepository<TEntity, TKey>(dbContext), IDynamicRepository<TEntity>
-    where TEntity : Entity<TKey>
+public class DynamicRepository<TEntity>(IDbContext dbContext) : IDynamicRepository<TEntity> where TEntity : class
 {
     private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
 

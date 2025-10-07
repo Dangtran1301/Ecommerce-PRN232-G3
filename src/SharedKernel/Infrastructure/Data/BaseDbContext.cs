@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.Domain.Common.Entities.Interface;
+using SharedKernel.Domain.Common.Events;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using System.Linq.Expressions;
 
@@ -43,7 +44,33 @@ public class BaseDbContext : DbContext, IDbContext
             Entry(entry.Entity).Property(e => e.DeletedBy).IsModified = true;
         }
 
-        return await base.SaveChangesAsync(cancellationToken);
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        var domainEventEntries = ChangeTracker.Entries<IHasDomainEvents>()
+            .SelectMany(e => e.Entity.DomainEvents)
+            .ToList();
+
+        if (!domainEventEntries.Any())
+            return result;
+
+        foreach (var outboxMessage in domainEventEntries.Select(@event => new OutboxMessage
+                 {
+                     Id = Guid.NewGuid(),
+                     EventType = @event.GetType().Name,
+                     Payload = Newtonsoft.Json.JsonConvert.SerializeObject(@event),
+                     OccurredOn = DateTime.UtcNow,
+                     Status = OutboxStatus.Pending
+                 }))
+        {
+            await Set<OutboxMessage>().AddAsync(outboxMessage, cancellationToken);
+        }
+
+        foreach (var entityEntry in ChangeTracker.Entries<IHasDomainEvents>().ToList())
+            entityEntry.Entity.ClearDomainEvents();
+
+        await base.SaveChangesAsync(cancellationToken);
+
+        return result;
     }
 }
 

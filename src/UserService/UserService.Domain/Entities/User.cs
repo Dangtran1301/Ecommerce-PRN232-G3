@@ -1,0 +1,51 @@
+﻿using SharedKernel.Domain.Common.Entities;
+using UserService.Domain.Entities.Enums;
+
+namespace UserService.Domain.Entities;
+
+public class User : AuditableEntity<Guid>
+{
+    public string FullName { get; set; } = string.Empty;
+
+    public string UserName { get; private set; } = string.Empty;
+
+    public string PasswordHash { get; private set; } = string.Empty;
+
+    public string Email { get; private set; } = string.Empty;
+
+    //public bool EmailConfirmed { get; private set; } = false;
+    public string? PhoneNumber { get; private set; } = string.Empty;
+
+    public Gender Gender { get; set; } = Gender.Unknown;
+
+    public DateTime? DayOfBirth { get; set; }
+
+    public string? Address { get; set; } = string.Empty;
+    public string? Avatar { get; set; } = string.Empty;
+    public AccountStatus AccountStatus { get; set; } = AccountStatus.Active;
+    public Role Role { get; set; } = Role.Customer;
+
+    protected User()
+    { }
+
+    public User(string userName, string email, string passwordHash, string? phoneNumber = null)
+    {
+        Id = Guid.NewGuid();
+        UserName = userName;
+        Email = email;
+        PasswordHash = passwordHash;
+        PhoneNumber = phoneNumber;
+        SetCreated("system");
+    }
+
+    //public void ConfirmEmail() => EmailConfirmed = true;
+    public void ChangeEmail(string newEmail) => Email = newEmail;
+
+    public void ChangePhone(string? newPhone) => PhoneNumber = newPhone;
+
+    public void ChangePassword(string newHash) => PasswordHash = newHash;
+
+    public void ActiveUser() => AccountStatus = AccountStatus.Active;
+
+    public void InactiveUser() => AccountStatus = AccountStatus.Inactive;
+}
