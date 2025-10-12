@@ -1,5 +1,5 @@
-﻿using CatalogService.API.Repositories.Interfaces;
-using CatalogService.Entities;
+﻿using CatalogService.API.Entities;
+using CatalogService.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;

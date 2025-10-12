@@ -1,10 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using SharedKernel.Infrastructure.Data;
 using System.Reflection;
-using CatalogService.Entities;
+using CatalogService.API.Entities;
+using Microsoft.EntityFrameworkCore;
 using SharedKernel.Domain.Common.Events;
+using SharedKernel.Infrastructure.Data;
 
-namespace CatalogService.Data
+namespace CatalogService.API.Data
 {
     public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : BaseDbContext(options)
     {

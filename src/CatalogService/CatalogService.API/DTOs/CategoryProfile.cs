@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using CatalogService.Entities;
-using CatalogService.API.DTOs;
+using CatalogService.API.Entities;
 
-namespace CatalogService.API.Mappings
+namespace CatalogService.API.DTOs
 {
     public class CategoryProfile : Profile
     {

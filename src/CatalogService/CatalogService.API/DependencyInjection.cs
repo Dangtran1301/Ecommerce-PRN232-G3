@@ -1,22 +1,19 @@
 ﻿using Asp.Versioning;
+using CatalogService.API.Data;
 using CatalogService.API.DTOs;
-using CatalogService.API.Mappings;
 using CatalogService.API.Repositories;
 using CatalogService.API.Repositories.Interfaces;
 using CatalogService.API.Services;
 using CatalogService.API.Services.Interfaces;
-using CatalogService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
-namespace CatalogService;
+namespace CatalogService.API;
 
 public static class DependencyInjection
 {

@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using CatalogService.API.DTOs;
+using CatalogService.API.Entities;
 using CatalogService.API.Repositories.Interfaces;
 using CatalogService.API.Services.Interfaces;
-using CatalogService.API.Specifications;
 using CatalogService.API.Errors;
-using CatalogService.Entities;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;

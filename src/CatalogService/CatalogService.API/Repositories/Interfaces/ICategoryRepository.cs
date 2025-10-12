@@ -1,4 +1,4 @@
-﻿using CatalogService.Entities;
+﻿using CatalogService.API.Entities;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 
 namespace CatalogService.API.Repositories.Interfaces

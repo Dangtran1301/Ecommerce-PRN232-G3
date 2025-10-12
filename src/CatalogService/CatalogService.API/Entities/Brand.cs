@@ -1,6 +1,6 @@
 using SharedKernel.Domain.Common.Entities;
 
-namespace CatalogService.Entities
+namespace CatalogService.API.Entities
 {
     public class Brand : AuditableEntity<Guid>
     {

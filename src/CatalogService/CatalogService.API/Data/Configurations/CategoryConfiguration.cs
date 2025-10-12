@@ -1,8 +1,8 @@
-﻿using CatalogService.Entities;
+﻿using CatalogService.API.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CatalogService.Data.Configurations
+namespace CatalogService.API.Data.Configurations
 {
     public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
