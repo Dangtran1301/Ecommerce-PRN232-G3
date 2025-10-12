@@ -1,49 +1,14 @@
 ﻿using Asp.Versioning;
-using CatalogService.API.DTOs;
-using CatalogService.API.Mappings;
-using CatalogService.API.Repositories;
-using CatalogService.API.Repositories.Interfaces;
-using CatalogService.API.Services;
-using CatalogService.API.Services.Interfaces;
-using CatalogService.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
-using SharedKernel.Infrastructure.Data.Interfaces;
-using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
-using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
-namespace CatalogService;
+namespace CatalogService.API;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddCatalogServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApiPresentation(this IServiceCollection services)
     {
-        // ========== Infrastructure ==========
-        services.AddDbContext<CatalogDbContext>(options =>
-        {
-            options.UseSqlServer(configuration.GetConnectionString("CatalogDb"));
-        });
-
-        services.AddScoped<IDbContext, CatalogDbContext>();
-        services.AddScoped<CatalogDbContext>();
-
-        services.AddScoped<IBrandRepository, BrandRepository>();
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
-
-        // ========== Application ==========
-        services.AddAutoMapper(typeof(BrandProfile).Assembly);
-        services.AddScoped<IBrandService, BrandService>();
-        services.AddScoped<ICategoryService, CategoryService>();
-
-        services.AddScoped(typeof(ISpecificationRepository<>), typeof(SpecificationRepository<>));
-        services.AddScoped(typeof(IDynamicRepository<>), typeof(DynamicRepository<>));
-
-        // ========== API Presentation ==========
         services.AddControllers();
 
         services.AddApiVersioning(options =>
@@ -66,7 +31,6 @@ public static class DependencyInjection
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-
         services.Configure<ApiBehaviorOptions>(static options =>
         {
             options.InvalidModelStateResponseFactory = context =>
@@ -84,7 +48,6 @@ public static class DependencyInjection
                 return new BadRequestObjectResult(response);
             };
         });
-
         return services;
     }
 }
