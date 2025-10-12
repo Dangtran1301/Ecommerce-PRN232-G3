@@ -1,9 +1,14 @@
-using CatalogService;
 using CatalogService.API;
+using CatalogService.Application;
+using CatalogService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 
-builder.Services.AddCatalogServices(builder.Configuration);
+services.AddApiPresentation();
+services.AddApplicationServices();
+services.AddInfrastructureServices(configuration);
 
 var app = builder.Build();
 
