@@ -8,7 +8,7 @@ using OrderService.API.Services.Interfaces;
 namespace OrderService.API.Controllers;
 
 [Route("api/v{version:apiVersion}/[controller]")]
-[ApiVersion("1.0")]
+[Asp.Versioning.ApiVersion("1.0")]
 [ApiController]
 public class OrdersController(IOrderService service) : ControllerBase
 {
