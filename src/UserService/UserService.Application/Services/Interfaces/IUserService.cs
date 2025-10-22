@@ -21,4 +21,6 @@ public interface IUserService
     Task<Result<PagedResult<UserDto>>> FilterByDynamic(DynamicQuery query);
 
     Task<Result<PagedResult<UserDto>>> FilterPaged(PagedRequest request);
+
+    Task<Result<UserDto>> ValidateUser(string login, string password, CancellationToken cancellationToken = default);
 }

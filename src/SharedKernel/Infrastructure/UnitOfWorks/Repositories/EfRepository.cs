@@ -13,6 +13,8 @@ where TEntity : Entity<TKey>
     private readonly IDbContext _dbContext = dbContext;
     private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
 
+    public IQueryable<TEntity> AsQueryable() => _dbSet.AsQueryable();
+
     public async Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken = default) =>
         await _dbSet.FindAsync([id], cancellationToken);
 

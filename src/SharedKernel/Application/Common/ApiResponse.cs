@@ -3,32 +3,42 @@ using System.Text.Json.Serialization;
 
 namespace SharedKernel.Application.Common;
 
-public class ApiResponse(bool success, Error? error)
+public class ApiResponse
 {
     [JsonPropertyOrder(1)]
-    public bool Success { get; } = success;
+    public bool Success { get; init; }
 
     [JsonPropertyOrder(2)]
-    public Error? Error { get; } = error;
+    public Error? Error { get; init; }
 
     [JsonPropertyOrder(4)]
-    public DateTime Timestamp { get; } = DateTime.UtcNow;
+    public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 
     public static implicit operator ApiResponse(Result result)
-        => new(result.IsSuccess, result.Error);
-
-    public static ApiResponse<T> FromResult<T>(Result<T> result)
-        => result;
+        => new()
+        {
+            Success = result.IsSuccess,
+            Error = result.IsSuccess ? null : result.Error
+        };
 }
 
-public class ApiResponse<T>(bool success, Error? error, T? data) : ApiResponse(success, error)
+public class ApiResponse<T> : ApiResponse
 {
     [JsonPropertyOrder(3)]
-    public T? Data { get; } = data;
+    public T? Data { get; init; }
 
     public static implicit operator ApiResponse<T>(Result<T> result)
-        => new(result.IsSuccess, result.Error, result.Value);
+        => new()
+        {
+            Success = result.IsSuccess,
+            Error = result.IsSuccess ? null : result.Error,
+            Data = result.Value
+        };
 
     public static implicit operator ApiResponse<T>(T value)
-        => new(true, null, value);
+        => new()
+        {
+            Success = true,
+            Data = value
+        };
 }
