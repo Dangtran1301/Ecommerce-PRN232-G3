@@ -2,34 +2,26 @@
 
 public class Error
 {
-    public string Code { get; }
-    public string Message { get; }
-    public object? Details { get; }
+    public string Code { get; init; } = string.Empty;
+    public string Message { get; init; } = string.Empty;
+    public string? Details { get; init; }
 
-    private Error(string code, string message, object? details = null)
-    {
-        Code = code;
-        Message = message;
-        Details = details;
-    }
+    public static readonly Error None = new() { Code = "None", Message = "" };
 
-    // Factory methods
-    public static Error Validation(string message, object? details = null)
-        => new("ValidationError", message, details);
+    public static Error Validation(string message, string? details = null)
+        => new() { Code = "ValidationError", Message = message, Details = details };
 
     public static Error NotFound(string message)
-        => new("NotFound", message);
+        => new() { Code = "NotFound", Message = message };
 
     public static Error Conflict(string message)
-        => new("Conflict", message);
+        => new() { Code = "Conflict", Message = message };
 
-    public static Error Failure(string message, object? details = null)
-        => new("Failure", message, details);
-
-    public static readonly Error None = new("None", string.Empty);
+    public static Error Failure(string message, string? details = null)
+        => new() { Code = "Failure", Message = message, Details = details };
 
     public override string ToString()
         => Details is null
             ? $"{Code}: {Message}"
-            : $"{Code}: {Message} | Details: {System.Text.Json.JsonSerializer.Serialize(Details)}";
+            : $"{Code}: {Message} | Details: {Details}";
 }

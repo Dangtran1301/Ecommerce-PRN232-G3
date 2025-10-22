@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.API", "AuthService.API\AuthService.API.csproj", "{0D662E8A-431D-753E-CE2D-5CED3050ED5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "..\SharedKernel\SharedKernel.csproj", "{C71DB168-5872-1C86-3B8B-5FDF83D4892C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0D662E8A-431D-753E-CE2D-5CED3050ED5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D662E8A-431D-753E-CE2D-5CED3050ED5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D662E8A-431D-753E-CE2D-5CED3050ED5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C71DB168-5872-1C86-3B8B-5FDF83D4892C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C71DB168-5872-1C86-3B8B-5FDF83D4892C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C71DB168-5872-1C86-3B8B-5FDF83D4892C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C71DB168-5872-1C86-3B8B-5FDF83D4892C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

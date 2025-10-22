@@ -17,7 +17,6 @@ public class UserDbContext(DbContextOptions<UserDbContext> options) : BaseDbCont
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-
         modelBuilder.Entity<OutboxMessage>(entity =>
         {
             entity.ToTable("Outbox_User");

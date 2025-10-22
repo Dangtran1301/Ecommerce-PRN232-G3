@@ -54,13 +54,13 @@ public class BaseDbContext : DbContext, IDbContext
             return result;
 
         foreach (var outboxMessage in domainEventEntries.Select(@event => new OutboxMessage
-                 {
-                     Id = Guid.NewGuid(),
-                     EventType = @event.GetType().Name,
-                     Payload = Newtonsoft.Json.JsonConvert.SerializeObject(@event),
-                     OccurredOn = DateTime.UtcNow,
-                     Status = OutboxStatus.Pending
-                 }))
+        {
+            Id = Guid.NewGuid(),
+            EventType = @event.GetType().Name,
+            Payload = Newtonsoft.Json.JsonConvert.SerializeObject(@event),
+            OccurredOn = DateTime.UtcNow,
+            Status = OutboxStatus.Pending
+        }))
         {
             await Set<OutboxMessage>().AddAsync(outboxMessage, cancellationToken);
         }
