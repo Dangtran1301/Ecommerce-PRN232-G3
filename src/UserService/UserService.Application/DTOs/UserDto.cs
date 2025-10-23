@@ -6,9 +6,11 @@ namespace UserService.Application.DTOs;
 public record CreateUserRequest(
     [Required(ErrorMessage = "FullName is required")]
     [StringLength(100, ErrorMessage = "FullName cannot exceed 100 characters")]
+    [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "FullName only allows letters and spaces")]
     string FullName,
 
     [Required(ErrorMessage = "UserName is required")]
+    [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username only allows alphanumeric and underscore")]
     [StringLength(50, MinimumLength = 3, ErrorMessage = "UserName must be between 3 and 50 characters")]
     string UserName,
 

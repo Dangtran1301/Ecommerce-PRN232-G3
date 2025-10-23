@@ -37,6 +37,9 @@ public class UserService(
         if (await repository.AnyAsync(x => x.Email.Equals(request.Email)))
             return UserErrors.EmailTaken(request.Email);
 
+        if (await repository.AnyAsync(x => x.UserName.Equals(request.UserName)))
+            return UserErrors.UsernameTaken(request.UserName);
+
         var user = new User(
             request.UserName,
             request.Email,

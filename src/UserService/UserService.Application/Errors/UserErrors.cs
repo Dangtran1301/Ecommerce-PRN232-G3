@@ -11,6 +11,9 @@ public static class UserErrors
     public static Error EmailTaken(string email) =>
         Error.Conflict($"Email already exists: {email}");
 
+    public static Error UsernameTaken(string username) =>
+        Error.Conflict($"Username already exist: {username}");
+
     public static Error InvalidData(string? message = null) =>
         Error.Failure(ErrorCodes.BadRequest, message ?? "Invalid user data");
 }

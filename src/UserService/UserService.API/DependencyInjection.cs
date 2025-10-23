@@ -37,12 +37,18 @@ public static class DependencyInjection
             {
                 var errors = context.ModelState
                     .Where(ms => ms.Value?.Errors.Count > 0)
-                    .ToDictionary(
-                        kvp => kvp.Key,
-                        kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
-                    );
+                    .SelectMany(kvp => kvp.Value!.Errors.Select(e => new
+                    {
+                        Field = kvp.Key,
+                        Error = e.ErrorMessage
+                    }))
+                    .ToList();
 
-                var error = Error.Validation("One or more validation errors occurred", errors.Values.ToString());
+                var error = Error.Validation(
+                    "One or more validation errors occurred",
+                    errors
+                );
+
                 var response = new ApiResponse { Error = error };
 
                 return new BadRequestObjectResult(response);

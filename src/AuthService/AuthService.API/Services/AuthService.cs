@@ -1,4 +1,5 @@
 ﻿using AuthService.API.DTOs;
+using AuthService.API.Errors;
 using AuthService.API.Interfaces;
 using AuthService.API.Models;
 using AutoMapper;
@@ -21,14 +22,15 @@ public class AuthService(
         var userResult = await userInternalClient.ValidateUserAsync(loginRequestDto, cancellationToken);
 
         if (!userResult.IsSuccess)
-            return Result.Fail<LoginResponseDto>(userResult.Error!);
+            return Result.Fail<LoginResponseDto>(AuthErrors.InvalidCredentials(
+                userResult.Error.Details?.ToString()));
+
         if (userResult.Value is null)
-            return Result.Fail<LoginResponseDto>(Error.Validation("User is null"));
+            return Result.Fail<LoginResponseDto>(AuthErrors.NullUser);
 
         var user = userResult.Value;
 
         var (accessToken, accessTokenExpiresAt) = tokenService.GenerateAccessToken(user);
-
         var (refreshToken, refreshExpiresAt) = tokenService.GenerateRefreshToken();
 
         var refreshEntity = new RefreshToken
@@ -56,30 +58,26 @@ public class AuthService(
             x.Token == refreshTokenRequestDto.RefreshToken, cancellationToken);
 
         if (existing is null)
-            return Result.Fail<LoginResponseDto>(Error.Validation("Invalid refresh token"));
+            return AuthErrors.InvalidRefreshToken;
 
         if (existing.IsRevoked)
-            return Result.Fail<LoginResponseDto>(Error.Validation("Refresh token has been revoked"));
+            return AuthErrors.RefreshTokenRevoked;
 
         if (existing.ExpiryDate < DateTime.UtcNow)
-            return Result.Fail<LoginResponseDto>(Error.Validation("Refresh token has expired"));
+            return AuthErrors.RefreshTokenExpired;
 
-        // Lấy lại thông tin user từ internal client
         var userResult = await userInternalClient.GetUserByIdAsync(existing.UserId, cancellationToken);
         if (!userResult.IsSuccess || userResult.Value is null)
-            return Result.Fail<LoginResponseDto>(Error.Validation("User not found"));
+            return AuthErrors.UserNotFound;
 
         var user = userResult.Value;
 
-        // Tạo token mới
         var (accessToken, expiresAt) = tokenService.GenerateAccessToken(user);
         var (newRefreshToken, newRefreshExpiresAt) = tokenService.GenerateRefreshToken();
 
-        // Thu hồi token cũ
         existing.IsRevoked = true;
         await repository.Update(existing, cancellationToken);
 
-        // Lưu refresh token mới
         var newEntity = new RefreshToken
         {
             UserId = user.Id,
@@ -105,10 +103,10 @@ public class AuthService(
             x.Token == refreshTokenRequestDto.RefreshToken, cancellationToken);
 
         if (token is null)
-            return Result.Fail(Error.Validation("Invalid refresh token"));
+            return AuthErrors.InvalidRefreshToken;
 
         if (token.IsRevoked)
-            return Result.Fail(Error.Validation("Token already revoked"));
+            return AuthErrors.TokenAlreadyRevoked;
 
         token.IsRevoked = true;
         await repository.Update(token, cancellationToken);
