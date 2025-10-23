@@ -30,7 +30,8 @@ public record UserDto(
     string UserName,
     string Email,
     string? PhoneNumber,
-    string? Avatar);
+    string? Avatar,
+    string? Role);
 
 public record UpdateUserRequest(
     [StringLength(100, ErrorMessage = "FullName cannot exceed 100 characters")]
@@ -55,4 +56,13 @@ public class UserFilterDto
     public int? PageSize { get; set; } = 25;
     public string? OrderBy { get; set; } = "CreatedAt";
     public bool Descending { get; set; } = false;
+}
+
+public class ValidateUserRequest
+{
+    [Required]
+    public string Username { get; set; }
+
+    [Required]
+    public string Password { get; set; }
 }

@@ -42,8 +42,8 @@ public static class DependencyInjection
                         kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
                     );
 
-                var error = Error.Validation("One or more validation errors occurred", errors);
-                var response = new ApiResponse(false, error);
+                var error = Error.Validation("One or more validation errors occurred", errors.Values.ToString());
+                var response = new ApiResponse { Error = error };
 
                 return new BadRequestObjectResult(response);
             };
