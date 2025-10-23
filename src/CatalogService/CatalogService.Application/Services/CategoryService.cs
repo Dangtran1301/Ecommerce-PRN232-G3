@@ -28,7 +28,7 @@ namespace CatalogService.Application.Services
         public async Task<Result<IReadOnlyList<CategoryDto>>> GetAllAsync()
         {
             var categories = await repository.GetAllAsync();
-            return Result.Success(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
+            return Result.Ok(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
         }
 
         public async Task<Result> CreateAsync(CreateCategoryRequest request)
@@ -66,21 +66,14 @@ namespace CatalogService.Application.Services
         {
             var spec = new CategoryFilterSpecification(filter);
             var categories = await specificationRepository.ListAsync(spec);
-            return Result.Success(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
-        }
-
-        public async Task<Result<PagedResult<CategoryDto>>> FilterByDynamic(DynamicQuery query)
-        {
-            var result = await dynamicRepository.GetPagedAsync(query);
-            var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
         }
 
         public async Task<Result<PagedResult<CategoryDto>>> FilterPaged(PagedRequest request)
         {
             var result = await repository.GetPagedAsync(request);
             var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(dto);
         }
     }
 }
