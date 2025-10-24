@@ -34,10 +34,6 @@ public class CategoriesController(ICategoryService service) : ControllerBase
     public async Task<IActionResult> FilterBySpec([FromQuery] CategoryFilterDto filter)
         => (await service.FilterBySpecification(filter)).ToActionResult();
 
-    [HttpPost("filter/dynamic")]
-    public async Task<IActionResult> FilterDynamic([FromBody] DynamicQuery query)
-        => (await service.FilterByDynamic(query)).ToActionResult();
-
     [HttpGet("filter/paged")]
     public async Task<IActionResult> FilterPaged([FromQuery] PagedRequest request)
         => (await service.FilterPaged(request)).ToActionResult();
@@ -53,26 +49,6 @@ public class CategoriesController(ICategoryService service) : ControllerBase
                 new { name = "CategoryName", type = "string" },
                 new { name = "CategoryDescription", type = "string" }
             },
-            sortableFields = new[]
-            {
-                "CategoryName",
-                "CreatedAt"
-            }
-        });
-    }
-
-    [HttpGet("dynamic/metadata")]
-    public IActionResult GetDynamicFilterMetadata()
-    {
-        return Ok(new
-        {
-            entity = "Category",
-            filterableFields = new[]
-            {
-                new { name = "CategoryName", type = "string" },
-                new { name = "CategoryDescription", type = "string" }
-            },
-            operators = Enum.GetNames(typeof(FilterOperator)),
             sortableFields = new[]
             {
                 "CategoryName",
