@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
-using CatalogService.Application.DTOs;
-using CatalogService.Application.Services.Interfaces;
 
 namespace CatalogService.API.Controllers;
 

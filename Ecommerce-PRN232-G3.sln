@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockService.API", "src\Sto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.API", "src\UserService\UserService.API\UserService.API.csproj", "{8DB96752-AC5E-1F69-436B-755E403381A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.API", "src\Gateway\Gateway.API\Gateway.API.csproj", "{7D762610-5DD4-B8D8-2880-79C0999E69CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.API", "src\AuthService\AuthService.API\AuthService.API.csproj", "{68FECFE2-1A64-0976-068E-F201387FF6A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{8DB96752-AC5E-1F69-436B-755E403381A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DB96752-AC5E-1F69-436B-755E403381A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DB96752-AC5E-1F69-436B-755E403381A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D762610-5DD4-B8D8-2880-79C0999E69CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D762610-5DD4-B8D8-2880-79C0999E69CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D762610-5DD4-B8D8-2880-79C0999E69CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D762610-5DD4-B8D8-2880-79C0999E69CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68FECFE2-1A64-0976-068E-F201387FF6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68FECFE2-1A64-0976-068E-F201387FF6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68FECFE2-1A64-0976-068E-F201387FF6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68FECFE2-1A64-0976-068E-F201387FF6A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

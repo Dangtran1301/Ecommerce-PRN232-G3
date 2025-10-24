@@ -4,6 +4,7 @@ public static class ErrorCodes
 {
     // --- 4xx: Client Errors ---
     public const string Validation = "VALIDATION";                 // 400
+
     public const string BadRequest = "BAD_REQUEST";                // 400
     public const string Unauthorized = "UNAUTHORIZED";             // 401
     public const string Forbidden = "FORBIDDEN";                   // 403
@@ -17,6 +18,7 @@ public static class ErrorCodes
 
     // --- 5xx: Server Errors ---
     public const string InternalServerError = "INTERNAL_SERVER_ERROR"; // 500
+
     public const string NotImplemented = "NOT_IMPLEMENTED";         // 501
     public const string BadGateway = "BAD_GATEWAY";                 // 502
     public const string ServiceUnavailable = "SERVICE_UNAVAILABLE"; // 503

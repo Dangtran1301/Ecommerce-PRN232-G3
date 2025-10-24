@@ -1,5 +1,4 @@
 using CatalogService.API;
-using CatalogService.Application;
 using CatalogService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

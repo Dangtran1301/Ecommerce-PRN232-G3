@@ -1,6 +1,5 @@
 ﻿namespace OrderService.API.Models
 
- 
 {
     using SharedKernel.Domain.Common.Entities;
 
