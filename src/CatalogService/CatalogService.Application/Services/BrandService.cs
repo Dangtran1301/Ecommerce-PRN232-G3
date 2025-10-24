@@ -35,7 +35,6 @@ namespace CatalogService.Application.Services
         {
             request.BrandName = request.BrandName.Trim();
             request.BrandDescription = request.BrandDescription?.Trim();
-            request.LogoUrl = request.LogoUrl?.Trim();
             request.WebsiteUrl = request.WebsiteUrl?.Trim();
             if (await repository.AnyAsync(b => b.BrandName == request.BrandName))
                 return BrandErrors.NameTaken(request.BrandName);
@@ -50,7 +49,6 @@ namespace CatalogService.Application.Services
             var brand = await repository.GetByIdAsync(id);
             request.BrandName = request.BrandName.Trim();
             request.BrandDescription = request.BrandDescription?.Trim();
-            request.LogoUrl = request.LogoUrl?.Trim();
             request.WebsiteUrl = request.WebsiteUrl?.Trim();
             if (brand is null)
                 return BrandErrors.NotFound(id);
