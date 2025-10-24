@@ -4,44 +4,21 @@ namespace CatalogService.Application.DTOs
 {
     public record CreateBrandRequest
     {
-        private string _brandName = null!;
-        private string? _brandDescription;
-        private string? _logoUrl;
-        private string? _websiteUrl;
-
         [Required(ErrorMessage = "Brand name is required")]
-        [StringLength(255, ErrorMessage = "Brand name must not exceed 255 characters")]
-        public string BrandName
-        {
-            get => _brandName;
-            set => _brandName = value?.Trim() ?? string.Empty;
-        }
-
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "Brand name must between 3 and 255 characters")]
+        [RegularExpression(@"^[\p{L}\d\s&\-\']+$", ErrorMessage = "Brand name only allows letters and spaces")]
+        public string BrandName { get; set; } = null!;
         [Required(ErrorMessage = "Brand description is required")]
         [StringLength(1000, ErrorMessage = "Brand description must not exceed 1000 characters")]
-        public string? BrandDescription
-        {
-            get => _brandDescription;
-            set => _brandDescription = value?.Trim();
-        }
-
+        public string? BrandDescription { get; set; }
         [Required(ErrorMessage = "Brand logo is required")]
         [StringLength(255, ErrorMessage = "Logo URL must not exceed 255 characters")]
-        [Url(ErrorMessage = "Logo URL must be a valid URL (e.g., https://example.com/logo.png)")]
-        public string? LogoUrl
-        {
-            get => _logoUrl;
-            set => _logoUrl = value?.Trim();
-        }
+        public string? LogoUrl { get; set; }
 
         [Required(ErrorMessage = "Brand website URL is required")]
         [StringLength(255, ErrorMessage = "Website URL must not exceed 255 characters")]
         [Url(ErrorMessage = "Website URL must be a valid URL (e.g., https://example.com)")]
-        public string? WebsiteUrl
-        {
-            get => _websiteUrl;
-            set => _websiteUrl = value?.Trim();
-        }
+        public string? WebsiteUrl { get; set; }
     }
     public record BrandDto
     {
@@ -53,41 +30,21 @@ namespace CatalogService.Application.DTOs
     }
     public record UpdateBrandRequest
     {
-        private string? _brandName;
-        private string? _brandDescription;
-        private string? _logoUrl;
-        private string? _websiteUrl;
-
         [Required(ErrorMessage = "Brand name is required")]
-        [StringLength(255, ErrorMessage = "Brand name must not exceed 255 characters")]
-        public string? BrandName
-        {
-            get => _brandName;
-            set => _brandName = value?.Trim();
-        }
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "Brand name must between 3 and 255 characters")]
+        [RegularExpression(@"^[\p{L}\d\s&\-\']+$", ErrorMessage = "Brand name only allows letters and spaces")]
+        public string BrandName { get; set; } = null!;
         [Required(ErrorMessage = "Brand description is required")]
         [StringLength(1000, ErrorMessage = "Brand description must not exceed 1000 characters")]
-        public string? BrandDescription
-        {
-            get => _brandDescription;
-            set => _brandDescription = value?.Trim();
-        }
+        public string? BrandDescription { get; set; }
         [Required(ErrorMessage = "Brand logo is required")]
         [StringLength(255, ErrorMessage = "Logo URL must not exceed 255 characters")]
-        public string? LogoUrl
-        {
-            get => _logoUrl;
-            set => _logoUrl = value?.Trim();
-        }
+        public string? LogoUrl { get; set; }
 
         [Required(ErrorMessage = "Brand website URL is required")]
         [StringLength(255, ErrorMessage = "Website URL must not exceed 255 characters")]
         [Url(ErrorMessage = "Website URL must be a valid URL (e.g., https://example.com)")]
-        public string? WebsiteUrl
-        {
-            get => _websiteUrl;
-            set => _websiteUrl = value?.Trim();
-        }
+        public string? WebsiteUrl { get; set; }
     }
     public class BrandFilterDto
     {

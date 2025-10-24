@@ -35,14 +35,20 @@ public static class DependencyInjection
         {
             options.InvalidModelStateResponseFactory = context =>
             {
-                var errorMessages = context.ModelState
+                var errors = context.ModelState
                     .Where(ms => ms.Value?.Errors.Count > 0)
-                    .SelectMany(kvp => kvp.Value!.Errors.Select(e => $"{kvp.Key}: {e.ErrorMessage}"))
+                    .SelectMany(kvp => kvp.Value!.Errors.Select(e => new
+                    {
+                        Field = kvp.Key,
+                        Error = e.ErrorMessage
+                    }))
                     .ToList();
 
-                var details = string.Join("; ", errorMessages);
+                var error = Error.Validation(
+                    "One or more validation errors occurred",
+                    errors
+                );
 
-                var error = Error.Validation("One or more validation errors occurred", details);
                 var response = new ApiResponse { Error = error };
 
                 return new BadRequestObjectResult(response);

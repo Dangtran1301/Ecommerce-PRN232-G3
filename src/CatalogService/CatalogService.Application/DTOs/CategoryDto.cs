@@ -4,33 +4,18 @@ namespace CatalogService.Application.DTOs
 {
     public record CreateCategoryRequest
     {
-        private string _categoryName = null!;
-        private string? _categoryDescription;
-        private string? _imageUrl;
-
         [Required(ErrorMessage = "Category name is required")]
-        [StringLength(255, ErrorMessage = "Category name must not exceed 255 characters")]
-        public string CategoryName
-        {
-            get => _categoryName;
-            set => _categoryName = value?.Trim() ?? string.Empty;
-        }
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "Category name must between 3 and 255 characters")]
+        [RegularExpression(@"^[\p{L}\d\s&\-\']+$", ErrorMessage = "Category name only allows letters and spaces")]
+        public string CategoryName { get; set; } = null!;
 
         [Required(ErrorMessage = "Category description is required")]
         [StringLength(1000, ErrorMessage = "Category description must not exceed 1000 characters")]
-        public string? CategoryDescription
-        {
-            get => _categoryDescription;
-            set => _categoryDescription = value?.Trim();
-        }
+        public string? CategoryDescription { get; set; }
 
         [Required(ErrorMessage = "Category image is required")]
         [StringLength(255, ErrorMessage = "Image URL must not exceed 255 characters")]
-        public string? ImageUrl
-        {
-            get => _imageUrl;
-            set => _imageUrl = value?.Trim();
-        }
+        public string? ImageUrl { get; set; }
     }
     public record CategoryDto
     {
@@ -41,31 +26,19 @@ namespace CatalogService.Application.DTOs
     }
     public record UpdateCategoryRequest
     {
-        private string? _categoryName;
-        private string? _categoryDescription;
-        private string? _imageUrl;
         [Required(ErrorMessage = "Category name is required")]
-        [StringLength(255, ErrorMessage = "Category name must not exceed 255 characters")]
-        public string? CategoryName
-        {
-            get => _categoryName;
-            set => _categoryName = value?.Trim();
-        }
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "Category name must between 3 and 255 characters")]
+        [RegularExpression(@"^[\p{L}\d\s&\-\']+$", ErrorMessage = "Category name only allows letters and spaces")]
+        public string CategoryName { get; set; } = null!;
+
         [Required(ErrorMessage = "Category description is required")]
         [StringLength(1000, ErrorMessage = "Category description must not exceed 1000 characters")]
-        public string? CategoryDescription
-        {
-            get => _categoryDescription;
-            set => _categoryDescription = value?.Trim();
-        }
+        public string? CategoryDescription { get; set; }
+
         [Required(ErrorMessage = "Category image is required")]
         [StringLength(255, ErrorMessage = "Image URL must not exceed 255 characters")]
-        public string? ImageUrl
-        {
-            get => _imageUrl;
-            set => _imageUrl = value?.Trim();
-        }
-        
+        public string? ImageUrl { get; set; }
+
     }
     public class CategoryFilterDto
     {

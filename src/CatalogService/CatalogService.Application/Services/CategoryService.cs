@@ -33,6 +33,8 @@ namespace CatalogService.Application.Services
 
         public async Task<Result> CreateAsync(CreateCategoryRequest request)
         {
+            request.CategoryName = request.CategoryName.Trim();
+            request.CategoryDescription = request.CategoryDescription.Trim();
             if (await repository.AnyAsync(c => c.CategoryName == request.CategoryName))
                 return CategoryErrors.NameTaken(request.CategoryName);
 
@@ -44,6 +46,8 @@ namespace CatalogService.Application.Services
         public async Task<Result> UpdateAsync(Guid id, UpdateCategoryRequest request)
         {
             var category = await repository.GetByIdAsync(id);
+            request.CategoryName = request.CategoryName.Trim();
+            request.CategoryDescription = request.CategoryDescription.Trim();
             if (category is null)
                 return CategoryErrors.NotFound(id);
 
