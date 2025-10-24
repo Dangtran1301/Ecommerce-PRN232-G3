@@ -26,7 +26,7 @@ public class Error
         => new() { Code = ErrorCodes.InternalServerError, Message = message, Details = details };
 
     public static Error Unauthorized(string message, object? detail = null)
-        => new() { Code = ErrorCodes.Unauthorized, Message = message, Details = detail};
+        => new() { Code = ErrorCodes.Unauthorized, Message = message, Details = detail };
 
     public static Error Forbidden(string message)
         => new() { Code = ErrorCodes.Forbidden, Message = message };
