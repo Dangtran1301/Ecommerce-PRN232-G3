@@ -18,9 +18,6 @@ namespace CatalogService.Infrastructure.Data.Configurations
 
             builder.Property(c => c.CategoryDescription)
                 .HasMaxLength(1000);
-
-            builder.Property(c => c.ImageUrl)
-                .HasMaxLength(255);
             builder.HasIndex(c => c.CategoryName).IsUnique();
         }
     }

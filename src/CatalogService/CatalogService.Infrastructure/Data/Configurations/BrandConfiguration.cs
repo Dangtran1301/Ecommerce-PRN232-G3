@@ -19,9 +19,6 @@ namespace CatalogService.Infrastructure.Data.Configurations
             builder.Property(b => b.BrandDescription)
                 .HasMaxLength(1000);
 
-            builder.Property(b => b.LogoUrl)
-                .HasMaxLength(255);
-
             builder.Property(b => b.WebsiteUrl)
                 .HasMaxLength(500);
 

@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CatalogService.API.Data.Migrations
+namespace CatalogService.Infrastructure.Migrations
 {
+    /// <inheritdoc />
     public partial class InitCatalogDb : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -16,7 +18,6 @@ namespace CatalogService.API.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BrandName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     BrandDescription = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    LogoUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     WebsiteUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -35,7 +36,6 @@ namespace CatalogService.API.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CategoryDescription = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -77,6 +77,8 @@ namespace CatalogService.API.Data.Migrations
                 column: "CategoryName",
                 unique: true);
         }
+
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

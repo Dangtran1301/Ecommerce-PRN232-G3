@@ -6,14 +6,11 @@ namespace CatalogService.Application.DTOs
     {
         [Required(ErrorMessage = "Brand name is required")]
         [StringLength(255, MinimumLength = 3, ErrorMessage = "Brand name must between 3 and 255 characters")]
-        [RegularExpression(@"^[\p{L}\d\s&\-\']+$", ErrorMessage = "Brand name only allows letters and spaces")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "Brand name only allows letters and spaces")]
         public string BrandName { get; set; } = null!;
         [Required(ErrorMessage = "Brand description is required")]
         [StringLength(1000, ErrorMessage = "Brand description must not exceed 1000 characters")]
         public string? BrandDescription { get; set; }
-        [Required(ErrorMessage = "Brand logo is required")]
-        [StringLength(255, ErrorMessage = "Logo URL must not exceed 255 characters")]
-        public string? LogoUrl { get; set; }
 
         [Required(ErrorMessage = "Brand website URL is required")]
         [StringLength(255, ErrorMessage = "Website URL must not exceed 255 characters")]
@@ -25,21 +22,17 @@ namespace CatalogService.Application.DTOs
         public Guid Id { get; set; }
         public string BrandName { get; set; } = null!;
         public string? BrandDescription { get; set; }
-        public string? LogoUrl { get; set; }
         public string? WebsiteUrl { get; set; }
     }
     public record UpdateBrandRequest
     {
         [Required(ErrorMessage = "Brand name is required")]
         [StringLength(255, MinimumLength = 3, ErrorMessage = "Brand name must between 3 and 255 characters")]
-        [RegularExpression(@"^[\p{L}\d\s&\-\']+$", ErrorMessage = "Brand name only allows letters and spaces")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "Brand name only allows letters and spaces")]
         public string BrandName { get; set; } = null!;
         [Required(ErrorMessage = "Brand description is required")]
         [StringLength(1000, ErrorMessage = "Brand description must not exceed 1000 characters")]
         public string? BrandDescription { get; set; }
-        [Required(ErrorMessage = "Brand logo is required")]
-        [StringLength(255, ErrorMessage = "Logo URL must not exceed 255 characters")]
-        public string? LogoUrl { get; set; }
 
         [Required(ErrorMessage = "Brand website URL is required")]
         [StringLength(255, ErrorMessage = "Website URL must not exceed 255 characters")]
