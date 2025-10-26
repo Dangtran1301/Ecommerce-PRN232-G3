@@ -20,7 +20,7 @@ namespace OrderService.API.Services
                 return OrderErrors.NotFound(orderId);
 
             var dto = mapper.Map<IReadOnlyList<OrderItemDto>>(items);
-            return Result.Success(dto);
+            return Result.Ok(dto);
         }
 
         public async Task<Result> CreateAsync(CreateOrderItemRequest request)
@@ -30,7 +30,7 @@ namespace OrderService.API.Services
 
             var entity = mapper.Map<OrderItem>(request);
             await repository.AddAsync(entity);
-            return Result.Success();
+            return Result.Ok();
         }
 
         public async Task<Result> UpdateAsync(Guid id, UpdateOrderItemRequest request)
@@ -41,7 +41,7 @@ namespace OrderService.API.Services
 
             mapper.Map(request, entity);
             await repository.Update(entity);
-            return Result.Success();
+            return Result.Ok();
         }
 
         public async Task<Result> DeleteAsync(Guid id)
@@ -51,7 +51,7 @@ namespace OrderService.API.Services
                 return OrderErrors.NotFound(id);
 
             await repository.Remove(entity);
-            return Result.Success();
+            return Result.Ok();
         }
     }
 }

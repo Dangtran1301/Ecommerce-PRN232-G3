@@ -29,14 +29,14 @@ namespace OrderService.API.Services
         public async Task<Result<IReadOnlyList<OrderDto>>> GetAllAsync()
         {
             var orders = await repository.GetAllAsync();
-            return Result.Success(mapper.Map<IReadOnlyList<OrderDto>>(orders));
+            return Result.Ok(mapper.Map<IReadOnlyList<OrderDto>>(orders));
         }
 
         public async Task<Result> CreateAsync(CreateOrderRequest request)
         {
             var entity = mapper.Map<Order>(request);
             await repository.AddAsync(entity);
-            return Result.Success();
+            return Result.Ok();
         }
 
         public async Task<Result> UpdateAsync(Guid id, UpdateOrderRequest request)
@@ -47,7 +47,7 @@ namespace OrderService.API.Services
 
             mapper.Map(request, entity);
             await repository.Update(entity);
-            return Result.Success();
+            return Result.Ok();
         }
 
         public async Task<Result> DeleteAsync(Guid id)
@@ -57,13 +57,13 @@ namespace OrderService.API.Services
                 return OrderErrors.NotFound(id);
 
             await repository.Remove(entity);
-            return Result.Success();
+            return Result.Ok();
         }
 
         public async Task<Result<IReadOnlyList<OrderDto>>> GetByCustomerIdAsync(Guid customerId)
         {
             var orders = await repository.GetOrdersByCustomerIdAsync(customerId);
-            return Result.Success(mapper.Map<IReadOnlyList<OrderDto>>(orders));
+            return Result.Ok(mapper.Map<IReadOnlyList<OrderDto>>(orders));
         }
 
         public async Task<Result<OrderDto>> GetOrderWithItemsAsync(Guid orderId)
@@ -78,7 +78,7 @@ namespace OrderService.API.Services
         {
             var result = await repository.GetPagedAsync(request);
             var dto = result.Map(mapper.Map<IReadOnlyList<OrderDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(dto);
         }
 
         public async Task<Result<PagedResult<OrderDto>>> GetAllPagedAsync(int pageIndex, int pageSize)
@@ -91,21 +91,21 @@ namespace OrderService.API.Services
 
             var result = await repository.GetPagedAsync(request);
             var dto = result.Map(mapper.Map<IReadOnlyList<OrderDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(dto);
         }
 
         public async Task<Result<PagedResult<OrderDto>>> FilterByDynamic(DynamicQuery query)
         {
             var result = await dynamicRepository.GetPagedAsync(query);
             var dto = result.Map(mapper.Map<IReadOnlyList<OrderDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(dto);
         }
 
         public async Task<Result<IReadOnlyList<OrderDto>>> FilterBySpecification(OrderFilterDto filter)
         {
             var spec = new OrderFilterSpecification(filter);
             var list = await specificationRepository.ListAsync(spec);
-            return Result.Success(mapper.Map<IReadOnlyList<OrderDto>>(list));
+            return Result.Ok(mapper.Map<IReadOnlyList<OrderDto>>(list));
         }
     }
 }
