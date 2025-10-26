@@ -29,13 +29,16 @@ public class UserService(
     {
         var users = await repository.GetAllAsync();
         var data = mapper.Map<IReadOnlyList<UserDto>>(users);
-        return Result.Success(data);
+        return Result.Ok(data);
     }
 
     public async Task<Result> CreateAsync(CreateUserRequest request)
     {
         if (await repository.AnyAsync(x => x.Email.Equals(request.Email)))
             return UserErrors.EmailTaken(request.Email);
+
+        if (await repository.AnyAsync(x => x.UserName.Equals(request.UserName)))
+            return UserErrors.UsernameTaken(request.UserName);
 
         var user = new User(
             request.UserName,
@@ -77,20 +80,28 @@ public class UserService(
     {
         var spec = new UserFilterSpecification(filter);
         var users = await specificationRepository.ListAsync(spec);
-        return Result.Success(mapper.Map<IReadOnlyList<UserDto>>(users));
+        return Result.Ok(mapper.Map<IReadOnlyList<UserDto>>(users));
     }
 
     public async Task<Result<PagedResult<UserDto>>> FilterByDynamic(DynamicQuery query)
     {
         var result = await dynamicRepository.GetPagedAsync(query);
         var dto = result.Map(mapper.Map<IReadOnlyList<UserDto>>(result.Items));
-        return Result.Success(dto);
+        return Result.Ok(dto);
     }
 
     public async Task<Result<PagedResult<UserDto>>> FilterPaged(PagedRequest request)
     {
         var result = await repository.GetPagedAsync(request);
         var dto = result.Map(mapper.Map<IReadOnlyList<UserDto>>(result.Items));
-        return Result.Success(dto);
+        return Result.Ok(dto);
+    }
+
+    public async Task<Result<UserDto>> ValidateUser(string login, string password, CancellationToken cancellationToken = default)
+    {
+        var user = await repository.GetByUsernameOrEmail(login, cancellationToken);
+        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            return UserErrors.InvalidData("Invalid username/email or password");
+        return Result.Ok(mapper.Map<UserDto>(user));
     }
 }

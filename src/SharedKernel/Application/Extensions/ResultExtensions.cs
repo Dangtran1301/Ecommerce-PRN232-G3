@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Common.Enums;
 using SharedKernel.Domain.Common.Results;
@@ -38,7 +39,8 @@ public static class ResultExtensions
 
             _ => new ObjectResult(response)
             {
-                StatusCode = StatusCodes.Status500InternalServerError
+                ContentTypes = { new MediaTypeHeaderValue("application/json") { Charset = "utf-8" } },
+                StatusCode = StatusCodes.Status500InternalServerError,
             }
         };
     }

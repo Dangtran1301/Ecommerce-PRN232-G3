@@ -1,4 +1,5 @@
 ﻿using UserService.API;
+using UserService.API.Middlewares;
 using UserService.Application;
 using UserService.Infrastructure;
 
@@ -26,7 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<InternalApiKeyMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

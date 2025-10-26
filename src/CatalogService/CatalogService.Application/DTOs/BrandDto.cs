@@ -5,16 +5,16 @@ namespace CatalogService.Application.DTOs
     public record CreateBrandRequest
     {
         [Required(ErrorMessage = "Brand name is required")]
-        [StringLength(255, ErrorMessage = "Brand name must not exceed 255 characters")]
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "Brand name must between 3 and 255 characters")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "Brand name only allows letters and spaces")]
         public string BrandName { get; set; } = null!;
         [Required(ErrorMessage = "Brand description is required")]
         [StringLength(1000, ErrorMessage = "Brand description must not exceed 1000 characters")]
         public string? BrandDescription { get; set; }
-        [Required(ErrorMessage = "Brand logo is required")]
-        [StringLength(255, ErrorMessage = "Logo URL must not exceed 255 characters")]
-        public string? LogoUrl { get; set; }
+
         [Required(ErrorMessage = "Brand website URL is required")]
         [StringLength(255, ErrorMessage = "Website URL must not exceed 255 characters")]
+        [Url(ErrorMessage = "Website URL must be a valid URL (e.g., https://example.com)")]
         public string? WebsiteUrl { get; set; }
     }
     public record BrandDto
@@ -22,21 +22,21 @@ namespace CatalogService.Application.DTOs
         public Guid Id { get; set; }
         public string BrandName { get; set; } = null!;
         public string? BrandDescription { get; set; }
-        public string? LogoUrl { get; set; }
         public string? WebsiteUrl { get; set; }
     }
     public record UpdateBrandRequest
     {
-        [StringLength(255, ErrorMessage = "Brand name must not exceed 255 characters")]
-        public string? BrandName { get; set; }
-
+        [Required(ErrorMessage = "Brand name is required")]
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "Brand name must between 3 and 255 characters")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "Brand name only allows letters and spaces")]
+        public string BrandName { get; set; } = null!;
+        [Required(ErrorMessage = "Brand description is required")]
         [StringLength(1000, ErrorMessage = "Brand description must not exceed 1000 characters")]
         public string? BrandDescription { get; set; }
 
-        [StringLength(255, ErrorMessage = "Logo URL must not exceed 255 characters")]
-        public string? LogoUrl { get; set; }
-
+        [Required(ErrorMessage = "Brand website URL is required")]
         [StringLength(255, ErrorMessage = "Website URL must not exceed 255 characters")]
+        [Url(ErrorMessage = "Website URL must be a valid URL (e.g., https://example.com)")]
         public string? WebsiteUrl { get; set; }
     }
     public class BrandFilterDto

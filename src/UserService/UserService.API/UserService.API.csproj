@@ -34,7 +34,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\SharedKernel\SharedKernel.csproj" />
-		<ProjectReference Include="..\Application\UserService.Application.csproj" />
+		<ProjectReference Include="..\UserService.Application\UserService.Application.csproj" />
 	</ItemGroup>
 
 </Project>

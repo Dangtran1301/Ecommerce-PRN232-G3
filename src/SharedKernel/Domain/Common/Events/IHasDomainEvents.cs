@@ -3,5 +3,6 @@
 public interface IHasDomainEvents
 {
     List<IIntegrationEvent> DomainEvents { get; }
+
     void ClearDomainEvents();
 }

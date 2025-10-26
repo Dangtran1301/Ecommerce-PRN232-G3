@@ -28,11 +28,13 @@ namespace CatalogService.Application.Services
         public async Task<Result<IReadOnlyList<CategoryDto>>> GetAllAsync()
         {
             var categories = await repository.GetAllAsync();
-            return Result.Success(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
+            return Result.Ok(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
         }
 
         public async Task<Result> CreateAsync(CreateCategoryRequest request)
         {
+            request.CategoryName = request.CategoryName.Trim();
+            request.CategoryDescription = request.CategoryDescription.Trim();
             if (await repository.AnyAsync(c => c.CategoryName == request.CategoryName))
                 return CategoryErrors.NameTaken(request.CategoryName);
 
@@ -44,6 +46,8 @@ namespace CatalogService.Application.Services
         public async Task<Result> UpdateAsync(Guid id, UpdateCategoryRequest request)
         {
             var category = await repository.GetByIdAsync(id);
+            request.CategoryName = request.CategoryName.Trim();
+            request.CategoryDescription = request.CategoryDescription.Trim();
             if (category is null)
                 return CategoryErrors.NotFound(id);
 
@@ -66,21 +70,14 @@ namespace CatalogService.Application.Services
         {
             var spec = new CategoryFilterSpecification(filter);
             var categories = await specificationRepository.ListAsync(spec);
-            return Result.Success(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
-        }
-
-        public async Task<Result<PagedResult<CategoryDto>>> FilterByDynamic(DynamicQuery query)
-        {
-            var result = await dynamicRepository.GetPagedAsync(query);
-            var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
         }
 
         public async Task<Result<PagedResult<CategoryDto>>> FilterPaged(PagedRequest request)
         {
             var result = await repository.GetPagedAsync(request);
             var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(dto);
         }
     }
 }

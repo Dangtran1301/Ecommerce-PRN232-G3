@@ -7,7 +7,8 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<User, UserDto>();
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.Role, opt => opt.MapFrom(x => x.Role));
 
         CreateMap<CreateUserRequest, User>()
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());

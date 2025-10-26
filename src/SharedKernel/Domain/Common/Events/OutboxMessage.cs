@@ -12,6 +12,7 @@ public class OutboxMessage
     public DateTime? ProcessedOn { get; set; }
     public OutboxStatus Status { get; set; } = OutboxStatus.Pending;
 }
+
 public enum OutboxStatus
 {
     Pending = 0,

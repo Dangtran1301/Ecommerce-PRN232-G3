@@ -6,9 +6,11 @@ namespace UserService.Application.DTOs;
 public record CreateUserRequest(
     [Required(ErrorMessage = "FullName is required")]
     [StringLength(100, ErrorMessage = "FullName cannot exceed 100 characters")]
+    [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "FullName only allows letters and spaces")]
     string FullName,
 
     [Required(ErrorMessage = "UserName is required")]
+    [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username only allows alphanumeric and underscore")]
     [StringLength(50, MinimumLength = 3, ErrorMessage = "UserName must be between 3 and 50 characters")]
     string UserName,
 
@@ -30,7 +32,8 @@ public record UserDto(
     string UserName,
     string Email,
     string? PhoneNumber,
-    string? Avatar);
+    string? Avatar,
+    string? Role);
 
 public record UpdateUserRequest(
     [StringLength(100, ErrorMessage = "FullName cannot exceed 100 characters")]
@@ -55,4 +58,13 @@ public class UserFilterDto
     public int? PageSize { get; set; } = 25;
     public string? OrderBy { get; set; } = "CreatedAt";
     public bool Descending { get; set; } = false;
+}
+
+public class ValidateUserRequest
+{
+    [Required]
+    public string Username { get; set; }
+
+    [Required]
+    public string Password { get; set; }
 }

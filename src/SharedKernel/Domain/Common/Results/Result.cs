@@ -2,45 +2,45 @@
 
 public class Result
 {
-    public bool IsSuccess { get; }
-    public Error? Error { get; }
+    public bool IsSuccess { get; init; }
+    public Error Error { get; init; } = Error.None;
 
-    protected Result(bool isSuccess, Error error)
+    protected Result(bool success, Error? error)
     {
-        IsSuccess = isSuccess;
+        IsSuccess = success;
         Error = error;
     }
 
-    public static Result Success() => new(true, Error.None);
+    public static Result Ok() => new(true, Error.None);
 
-    public static Result Failure(Error error) => new(false, error);
+    public static Result Fail(Error error) => new(false, error);
 
-    public static Result<T> Success<T>(T value) => Result<T>.Success(value);
+    public static Result<T> Ok<T>(T value) => Result<T>.Ok(value);
 
-    public static Result<T> Failure<T>(Error error) => Result<T>.Failure(error);
+    public static Result<T> Fail<T>(Error error) => Result<T>.Fail(error);
 
     public static implicit operator Result(bool success)
-        => success ? Success() : Failure(Error.None);
+        => success ? Ok() : Fail(Error.None);
 
     public static implicit operator Result(Error error)
-        => Failure(error);
+        => Fail(error);
 }
 
 public sealed class Result<T> : Result
 {
     public T? Value { get; }
 
-    private Result(T? value, bool isSuccess, Error error)
-        : base(isSuccess, error)
+    private Result(T? value, bool success, Error error)
+        : base(success, error)
     {
         Value = value;
     }
 
-    public static Result<T> Success(T value) => new(value, true, Error.None);
+    public static Result<T> Ok(T value) => new(value, true, Error.None);
 
-    public new static Result<T> Failure(Error error) => new(default, false, error);
+    public new static Result<T> Fail(Error error) => new(default, false, error);
 
-    public static implicit operator Result<T>(T value) => Success(value);
+    public static implicit operator Result<T>(T value) => Ok(value);
 
-    public static implicit operator Result<T>(Error error) => Failure(error);
+    public static implicit operator Result<T>(Error error) => Fail(error);
 }

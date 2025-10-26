@@ -1,35 +1,41 @@
-﻿namespace SharedKernel.Domain.Common.Results;
+﻿using SharedKernel.Application.Common.Enums;
+
+namespace SharedKernel.Domain.Common.Results;
 
 public class Error
 {
-    public string Code { get; }
-    public string Message { get; }
-    public object? Details { get; }
+    public string Code { get; init; } = string.Empty;
+    public string? Message { get; init; } = string.Empty;
+    public object? Details { get; init; }
 
-    private Error(string code, string message, object? details = null)
-    {
-        Code = code;
-        Message = message;
-        Details = details;
-    }
+    public static readonly Error None = new() { Code = "None", Message = "" };
 
-    // Factory methods
     public static Error Validation(string message, object? details = null)
-        => new("ValidationError", message, details);
+        => new() { Code = ErrorCodes.Validation, Message = message, Details = details };
 
     public static Error NotFound(string message)
-        => new("NotFound", message);
+        => new() { Code = ErrorCodes.NotFound, Message = message };
 
     public static Error Conflict(string message)
-        => new("Conflict", message);
+        => new() { Code = ErrorCodes.Conflict, Message = message };
 
     public static Error Failure(string message, object? details = null)
-        => new("Failure", message, details);
+        => new() { Code = ErrorCodes.BadRequest, Message = message, Details = details };
 
-    public static readonly Error None = new("None", string.Empty);
+    public static Error Internal(string message, object? details = null)
+        => new() { Code = ErrorCodes.InternalServerError, Message = message, Details = details };
+
+    public static Error Unauthorized(string message, object? detail = null)
+        => new() { Code = ErrorCodes.Unauthorized, Message = message, Details = detail };
+
+    public static Error Forbidden(string message)
+        => new() { Code = ErrorCodes.Forbidden, Message = message };
+
+    public static Error TooManyRequests(string message)
+        => new() { Code = ErrorCodes.TooManyRequests, Message = message };
 
     public override string ToString()
         => Details is null
             ? $"{Code}: {Message}"
-            : $"{Code}: {Message} | Details: {System.Text.Json.JsonSerializer.Serialize(Details)}";
+            : $"{Code}: {Message} | Details: {Details}";
 }

@@ -28,11 +28,14 @@ namespace CatalogService.Application.Services
         public async Task<Result<IReadOnlyList<BrandDto>>> GetAllAsync()
         {
             var brands = await repository.GetAllAsync();
-            return Result.Success(mapper.Map<IReadOnlyList<BrandDto>>(brands));
+            return Result.Ok(mapper.Map<IReadOnlyList<BrandDto>>(brands));
         }
 
         public async Task<Result> CreateAsync(CreateBrandRequest request)
         {
+            request.BrandName = request.BrandName.Trim();
+            request.BrandDescription = request.BrandDescription?.Trim();
+            request.WebsiteUrl = request.WebsiteUrl?.Trim();
             if (await repository.AnyAsync(b => b.BrandName == request.BrandName))
                 return BrandErrors.NameTaken(request.BrandName);
 
@@ -44,6 +47,9 @@ namespace CatalogService.Application.Services
         public async Task<Result> UpdateAsync(Guid id, UpdateBrandRequest request)
         {
             var brand = await repository.GetByIdAsync(id);
+            request.BrandName = request.BrandName.Trim();
+            request.BrandDescription = request.BrandDescription?.Trim();
+            request.WebsiteUrl = request.WebsiteUrl?.Trim();
             if (brand is null)
                 return BrandErrors.NotFound(id);
 
@@ -66,21 +72,14 @@ namespace CatalogService.Application.Services
         {
             var spec = new BrandFilterSpecification(filter);
             var brands = await specificationRepository.ListAsync(spec);
-            return Result.Success(mapper.Map<IReadOnlyList<BrandDto>>(brands));
-        }
-
-        public async Task<Result<PagedResult<BrandDto>>> FilterByDynamic(DynamicQuery query)
-        {
-            var result = await dynamicRepository.GetPagedAsync(query);
-            var dto = result.Map(mapper.Map<IReadOnlyList<BrandDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(mapper.Map<IReadOnlyList<BrandDto>>(brands));
         }
 
         public async Task<Result<PagedResult<BrandDto>>> FilterPaged(PagedRequest request)
         {
             var result = await repository.GetPagedAsync(request);
             var dto = result.Map(mapper.Map<IReadOnlyList<BrandDto>>(result.Items));
-            return Result.Success(dto);
+            return Result.Ok(dto);
         }
     }
 }
