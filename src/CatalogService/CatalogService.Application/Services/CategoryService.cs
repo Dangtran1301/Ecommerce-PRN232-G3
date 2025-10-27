@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+using CatalogService.Application.DTOs;
+using CatalogService.Application.Errors;
+using CatalogService.Application.Services.Interfaces;
 using CatalogService.Domain.Entities;
+using CatalogService.Infrastructure.Repositories;
 using CatalogService.Infrastructure.Repositories.Interfaces;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
-using CatalogService.Application.Services.Interfaces;
-using CatalogService.Application.Errors;
-using CatalogService.Application.DTOs;
 
 namespace CatalogService.Application.Services
 {
@@ -62,10 +63,14 @@ namespace CatalogService.Application.Services
             if (category is null)
                 return CategoryErrors.NotFound(id);
 
+            //// ✅ Kiểm tra nếu có Product thuộc Category này
+            //bool hasProducts = await repository.AnyAsync(p => p.CategoryId == id);
+            //if (hasProducts)
+            //    return CategoryErrors.HasProducts(id); // sử dụng lỗi đã thêm ở CategoryErrors.cs
+
             await repository.Remove(category);
             return true;
         }
-
         public async Task<Result<IReadOnlyList<CategoryDto>>> FilterBySpecification(CategoryFilterDto filter)
         {
             var spec = new CategoryFilterSpecification(filter);
