@@ -8,10 +8,13 @@ public class AuthErrors
         Error.Unauthorized(details ?? "Invalid username/email or password");
 
     public static Error UserNotFound =>
-        Error.NotFound("User not found");
+        Error.Unauthorized("User not found");
 
     public static Error NullUser =>
-        Error.Validation("User is null");
+        Error.Unauthorized("User is null");
+
+    public static Error AlreadyExisted =>
+        Error.Failure("User or email already existed");
 
     public static Error InvalidRefreshToken =>
         Error.Validation("Invalid refresh token");

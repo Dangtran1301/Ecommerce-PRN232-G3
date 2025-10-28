@@ -7,6 +7,8 @@ using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 using CatalogService.Infrastructure.Data;
 using CatalogService.Infrastructure.Repositories.Interfaces;
 using CatalogService.Infrastructure.Repositories;
+using CatalogService.API.Repositories;
+using CatalogService.API.Repositories.Interfaces;
 
 namespace CatalogService.Infrastructure;
 
@@ -26,6 +28,10 @@ public static class DependencyInjection
         // Repository pattern
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
+        services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
+        services.AddScoped<IStockRepository, StockRepository>();
         services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
 
         return services;

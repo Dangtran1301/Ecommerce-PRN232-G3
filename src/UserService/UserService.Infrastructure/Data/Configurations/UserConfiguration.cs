@@ -4,11 +4,11 @@ using UserService.Domain.Entities;
 
 namespace UserService.Infrastructure.Data.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : IEntityTypeConfiguration<UserProfile>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<UserProfile> builder)
     {
-        builder.ToTable("Users");
+        builder.ToTable("UserProfiles");
 
         builder.HasKey(u => u.Id);
 
@@ -16,42 +16,20 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(u => u.UserName)
-            .HasMaxLength(50)
-            .IsRequired();
-
-        builder.Property(u => u.Email)
-            .HasMaxLength(100)
-            .IsRequired();
-
-        builder.Property(u => u.PasswordHash)
-            .HasMaxLength(255)
-            .IsRequired();
-
         builder.Property(u => u.PhoneNumber)
             .HasMaxLength(20);
 
         builder.Property(u => u.Gender)
             .HasConversion<string>()
-            .HasMaxLength(7);
+            .HasMaxLength(16);
 
-        builder.Property(u => u.AccountStatus)
-            .HasConversion<string>()
-            .HasMaxLength(8);
-
-        builder.Property(u => u.Role)
-            .HasConversion<string>()
-            .HasMaxLength(8);
-
-        builder.Property(u => u.DayOfBirth);
+        builder.Property(u => u.DayOfBirth)
+            .HasColumnType("date");
 
         builder.Property(u => u.Address)
             .HasMaxLength(255);
 
         builder.Property(u => u.Avatar)
             .HasMaxLength(255);
-
-        builder.HasIndex(u => u.Email).IsUnique();
-        builder.HasIndex(u => u.UserName).IsUnique();
     }
 }
