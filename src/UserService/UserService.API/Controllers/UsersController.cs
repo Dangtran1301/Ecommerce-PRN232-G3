@@ -10,104 +10,94 @@ namespace UserService.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
-public class UsersController(IUserService service) : ControllerBase
+public class UsersController(IUserProfileService profileService) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
-        => (await service.GetByIdAsync(id)).ToActionResult();
+        => (await profileService.GetByIdAsync(id)).ToActionResult();
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
-        => (await service.GetAllAsync()).ToActionResult();
+        => (await profileService.GetAllAsync()).ToActionResult();
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
-        => (await service.CreateAsync(request)).ToActionResult();
+    public async Task<IActionResult> Create([FromBody] CreateUserProfileRequest request)
+        => (await profileService.CreateAsync(request)).ToActionResult();
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
-        => (await service.UpdateAsync(id, request)).ToActionResult();
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateUserProfileRequest request)
+        => (await profileService.UpdateAsync(id, request)).ToActionResult();
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
-        => (await service.DeleteAsync(id)).ToActionResult();
+        => (await profileService.DeleteAsync(id)).ToActionResult();
 
     [HttpGet("filter/spec")]
-    public async Task<IActionResult> FilterBySpec([FromQuery] UserFilterDto filter)
-        => (await service.FilterBySpecification(filter)).ToActionResult();
+    public async Task<IActionResult> FilterBySpec([FromQuery] UserProfileFilterDto filter)
+        => (await profileService.FilterBySpecification(filter)).ToActionResult();
 
     [HttpPost("filter/dynamic")]
     public async Task<IActionResult> FilterDynamic([FromBody] DynamicQuery query)
-        => (await service.FilterByDynamic(query)).ToActionResult();
+        => (await profileService.FilterByDynamic(query)).ToActionResult();
 
     [HttpGet("filter/paged")]
     public async Task<IActionResult> FilterPaged([FromQuery] PagedRequest request)
-        => (await service.FilterPaged(request)).ToActionResult();
+        => (await profileService.FilterPaged(request)).ToActionResult();
 
     [HttpGet("specification/metadata")]
-    public IActionResult GetSpecificationFilterMetadata()
-    {
-        return Ok(new
+    public IActionResult GetSpecificationFilterMetadata() =>
+        Ok(new
         {
-            entity = "User",
+            entity = "UserProfileAutomapperProfile",
             filterableFields = new[]
             {
                 new { name = "FullName", type = "string" },
-                new { name = "Email", type = "string" },
+                new { name = "PhoneNumber", type = "string" },
                 new { name = "Gender", type = "enum" },
-                new { name = "Role", type = "enum" },
-                new { name = "AccountStatus", type = "enum" }
+                new { name = "AccountStatus", type = "enum" },
+                new { name = "DayOfBirth", type = "datetime" }
             },
             sortableFields = new[]
             {
                 "FullName",
-                "Email",
                 "DayOfBirth",
-                "CreatedDate"
+                "CreatedAt"
             }
         });
-    }
 
     [HttpGet("dynamic/metadata")]
-    public IActionResult GetDynamicFilterMetadata()
-    {
-        return Ok(new
+    public IActionResult GetDynamicFilterMetadata() =>
+        Ok(new
         {
-            entity = "User",
+            entity = "UserProfileAutomapperProfile",
             filterableFields = new[]
             {
                 new { name = "FullName", type = "string" },
-                new { name = "Email", type = "string" },
+                new { name = "PhoneNumber", type = "string" },
                 new { name = "Gender", type = "enum" },
-                new { name = "Role", type = "enum" },
-                new { name = "DayOfBirth", type = "datetime" },
-                new { name = "AccountStatus", type = "enum" }
+                new { name = "AccountStatus", type = "enum" },
+                new { name = "DayOfBirth", type = "datetime" }
             },
             operators = Enum.GetNames(typeof(FilterOperator)),
             sortableFields = new[]
             {
                 "FullName",
-                "Email",
                 "DayOfBirth",
-                "CreatedDate"
+                "CreatedAt"
             }
         });
-    }
 
     [HttpGet("paged/metadata")]
-    public IActionResult GetPagedMetadata()
-    {
-        return Ok(new
+    public IActionResult GetPagedMetadata() =>
+        Ok(new
         {
             defaultPageSize = 10,
             maxPageSize = 100,
             sortableFields = new[]
             {
                 "FullName",
-                "Email",
                 "DayOfBirth",
-                "CreatedDate"
+                "CreatedAt"
             }
         });
-    }
 }

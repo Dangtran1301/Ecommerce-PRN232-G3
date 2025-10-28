@@ -24,10 +24,6 @@ public class AuthDbContext(DbContextOptions options) : BaseDbContext(options)
                 .IsRequired()
                 .HasMaxLength(512);
 
-            entity.Property(x => x.UserName)
-                .IsRequired()
-                .HasMaxLength(100);
-
             entity.Property(x => x.ExpiryDate)
                 .IsRequired();
 

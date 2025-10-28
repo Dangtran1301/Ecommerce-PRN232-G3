@@ -9,13 +9,17 @@ namespace UserService.API.Controllers;
 [Route("api/internal/v{version:apiVersion}/users")]
 [ApiVersion("1.0")]
 [ApiController]
-public class InternalUsersController(IUserService service) : ControllerBase
+public class InternalUsersController(IUserProfileService profileService) : ControllerBase
 {
-    [HttpPost("validate")]
-    public async Task<IActionResult> Validate([FromBody] ValidateUserRequest request, CancellationToken cancellationToken) =>
-        (await service.ValidateUser(request.Username, request.Password, cancellationToken)).ToActionResult();
-
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetUserById([FromRoute] Guid id) =>
-        (await service.GetByIdAsync(id)).ToActionResult();
+    [ActionName(nameof(GetUserProfileById))]
+    public async Task<IActionResult> GetUserProfileById([FromRoute] Guid id) =>
+        (await profileService.GetByIdAsync(id)).ToActionResult();
+
+    [HttpPost]
+    public async Task<IActionResult> CreateFromAuth([FromBody] CreateUserProfileFromAuthRequest request, CancellationToken cancellationToken)
+    {
+        var result = await profileService.CreateFromAuthAsync(request.UserId, request.FullName, request.PhoneNumber);
+        return result.ToActionResult();
+    }
 }

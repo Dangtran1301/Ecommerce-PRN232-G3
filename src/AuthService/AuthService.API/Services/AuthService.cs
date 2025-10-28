@@ -39,7 +39,6 @@ public class AuthService(
             Token = refreshToken,
             ExpiryDate = refreshExpiresAt,
             IsRevoked = false,
-            UserName = user.UserName,
             CreatedByIp = GetClientIp()
         };
         await repository.AddAsync(refreshEntity, cancellationToken);
@@ -84,7 +83,6 @@ public class AuthService(
             Token = newRefreshToken,
             ExpiryDate = newRefreshExpiresAt,
             IsRevoked = false,
-            UserName = user.UserName,
             CreatedByIp = GetClientIp()
         };
         await repository.AddAsync(newEntity, cancellationToken);
