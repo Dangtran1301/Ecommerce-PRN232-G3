@@ -23,10 +23,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserProfile>
             .HasConversion<string>()
             .HasMaxLength(16);
 
-        builder.Property(u => u.AccountStatus)
-            .HasConversion<string>()
-            .HasMaxLength(16);
-
         builder.Property(u => u.DayOfBirth)
             .HasColumnType("date");
 

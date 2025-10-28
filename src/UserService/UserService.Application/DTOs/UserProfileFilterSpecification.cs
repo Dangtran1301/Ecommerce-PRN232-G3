@@ -13,7 +13,6 @@ public class UserProfileFilterSpecification : BaseSpecification<Domain.Entities.
             (string.IsNullOrEmpty(keyword) ||
              u.FullName.ToLower().Contains(keyword) ||
              (u.PhoneNumber != null && u.PhoneNumber.ToLower().Contains(keyword))) &&
-            (!filter.Status.HasValue || u.AccountStatus == filter.Status.Value) &&
             (!filter.Gender.HasValue || u.Gender == filter.Gender.Value) &&
             (!filter.DobFrom.HasValue || u.DayOfBirth >= filter.DobFrom.Value) &&
             (!filter.DobTo.HasValue || u.DayOfBirth <= filter.DobTo.Value);

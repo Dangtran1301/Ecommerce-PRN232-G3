@@ -17,6 +17,12 @@ public class AuthController(IAuthService authService) : ControllerBase
         return (await authService.LoginAsync(dto, cancellationToken)).ToActionResult();
     }
 
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterRequestDto dto, CancellationToken cancellationToken)
+    {
+        return (await authService.RegisterAsync(dto, cancellationToken)).ToActionResult();
+    }
+
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh(RefreshTokenRequestDto refreshTokenRequestDto)
     {

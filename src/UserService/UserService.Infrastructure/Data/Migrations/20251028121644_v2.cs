@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -40,7 +41,6 @@ namespace UserService.Infrastructure.Migrations
                     DayOfBirth = table.Column<DateTime>(type: "date", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    AccountStatus = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),

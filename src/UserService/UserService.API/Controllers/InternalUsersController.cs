@@ -19,7 +19,11 @@ public class InternalUsersController(IUserProfileService profileService) : Contr
     [HttpPost]
     public async Task<IActionResult> CreateFromAuth([FromBody] CreateUserProfileFromAuthRequest request, CancellationToken cancellationToken)
     {
-        var result = await profileService.CreateFromAuthAsync(request.UserId, request.FullName, request.PhoneNumber);
+        var result = await profileService.CreateFromAuthAsync(
+            request.UserId,
+            request.FullName,
+            request.PhoneNumber,
+            cancellationToken: cancellationToken);
         return result.ToActionResult();
     }
 }

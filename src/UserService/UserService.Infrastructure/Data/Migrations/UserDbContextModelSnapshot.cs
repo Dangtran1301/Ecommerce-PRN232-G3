@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserService.Infrastructure.Data;
 
@@ -12,11 +11,9 @@ using UserService.Infrastructure.Data;
 namespace UserService.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20251028115520_v2")]
-    partial class v2
+    partial class UserDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,11 +67,6 @@ namespace UserService.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AccountStatus")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("Address")
                         .HasMaxLength(255)

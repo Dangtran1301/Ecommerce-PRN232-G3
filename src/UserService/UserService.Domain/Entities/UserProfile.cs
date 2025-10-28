@@ -11,7 +11,6 @@ public class UserProfile : AuditableEntity<Guid>
     public DateTime? DayOfBirth { get; set; }
     public string? Address { get; set; }
     public string? Avatar { get; set; }
-    public AccountStatus AccountStatus { get; private set; } = AccountStatus.Active;
 
     protected UserProfile()
     { }
@@ -31,8 +30,4 @@ public class UserProfile : AuditableEntity<Guid>
     public void ChangeAvatar(string? newAvatar) => Avatar = newAvatar;
 
     public void ChangeName(string newName) => FullName = newName;
-
-    public void Active() => AccountStatus = AccountStatus.Active;
-
-    public void Inactive() => AccountStatus = AccountStatus.Inactive;
 }

@@ -11,10 +11,6 @@ public record CreateUserProfileRequest(
     [RegularExpression(@"^[\p{L}\s]+$", ErrorMessage = "FullName only allows letters and spaces")]
     string FullName,
 
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Invalid email format")]
-    string Email,
-
     [Phone(ErrorMessage = "Invalid phone number format")]
     string? PhoneNumber,
 
@@ -44,8 +40,7 @@ public record UserProfileDto(
     string? Avatar,
     Gender Gender,
     DateTime? DayOfBirth,
-    string? Address,
-    AccountStatus AccountStatus
+    string? Address
 );
 
 public record UpdateUserProfileRequest(
@@ -68,7 +63,6 @@ public record UpdateUserProfileRequest(
 public class UserProfileFilterDto
 {
     public string? Keyword { get; set; }
-    public AccountStatus? Status { get; set; }
     public Gender? Gender { get; set; }
     public DateTime? DobFrom { get; set; }
     public DateTime? DobTo { get; set; }
