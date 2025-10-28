@@ -3,9 +3,6 @@ using UserService.Domain.Entities;
 
 namespace UserService.Infrastructure.UnitOfWorks.Interfaces;
 
-public interface IUserRepository : IRepository<User, Guid>
+public interface IUserRepository : IRepository<UserProfile, Guid>
 {
-    Task<User?> GetByUsernameOrEmail(string username, CancellationToken cancellationToken = default);
-
-    Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 }

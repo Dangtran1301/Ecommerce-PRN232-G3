@@ -3,16 +3,16 @@ using SharedKernel.Domain.Common.Results;
 
 namespace UserService.Application.Errors;
 
-public static class UserErrors
+public static class UserProfileErrors
 {
     public static Error NotFound(Guid id) =>
-        Error.NotFound($"User not found with ID: {id}");
+        Error.NotFound($"User Profile not found with ID: {id}");
 
     public static Error EmailTaken(string email) =>
         Error.Conflict($"Email already exists: {email}");
 
-    public static Error UsernameTaken(string username) =>
-        Error.Conflict($"Username already exist: {username}");
+    public static Error UserIdTaken(Guid id) =>
+        Error.Conflict($"User ID already exist: {id}");
 
     public static Error InvalidData(string? message = null) =>
         Error.Failure(ErrorCodes.BadRequest, message ?? "Invalid user data");

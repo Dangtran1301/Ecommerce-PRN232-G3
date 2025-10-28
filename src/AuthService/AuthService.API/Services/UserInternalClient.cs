@@ -2,7 +2,6 @@
 using AuthService.API.Interfaces;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
-using System.Text.Json;
 
 namespace AuthService.API.Services;
 
@@ -10,27 +9,13 @@ public class UserInternalClient(IHttpClientFactory httpClientFactory) : IUserInt
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("UserServiceClient");
 
-    public async Task<Result<UserServiceUserDto?>> ValidateUserAsync(LoginRequestDto payload, CancellationToken cancellationToken)
+    public async Task<Result<UserServiceUserDto?>> CreateUserProfileAsync(CreateUserProfileInternalRequest payload,
+        CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.PostAsJsonAsync("/api/internal/v1/users/validate", payload, cancellationToken);
-
-        var body = await response.Content.ReadAsStringAsync(cancellationToken);
+        var response = await _httpClient.PostAsJsonAsync("/api/internal/v1/users", payload, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-        {
-            try
-            {
-                var doc = JsonDocument.Parse(body);
-                if (!doc.RootElement.TryGetProperty("error", out var errorProp))
-                    return Result.Fail<UserServiceUserDto?>(Error.Failure($"UserService error: {response.StatusCode}"));
-                var error = errorProp.Deserialize<Error>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                return Result.Fail<UserServiceUserDto?>(error ?? Error.Failure("Unknown error"));
-            }
-            catch
-            {
-                return Result.Fail<UserServiceUserDto?>(Error.Failure($"UserService error: {response.StatusCode}"));
-            }
-        }
+            return Result.Fail<UserServiceUserDto?>(Error.Failure($"UserService error: {response.StatusCode}"));
 
         var apiResp = await response.Content.ReadFromJsonAsync<ApiResponse<UserServiceUserDto?>>(cancellationToken: cancellationToken);
         if (apiResp is null)
