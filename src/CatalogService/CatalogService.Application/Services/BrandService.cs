@@ -1,18 +1,21 @@
 ﻿using AutoMapper;
+using CatalogService.API.Repositories.Interfaces;
 using CatalogService.Application.DTOs;
+using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.Errors;
 using CatalogService.Application.Services.Interfaces;
-using CatalogService.Infrastructure.Repositories.Interfaces;
 using CatalogService.Domain.Entities;
+using CatalogService.Infrastructure.Repositories;
+using CatalogService.Infrastructure.Repositories.Interfaces;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
-using CatalogService.Application.DTOs.Brands;
 
 namespace CatalogService.Application.Services
 {
     public class BrandService(
-        IBrandRepository repository,
+        IBrandRepository brandRepository,
+        IProductRepository productRepository,
         ISpecificationRepository<Brand> specificationRepository,
         IDynamicRepository<Brand> dynamicRepository,
         IMapper mapper
@@ -20,7 +23,7 @@ namespace CatalogService.Application.Services
     {
         public async Task<Result<BrandDto>> GetByIdAsync(Guid id)
         {
-            var brand = await repository.GetByIdAsync(id);
+            var brand = await brandRepository.GetByIdAsync(id);
             return brand is null
                 ? BrandErrors.NotFound(id)
                 : mapper.Map<BrandDto>(brand);
@@ -28,7 +31,7 @@ namespace CatalogService.Application.Services
 
         public async Task<Result<IReadOnlyList<BrandDto>>> GetAllAsync()
         {
-            var brands = await repository.GetAllAsync();
+            var brands = await brandRepository.GetAllAsync();
             return Result.Ok(mapper.Map<IReadOnlyList<BrandDto>>(brands));
         }
 
@@ -37,17 +40,17 @@ namespace CatalogService.Application.Services
             request.BrandName = request.BrandName.Trim();
             request.BrandDescription = request.BrandDescription?.Trim();
             request.WebsiteUrl = request.WebsiteUrl?.Trim();
-            if (await repository.AnyAsync(b => b.BrandName == request.BrandName))
+            if (await brandRepository.AnyAsync(b => b.BrandName == request.BrandName))
                 return BrandErrors.NameTaken(request.BrandName);
 
             var brand = mapper.Map<Brand>(request);
-            await repository.AddAsync(brand);
+            await brandRepository.AddAsync(brand);
             return true;
         }
 
         public async Task<Result> UpdateAsync(Guid id, UpdateBrandRequest request)
         {
-            var brand = await repository.GetByIdAsync(id);
+            var brand = await brandRepository.GetByIdAsync(id);
             request.BrandName = request.BrandName.Trim();
             request.BrandDescription = request.BrandDescription?.Trim();
             request.WebsiteUrl = request.WebsiteUrl?.Trim();
@@ -55,17 +58,19 @@ namespace CatalogService.Application.Services
                 return BrandErrors.NotFound(id);
 
             mapper.Map(request, brand);
-            await repository.Update(brand);
+            await brandRepository.Update(brand);
             return true;
         }
 
         public async Task<Result> DeleteAsync(Guid id)
         {
-            var brand = await repository.GetByIdAsync(id);
+            var brand = await brandRepository.GetByIdAsync(id);
             if (brand is null)
                 return BrandErrors.NotFound(id);
-
-            await repository.Remove(brand);
+            bool hasProducts = await productRepository.AnyAsync(p => p.BrandId == id);
+            if (hasProducts)
+                return BrandErrors.HasProducts(id);
+            await brandRepository.Remove(brand);
             return true;
         }
 
@@ -78,13 +83,13 @@ namespace CatalogService.Application.Services
 
         public async Task<Result<PagedResult<BrandDto>>> FilterPaged(PagedRequest request)
         {
-            var result = await repository.GetPagedAsync(request);
+            var result = await brandRepository.GetPagedAsync(request);
             var dto = result.Map(mapper.Map<IReadOnlyList<BrandDto>>(result.Items));
             return Result.Ok(dto);
         }
         public IQueryable<BrandDto> AsQueryable()
         {
-            return repository.GetQueryable().Select(b => new BrandDto
+            return brandRepository.GetQueryable().Select(b => new BrandDto
             {
                 Id = b.Id,
                 BrandName = b.BrandName,

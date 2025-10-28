@@ -1,6 +1,7 @@
 using CatalogService.API;
 using CatalogService.Application;
-using CatalogService.Application.DTOs;
+using CatalogService.Application.DTOs.Brands;
+using CatalogService.Application.DTOs.Categories;
 using CatalogService.Infrastructure;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
