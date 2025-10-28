@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CatalogService.Application.DTOs
 {
@@ -37,5 +38,16 @@ namespace CatalogService.Application.DTOs
         public int? PageSize { get; set; } = 25;
         public string? OrderBy { get; set; } = "CreatedAt";
         public bool Descending { get; set; } = false;
+    }
+    public class ODataResponse<T>
+    {
+        [JsonPropertyName("@odata.context")]
+        public string? OdataContext { get; set; }
+
+        [JsonPropertyName("value")]
+        public List<T>? Value { get; set; }
+
+        [JsonPropertyName("@odata.count")]
+        public int? Count { get; set; }
     }
 }

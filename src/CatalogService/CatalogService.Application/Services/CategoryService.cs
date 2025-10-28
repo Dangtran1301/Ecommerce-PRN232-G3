@@ -84,5 +84,14 @@ namespace CatalogService.Application.Services
             var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
             return Result.Ok(dto);
         }
+        public IQueryable<CategoryDto> AsQueryable()
+        {
+            return repository.GetQueryable().Select(c => new CategoryDto
+            {
+                Id = c.Id,
+                CategoryName = c.CategoryName,
+                CategoryDescription = c.CategoryDescription
+            });
+        }
     }
 }
