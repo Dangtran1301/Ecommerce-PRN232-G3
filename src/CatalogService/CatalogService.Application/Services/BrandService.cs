@@ -7,6 +7,7 @@ using CatalogService.Domain.Entities;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
+using CatalogService.Application.DTOs.Brands;
 
 namespace CatalogService.Application.Services
 {

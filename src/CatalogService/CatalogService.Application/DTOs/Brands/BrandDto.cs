@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CatalogService.Application.DTOs
+namespace CatalogService.Application.DTOs.Brands
 {
     public record CreateBrandRequest
     {

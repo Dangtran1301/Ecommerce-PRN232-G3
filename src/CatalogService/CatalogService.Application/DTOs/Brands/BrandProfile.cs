@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CatalogService.Domain.Entities;
 
-namespace CatalogService.Application.DTOs
+namespace CatalogService.Application.DTOs.Brands
 {
     public class BrandProfile : Profile
     {

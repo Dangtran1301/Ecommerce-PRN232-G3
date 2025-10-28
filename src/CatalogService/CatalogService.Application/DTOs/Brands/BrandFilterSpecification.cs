@@ -1,7 +1,7 @@
 ﻿using CatalogService.Domain.Entities;
 using SharedKernel.Application.Common;
 
-namespace CatalogService.Application.DTOs
+namespace CatalogService.Application.DTOs.Brands
 {
     public class BrandFilterSpecification : BaseSpecification<Brand>
     {

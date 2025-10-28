@@ -7,6 +7,7 @@ using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 using CatalogService.Application.Services.Interfaces;
 using CatalogService.Application.Errors;
 using CatalogService.Application.DTOs;
+using CatalogService.Application.DTOs.Categories;
 
 namespace CatalogService.Application.Services
 {
