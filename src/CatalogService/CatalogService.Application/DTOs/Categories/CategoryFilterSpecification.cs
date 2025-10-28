@@ -1,7 +1,7 @@
 ﻿using CatalogService.Domain.Entities;
 using SharedKernel.Application.Common;
 
-namespace CatalogService.Application.DTOs
+namespace CatalogService.Application.DTOs.Categories
 {
     public class CategoryFilterSpecification : BaseSpecification<Category>
     {

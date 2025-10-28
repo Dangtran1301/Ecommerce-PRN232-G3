@@ -1,16 +1,16 @@
 ﻿using Asp.Versioning;
-using CatalogService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
-using CatalogService.Application.DTOs.Categories;
+using CatalogService.API.DTOs;
+using CatalogService.API.Services.Interfaces;
 
-namespace CatalogService.API.Controllers;
+namespace ProductService.API.Controllers;
 
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
-public class CategoriesController(ICategoryService service) : ControllerBase
+public class ProductsController(IProductService service) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
@@ -21,11 +21,11 @@ public class CategoriesController(ICategoryService service) : ControllerBase
         => (await service.GetAllAsync()).ToActionResult();
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
+    public async Task<IActionResult> Create([FromBody] CreateProductRequest request)
         => (await service.CreateAsync(request)).ToActionResult();
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateCategoryRequest request)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductRequest request)
         => (await service.UpdateAsync(id, request)).ToActionResult();
 
     [HttpDelete("{id:guid}")]
@@ -33,8 +33,12 @@ public class CategoriesController(ICategoryService service) : ControllerBase
         => (await service.DeleteAsync(id)).ToActionResult();
 
     [HttpGet("filter/spec")]
-    public async Task<IActionResult> FilterBySpec([FromQuery] CategoryFilterDto filter)
+    public async Task<IActionResult> FilterBySpec([FromQuery] ProductFilterDto filter)
         => (await service.FilterBySpecification(filter)).ToActionResult();
+
+    [HttpPost("filter/dynamic")]
+    public async Task<IActionResult> FilterDynamic([FromBody] DynamicQuery query)
+        => (await service.FilterByDynamic(query)).ToActionResult();
 
     [HttpGet("filter/paged")]
     public async Task<IActionResult> FilterPaged([FromQuery] PagedRequest request)
@@ -45,16 +49,37 @@ public class CategoriesController(ICategoryService service) : ControllerBase
     {
         return Ok(new
         {
-            entity = "Category",
+            entity = "Product",
             filterableFields = new[]
             {
-                new { name = "CategoryName", type = "string" },
-                new { name = "CategoryDescription", type = "string" }
+                new { name = "ProductName", type = "string" },
+                new { name = "Price", type = "decimal" },
+                new { name = "Sku", type = "string" }
             },
             sortableFields = new[]
             {
-                "CategoryName",
-                "CreatedAt"
+                "ProductName", "Price", "CreatedAt"
+            }
+        });
+    }
+
+    [HttpGet("dynamic/metadata")]
+    public IActionResult GetDynamicFilterMetadata()
+    {
+        return Ok(new
+        {
+            entity = "Product",
+            filterableFields = new[]
+            {
+                new { name = "ProductName", type = "string" },
+                new { name = "Description", type = "string" },
+                new { name = "Price", type = "decimal" },
+                new { name = "Sku", type = "string" }
+            },
+            operators = Enum.GetNames(typeof(FilterOperator)),
+            sortableFields = new[]
+            {
+                "ProductName", "Price", "CreatedAt"
             }
         });
     }
@@ -68,8 +93,7 @@ public class CategoriesController(ICategoryService service) : ControllerBase
             maxPageSize = 100,
             sortableFields = new[]
             {
-                "CategoryName",
-                "CreatedAt"
+                "ProductName", "Price", "CreatedAt"
             }
         });
     }
