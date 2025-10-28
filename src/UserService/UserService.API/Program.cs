@@ -1,7 +1,8 @@
-﻿using UserService.API;
-using UserService.API.Middlewares;
+﻿using Microsoft.EntityFrameworkCore;
+using UserService.API;
 using UserService.Application;
 using UserService.Infrastructure;
+using UserService.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -19,6 +20,12 @@ services.AddInfrastructureServices(configuration);
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+    db.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -27,7 +34,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<InternalApiKeyMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();

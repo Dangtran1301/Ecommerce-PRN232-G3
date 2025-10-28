@@ -1,0 +1,54 @@
+services:
+  gateway:
+    build:
+      context: ..
+      dockerfile: src/Gateway/Gateway.API/Dockerfile
+    ports:
+      - "8000:8080"
+    depends_on:
+      - authservice
+      - userservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - AuthService__BaseUrl=http://authservice:8080
+      - UserService__BaseUrl=http://userservice:8080
+
+  authservice:
+    build:
+      context: ..
+      dockerfile: src/AuthService/AuthService.API/Dockerfile
+    ports:
+      - "8001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__Default=Server=db,1433;Database=AuthDB;User Id=sa;Password=P@ssword;
+    depends_on:
+      - db
+
+  userservice:
+    build:
+      context: ..
+      dockerfile: src/UserService/UserService.API/Dockerfile
+    ports:
+      - "8002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__Default=Server=db,1433;Database=UserDB;User Id=sa;Password=P@ssword;
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver1
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@ssword
+    volumes:
+      - sql_data:/var/opt/mssql
+volumes:
+  sql_data:
