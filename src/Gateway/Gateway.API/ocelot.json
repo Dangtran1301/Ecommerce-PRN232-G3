@@ -75,10 +75,36 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7080
+          "Port": "7080"
         }
       ],
       "UpstreamPathTemplate": "/odata/categories",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "catalog-odata"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Brands/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7080"
+        }
+      ],
+      "UpstreamPathTemplate": "/brands/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "DownstreamPathTemplate": "/odata/ODataBrands",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7080"
+        }
+      ],
+      "UpstreamPathTemplate": "/odata/brands",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "catalog-odata"
     },

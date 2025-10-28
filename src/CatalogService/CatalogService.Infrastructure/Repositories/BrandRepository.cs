@@ -15,5 +15,9 @@ namespace CatalogService.Infrastructure.Repositories
         {
             return await _brands.FirstOrDefaultAsync(b => b.BrandName == name, cancellationToken);
         }
+        public IQueryable<Brand> GetQueryable()
+        {
+            return _brands.AsNoTracking();
+        }
     }
 }

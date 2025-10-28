@@ -81,5 +81,15 @@ namespace CatalogService.Application.Services
             var dto = result.Map(mapper.Map<IReadOnlyList<BrandDto>>(result.Items));
             return Result.Ok(dto);
         }
+        public IQueryable<BrandDto> AsQueryable()
+        {
+            return repository.GetQueryable().Select(b => new BrandDto
+            {
+                Id = b.Id,
+                BrandName = b.BrandName,
+                BrandDescription = b.BrandDescription,
+                WebsiteUrl = b.WebsiteUrl,
+            });
+        }
     }
 }

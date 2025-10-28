@@ -17,6 +17,7 @@ builder.Services.AddControllers()
     {
         var modelBuilder = new ODataConventionModelBuilder();
         modelBuilder.EntitySet<CategoryDto>("ODataCategories");
+        modelBuilder.EntitySet<BrandDto>("ODataBrands");
         opt.AddRouteComponents("odata", modelBuilder.GetEdmModel())
            .Filter()
            .Select()
