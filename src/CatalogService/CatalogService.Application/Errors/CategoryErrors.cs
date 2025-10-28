@@ -13,5 +13,7 @@ namespace CatalogService.Application.Errors
 
         public static Error InvalidData(string? message = null) =>
             Error.Failure(ErrorCodes.BadRequest, message ?? "Invalid category data");
+        public static Error HasProducts(Guid categoryId) =>
+            Error.Conflict($"Cannot delete category {categoryId} because it still contains products.");
     }
 }

@@ -1,26 +1,28 @@
 ﻿using AutoMapper;
+using CatalogService.API.Repositories.Interfaces;
+using CatalogService.Application.DTOs.Categories;
+using CatalogService.Application.Errors;
+using CatalogService.Application.Services.Interfaces;
 using CatalogService.Domain.Entities;
+using CatalogService.Infrastructure.Repositories;
 using CatalogService.Infrastructure.Repositories.Interfaces;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
-using CatalogService.Application.Services.Interfaces;
-using CatalogService.Application.Errors;
-using CatalogService.Application.DTOs;
-using CatalogService.Application.DTOs.Categories;
 
 namespace CatalogService.Application.Services
 {
     public class CategoryService(
-        ICategoryRepository repository,
-        ISpecificationRepository<Category> specificationRepository,
-        IDynamicRepository<Category> dynamicRepository,
-        IMapper mapper
-    ) : ICategoryService
+    ICategoryRepository categoryRepository,
+    IProductRepository productRepository,
+    ISpecificationRepository<Category> specificationRepository,
+    IDynamicRepository<Category> dynamicRepository,
+    IMapper mapper
+) : ICategoryService
     {
         public async Task<Result<CategoryDto>> GetByIdAsync(Guid id)
         {
-            var category = await repository.GetByIdAsync(id);
+            var category = await categoryRepository.GetByIdAsync(id);
             return category is null
                 ? CategoryErrors.NotFound(id)
                 : mapper.Map<CategoryDto>(category);
@@ -28,7 +30,7 @@ namespace CatalogService.Application.Services
 
         public async Task<Result<IReadOnlyList<CategoryDto>>> GetAllAsync()
         {
-            var categories = await repository.GetAllAsync();
+            var categories = await categoryRepository.GetAllAsync();
             return Result.Ok(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
         }
 
@@ -36,37 +38,38 @@ namespace CatalogService.Application.Services
         {
             request.CategoryName = request.CategoryName.Trim();
             request.CategoryDescription = request.CategoryDescription.Trim();
-            if (await repository.AnyAsync(c => c.CategoryName == request.CategoryName))
+            if (await categoryRepository.AnyAsync(c => c.CategoryName == request.CategoryName))
                 return CategoryErrors.NameTaken(request.CategoryName);
 
             var category = mapper.Map<Category>(request);
-            await repository.AddAsync(category);
+            await categoryRepository.AddAsync(category);
             return true;
         }
 
         public async Task<Result> UpdateAsync(Guid id, UpdateCategoryRequest request)
         {
-            var category = await repository.GetByIdAsync(id);
+            var category = await categoryRepository.GetByIdAsync(id);
             request.CategoryName = request.CategoryName.Trim();
             request.CategoryDescription = request.CategoryDescription.Trim();
             if (category is null)
                 return CategoryErrors.NotFound(id);
 
             mapper.Map(request, category);
-            await repository.Update(category);
+            await categoryRepository.Update(category);
             return true;
         }
 
         public async Task<Result> DeleteAsync(Guid id)
         {
-            var category = await repository.GetByIdAsync(id);
+            var category = await categoryRepository.GetByIdAsync(id);
             if (category is null)
                 return CategoryErrors.NotFound(id);
-
-            await repository.Remove(category);
+            bool hasProducts = await productRepository.AnyAsync(p => p.CategoryId == id);
+            if (hasProducts)
+                return CategoryErrors.HasProducts(id); 
+            await categoryRepository.Remove(category);
             return true;
         }
-
         public async Task<Result<IReadOnlyList<CategoryDto>>> FilterBySpecification(CategoryFilterDto filter)
         {
             var spec = new CategoryFilterSpecification(filter);
@@ -76,9 +79,18 @@ namespace CatalogService.Application.Services
 
         public async Task<Result<PagedResult<CategoryDto>>> FilterPaged(PagedRequest request)
         {
-            var result = await repository.GetPagedAsync(request);
+            var result = await categoryRepository.GetPagedAsync(request);
             var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
             return Result.Ok(dto);
+        }
+        public IQueryable<CategoryDto> AsQueryable()
+        {
+            return categoryRepository.GetQueryable().Select(c => new CategoryDto
+            {
+                Id = c.Id,
+                CategoryName = c.CategoryName,
+                CategoryDescription = c.CategoryDescription
+            });
         }
     }
 }
