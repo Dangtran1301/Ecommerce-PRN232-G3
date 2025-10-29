@@ -34,4 +34,16 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         return (await authService.LogoutAsync(refreshTokenRequestDto)).ToActionResult();
     }
+
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest forgotPasswordRequest, CancellationToken cancellation)
+    {
+        return (await authService.ForgotPasswordAsync(forgotPasswordRequest, cancellation)).ToActionResult();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
+    {
+        return (await authService.ResetPasswordAsync(request, cancellationToken: cancellationToken)).ToActionResult();
+    }
 }

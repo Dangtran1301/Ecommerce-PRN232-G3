@@ -40,8 +40,22 @@ public class AuthDbContext(DbContextOptions options) : BaseDbContext(options)
                 .HasMaxLength(16)
                 .IsRequired();
 
+            entity.Property(u => u.ResetToken)
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .IsRequired(false);
+
+            entity.Property(x => x.CreatedBy)
+                .HasMaxLength(256);
+
+            entity.Property(x => x.UpdatedBy)
+                .HasMaxLength(256);
+            entity.Property(u => u.ResetTokenExpiry)
+                .IsRequired(false);
+
             entity.HasIndex(u => u.Email).IsUnique();
             entity.HasIndex(u => u.UserName).IsUnique();
+            entity.HasIndex(u => u.ResetToken);
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>

@@ -1,11 +1,11 @@
 ﻿using AuthService.API.DTOs;
 using AuthService.API.Interfaces;
+using AuthService.API.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using AuthService.API.Models;
 
 namespace AuthService.API.Services;
 
@@ -22,7 +22,7 @@ public class TokenService : ITokenService
         _refreshTokenLifetime = TimeSpan.FromDays(_config.GetValue<int>("Jwt:RefreshTokenLifetimeDays"));
     }
 
-    public (string accessToken, DateTime expiresAt) GenerateAccessToken(User user,UserServiceUserDto userProfile)
+    public (string accessToken, DateTime expiresAt) GenerateAccessToken(User user, UserServiceUserDto userProfile)
     {
         var expiresAt = DateTime.UtcNow.Add(_accessTokenLifetime);
 

@@ -13,8 +13,8 @@ using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
-using System.Text;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
+using System.Text;
 
 namespace AuthService.API;
 
@@ -143,10 +143,13 @@ public static class DependencyInjection
 
         // Repository
         services.AddScoped<IRepository<RefreshToken, int>, AuthRepository>();
-        services.AddScoped(typeof(IRepository<,>),typeof(EfRepository<,>));
+        services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
         // Token + Auth Services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAuthService, AuthService.API.Services.AuthService>();
+
+        //Mail Services
+        services.AddSingleton<IEmailService, EmailService>();
 
         // Http Client Internal (User Service)
         services.AddHttpClient("UserServiceClient", client =>
