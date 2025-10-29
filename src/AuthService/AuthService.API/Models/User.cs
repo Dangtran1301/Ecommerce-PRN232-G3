@@ -1,4 +1,5 @@
 ﻿using SharedKernel.Domain.Common.Entities;
+using System.Security.Cryptography;
 
 namespace AuthService.API.Models;
 
@@ -9,6 +10,8 @@ public class User : AuditableEntity<Guid>
     public string PasswordHash { get; private set; } = string.Empty;
     public Role Role { get; private set; } = Role.Customer;
     public AccountStatus AccountStatus { get; set; } = AccountStatus.Active;
+    public string? ResetToken { get; private set; }
+    public DateTime? ResetTokenExpiry { get; private set; }
 
     protected User()
     { }
@@ -34,6 +37,22 @@ public class User : AuditableEntity<Guid>
 
     public void ChangeRole(Role role)
         => Role = role;
+
+    public void GenerateResetToken()
+    {
+        var tokenBytes = RandomNumberGenerator.GetBytes(64);
+        ResetToken = Convert.ToBase64String(tokenBytes);
+        ResetTokenExpiry = DateTime.UtcNow.AddMinutes(15);
+    }
+
+    public void ClearResetToken()
+    {
+        ResetToken = null;
+        ResetTokenExpiry = null;
+    }
+
+    public bool IsResetTokenValid(string token)
+        => ResetToken == token && ResetTokenExpiry > DateTime.UtcNow;
 }
 
 public enum Role

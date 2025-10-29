@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace AuthService.API.Migrations
 {
     /// <inheritdoc />
-    public partial class v2 : Migration
+    public partial class v3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,10 +57,12 @@ namespace AuthService.API.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     Role = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     AccountStatus = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    ResetToken = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: true),
+                    ResetTokenExpiry = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UpdatedBy = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -84,6 +85,11 @@ namespace AuthService.API.Migrations
                 table: "Users",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_ResetToken",
+                table: "Users",
+                column: "ResetToken");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",

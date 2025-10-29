@@ -15,7 +15,9 @@ public class AuthService(
     IUserInternalClient userInternalClient,
     ITokenService tokenService,
     IMapper mapper,
-    IHttpContextAccessor httpContextAccessor
+    IHttpContextAccessor httpContextAccessor,
+    IEmailService emailService,
+    IConfiguration configuration
     ) : IAuthService
 {
     public async Task<Result<LoginResponseDto>> LoginAsync(LoginRequestDto loginRequestDto, CancellationToken cancellationToken = default)
@@ -76,7 +78,7 @@ public class AuthService(
 
         var user = await userRepository.GetByIdAsync(existing.UserId, cancellationToken);
 
-        if (user is null) 
+        if (user is null)
             return AuthErrors.UserNotFound;
 
         var userProfileResponse = await userInternalClient.GetUserByIdAsync(existing.UserId, cancellationToken);
@@ -100,10 +102,15 @@ public class AuthService(
         };
         await tokenRepository.AddAsync(newEntity, cancellationToken);
 
-        var response = mapper.Map<LoginResponseDto>(user);
-        response.AccessToken = accessToken;
-        response.RefreshToken = newRefreshToken;
-        response.ExpiresAt = expiresAt;
+        var authUser = mapper.Map<AuthUserDto>(user);
+        authUser.FullName = userProfileResponse.Value.FullName;
+        var response = new LoginResponseDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = newRefreshToken,
+            ExpiresAt = expiresAt,
+            User = authUser
+        };
 
         return Result.Ok(response);
     }
@@ -127,9 +134,11 @@ public class AuthService(
 
     public async Task<Result<UserServiceUserDto>> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken = default)
     {
-        var exists = await userRepository.AnyAsync(u => u.UserName == request.UserName || u.Email == request.Email, cancellationToken);
-        if (exists)
-            return AuthErrors.AlreadyExisted;
+        if (await userRepository.AnyAsync(u => u.UserName == request.UserName, cancellationToken))
+            return AuthErrors.UsernameAlreadyExisted;
+
+        if (await userRepository.AnyAsync(u => u.Email == request.Email, cancellationToken))
+            return AuthErrors.EmailAlreadyExisted;
 
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
@@ -148,6 +157,53 @@ public class AuthService(
         return !profileResult.IsSuccess
             ? Result.Fail<UserServiceUserDto>(Error.Failure("Failed to create user profile"))
             : Result.Ok(profileResult.Value!);
+    }
+
+    public async Task<Result> ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var user = await userRepository.AsQueryable().AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Email == forgotPasswordRequest.Email, cancellationToken);
+
+            if (user is null)
+                return AuthErrors.UserNotFound;
+
+            user.GenerateResetToken();
+            await userRepository.Update(user, cancellationToken);
+
+            var resetLink =
+                $"{configuration["App:ClientUrl"]}/reset-password?token={Uri.EscapeDataString(user.ResetToken!)}";
+            var body = $@"
+        <p>Xin chào {user.UserName},</p>
+        <p>Bạn đã yêu cầu đặt lại mật khẩu. Nhấn vào liên kết bên dưới để tiếp tục:</p>
+        <p><a href='{resetLink}' target='_blank'>Đặt lại mật khẩu</a></p>
+        <p>Liên kết này sẽ hết hạn sau 15 phút.</p>";
+
+            await emailService.SendEmailAsync(user.Email, "Đặt lại mật khẩu", body);
+
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail(AuthErrors.BadRequest("Email sending failed", ex.Message));
+        }
+    }
+
+    public async Task<Result> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository.AsQueryable().AsNoTracking()
+            .FirstOrDefaultAsync(x => x.ResetToken == request.Token, cancellationToken);
+
+        if (user is null || !user.IsResetTokenValid(request.Token))
+            return AuthErrors.InvalidResetToken;
+
+        var newHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        user.ChangePassword(newHash);
+        user.ClearResetToken();
+
+        await userRepository.Update(user, cancellationToken);
+        return Result.Ok();
     }
 
     private string GetClientIp()
