@@ -15,5 +15,9 @@ namespace CatalogService.Infrastructure.Repositories
         {
             return await _categories.FirstOrDefaultAsync(c => c.CategoryName == name, cancellationToken);
         }
+        public IQueryable<Category> GetQueryable()
+        {
+            return _categories.AsNoTracking();
+        }
     }
 }

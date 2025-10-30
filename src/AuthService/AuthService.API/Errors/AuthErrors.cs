@@ -8,22 +8,34 @@ public class AuthErrors
         Error.Unauthorized(details ?? "Invalid username/email or password");
 
     public static Error UserNotFound =>
-        Error.NotFound("User not found");
+        Error.Unauthorized("User not found");
 
     public static Error NullUser =>
-        Error.Validation("User is null");
+        Error.Unauthorized("User is null");
+
+    public static Error UsernameAlreadyExisted =>
+        Error.Failure("User already existed");
+
+    public static Error EmailAlreadyExisted =>
+        Error.Failure("Email already in use");
 
     public static Error InvalidRefreshToken =>
-        Error.Validation("Invalid refresh token");
+        Error.Unauthorized("Invalid refresh token");
+
+    public static Error InvalidResetToken =>
+        Error.Unauthorized("Invalid reset token");
 
     public static Error RefreshTokenRevoked =>
-        Error.Validation("Refresh token has been revoked");
+        Error.Unauthorized("Refresh token has been revoked");
 
     public static Error RefreshTokenExpired =>
-        Error.Validation("Refresh token has expired");
+        Error.Unauthorized("Refresh token has expired");
 
     public static Error TokenAlreadyRevoked =>
-        Error.Validation("Token already revoked");
+        Error.Unauthorized("Token already revoked");
+
+    public static Error BadRequest(string mess, object? detail = null) =>
+        Error.Failure(mess, detail);
 
     public static Error InternalFailure(string message, object? details = null) =>
         Error.Internal(message, details);

@@ -1,9 +1,32 @@
-﻿namespace AuthService.API.DTOs;
+﻿using AuthService.API.Models;
+
+namespace AuthService.API.DTOs;
+public record RegisterRequestDto(
+    string UserName,
+    string Email,
+    string Password,
+    string FullName,
+    string? PhoneNumber = null,
+    Gender Gender = Gender.Unknown,
+    DateTime? DayOfBirth = null,
+    string? Address = null,
+    string? Avatar = null
+);
+
+public record CreateUserProfileInternalRequest(
+    Guid UserId,
+    string FullName,
+    string? PhoneNumber = null,
+    Gender Gender = Gender.Unknown,
+    DateTime? DayOfBirth = null,
+    string? Address = null,
+    string? Avatar = null
+);
 
 public class LoginRequestDto
 {
-    public string Username { get; set; }
-    public string Password { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }
 
 public class LoginResponseDto
@@ -22,8 +45,6 @@ public class RefreshTokenRequestDto
 public record UserServiceUserDto(
     Guid Id,
     string FullName,
-    string UserName,
-    string Email,
     string? PhoneNumber,
     string? Avatar,
     string? Role
@@ -37,3 +58,7 @@ public class AuthUserDto
     public string Email { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
 }
+
+public record ForgotPasswordRequest(string Email);
+
+public record ResetPasswordRequest(string Token, string NewPassword);

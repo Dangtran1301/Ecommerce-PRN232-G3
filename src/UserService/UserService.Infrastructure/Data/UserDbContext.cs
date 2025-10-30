@@ -8,7 +8,7 @@ namespace UserService.Infrastructure.Data;
 
 public class UserDbContext(DbContextOptions<UserDbContext> options) : BaseDbContext(options)
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

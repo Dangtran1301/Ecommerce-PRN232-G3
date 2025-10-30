@@ -10,4 +10,10 @@ public interface IAuthService
     Task<Result<LoginResponseDto>> RefreshAsync(RefreshTokenRequestDto refreshTokenRequestDto, CancellationToken cancellationToken = default);
 
     Task<Result> LogoutAsync(RefreshTokenRequestDto refreshTokenRequestDto, CancellationToken cancellationToken = default);
+
+    Task<Result<UserServiceUserDto>> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken = default);
+
+    Task<Result> ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest, CancellationToken cancellationToken = default);
+
+    Task<Result> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default);
 }

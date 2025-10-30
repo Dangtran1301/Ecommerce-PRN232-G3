@@ -1,5 +1,6 @@
 ﻿using AuthService.API.DTOs;
 using AuthService.API.Interfaces;
+using AuthService.API.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,7 +22,7 @@ public class TokenService : ITokenService
         _refreshTokenLifetime = TimeSpan.FromDays(_config.GetValue<int>("Jwt:RefreshTokenLifetimeDays"));
     }
 
-    public (string accessToken, DateTime expiresAt) GenerateAccessToken(UserServiceUserDto user)
+    public (string accessToken, DateTime expiresAt) GenerateAccessToken(User user, UserServiceUserDto userProfile)
     {
         var expiresAt = DateTime.UtcNow.Add(_accessTokenLifetime);
 
@@ -31,9 +32,9 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Name, user.FullName),
+            new Claim(JwtRegisteredClaimNames.Name, userProfile.FullName),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var token = new JwtSecurityToken(
