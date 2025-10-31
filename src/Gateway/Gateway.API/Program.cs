@@ -9,6 +9,9 @@ using Gateway.API;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+var environment = builder.Environment.EnvironmentName;
+
+builder.Configuration.AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
 
 builder.Configuration
     .AddJsonFile("ocelot.routes.json", optional: false, reloadOnChange: true)

@@ -2,7 +2,10 @@
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:7000"
   },
-
+  "AuthenticationOptions": {
+    "AuthenticationProviderKey": "Bearer",
+    "AllowedScopes": []
+  },
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/Auth/{everything}",
