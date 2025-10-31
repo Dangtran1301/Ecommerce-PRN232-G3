@@ -5,8 +5,8 @@ namespace AuthService.API.Interfaces;
 
 public interface IUserInternalClient
 {
-    Task<Result<UserServiceUserDto?>> CreateUserProfileAsync(CreateUserProfileInternalRequest payload,
+    Task<Result<UserProfileResponse?>> CreateUserProfileAsync(CreateUserProfileInternalRequest payload,
         CancellationToken cancellationToken = default);
 
-    Task<Result<UserServiceUserDto?>> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Result<UserProfileResponse?>> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }

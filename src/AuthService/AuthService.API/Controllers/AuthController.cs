@@ -12,27 +12,27 @@ namespace AuthService.API.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequestDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login(LoginRequest dto, CancellationToken cancellationToken)
     {
         return (await authService.LoginAsync(dto, cancellationToken)).ToActionResult();
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequestDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Register(RegisterRequest dto, CancellationToken cancellationToken)
     {
         return (await authService.RegisterAsync(dto, cancellationToken)).ToActionResult();
     }
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh(RefreshTokenRequestDto refreshTokenRequestDto)
+    public async Task<IActionResult> Refresh(RefreshTokenRequest refreshTokenRequest)
     {
-        return (await authService.RefreshAsync(refreshTokenRequestDto)).ToActionResult();
+        return (await authService.RefreshAsync(refreshTokenRequest)).ToActionResult();
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout(RefreshTokenRequestDto refreshTokenRequestDto)
+    public async Task<IActionResult> Logout(RefreshTokenRequest refreshTokenRequest)
     {
-        return (await authService.LogoutAsync(refreshTokenRequestDto)).ToActionResult();
+        return (await authService.LogoutAsync(refreshTokenRequest)).ToActionResult();
     }
 
     [HttpPost("forgot-password")]
