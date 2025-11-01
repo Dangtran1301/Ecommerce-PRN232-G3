@@ -150,7 +150,7 @@ public static class DependencyInjection
         // Repository
         services.AddScoped<IRepository<RefreshToken, int>, AuthRepository>();
         services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
-        services.AddScoped(typeof(ISpecificationRepository<>),typeof(SpecificationRepository<>));
+        services.AddScoped(typeof(ISpecificationRepository<>), typeof(SpecificationRepository<>));
 
         // Token + Auth Services
         services.AddScoped<ITokenService, TokenService>();

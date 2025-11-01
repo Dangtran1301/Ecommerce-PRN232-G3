@@ -78,6 +78,7 @@ public class UserService(
                 case AccountStatus.Active:
                     user.Activate();
                     break;
+
                 case AccountStatus.Inactive:
                     user.Deactivate();
                     break;
@@ -94,10 +95,15 @@ public class UserService(
 
         var user = await userRepository.GetByIdAsync(id, cancellationToken);
 
-        if (user is null) return AuthErrors.UserNotFound;
+        if (user is null)
+            return AuthErrors.UserNotFound;
 
-        if (user.Id.ToString().Equals(claimsService.CurrentUserId)) return AuthErrors.InvalidCredentials("Can't not delete your own account");
+        if (user.Id.ToString().Equals(claimsService.CurrentUserId))
+            return AuthErrors.InvalidCredentials("Can't not delete your own account");
 
+        var response = await userInternalClient.DeleteUserProfileAsync(id, cancellationToken);
+        if (!response.IsSuccess)
+            return AuthErrors.BadRequest("Can't not delete user's profile");
         await userRepository.Remove(user, cancellationToken);
         return Result.Ok();
     }

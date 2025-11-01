@@ -1,8 +1,8 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using AuthService.API.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AuthService.API.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.API.Services;
 
@@ -57,7 +57,7 @@ public class ClaimsService(IConfiguration config, IHttpContextAccessor httpConte
     public string? GetRole(string token)
         => GetPrincipalFromToken(token)?.FindFirstValue(ClaimTypes.Role);
 
-    #endregion
+    #endregion From Raw Token
 
     #region From HttpContext
 
@@ -73,5 +73,5 @@ public class ClaimsService(IConfiguration config, IHttpContextAccessor httpConte
 
     public string? CurrentUserRole => HttpContextUser?.FindFirstValue(ClaimTypes.Role);
 
-    #endregion
+    #endregion From HttpContext
 }

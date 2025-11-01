@@ -152,7 +152,7 @@ public class AuthService(
             request.DayOfBirth,
             request.Address,
             request.Avatar), cancellationToken);
-       
+
         if (!profileResult.IsSuccess)
             return Result.Fail<UserProfileResponse>(Error.Failure("Failed to create user profile"));
 

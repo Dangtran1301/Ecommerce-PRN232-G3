@@ -1,7 +1,4 @@
 using AuthService.API;
-using AuthService.API.Interfaces;
-using AuthService.API.Services;
-using SharedKernel.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -12,7 +9,6 @@ builder.Services
     .AddValidationBehavior()
     .AddAuthInfrastructure(config)
     .AddJwtAuthentication(config);
-
 
 var app = builder.Build();
 

@@ -9,6 +9,22 @@ public class UserInternalClient(IHttpClientFactory httpClientFactory) : IUserInt
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("UserServiceClient");
 
+    public async Task<Result<UserProfileResponse?>> GetUserByIdAsync(Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.GetAsync($"api/internal/v1/users/{id}", cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+            return Result.Fail<UserProfileResponse?>(Error.Validation("User not found"));
+
+        var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<UserProfileResponse?>>(cancellationToken: cancellationToken);
+        if (apiResponse is null)
+            return Result.Fail<UserProfileResponse?>(Error.Failure("Invalid response format"));
+        return !apiResponse.Success
+            ? Result.Fail<UserProfileResponse?>(apiResponse.Error ?? Error.Failure("Unknown error"))
+            : Result.Ok(apiResponse.Data);
+    }
+
     public async Task<Result<UserProfileResponse?>> CreateUserProfileAsync(CreateUserProfileInternalRequest payload,
         CancellationToken cancellationToken = default)
     {
@@ -26,19 +42,19 @@ public class UserInternalClient(IHttpClientFactory httpClientFactory) : IUserInt
             : Result.Ok(apiResp.Data);
     }
 
-    public async Task<Result<UserProfileResponse?>> GetUserByIdAsync(Guid id,
-        CancellationToken cancellationToken = default)
+    public async Task<Result> DeleteUserProfileAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.GetAsync($"api/internal/v1/users/{id}", cancellationToken);
+        var response = await _httpClient.DeleteAsync($"/api/internal/v1/users/{id}", cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            return Result.Fail<UserProfileResponse?>(Error.Validation("User not found"));
+            return Result.Fail(Error.Failure($"UserService error: {response.StatusCode}"));
 
-        var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<UserProfileResponse?>>(cancellationToken: cancellationToken);
-        if (apiResponse is null)
-            return Result.Fail<UserProfileResponse?>(Error.Failure("Invalid response format"));
-        return !apiResponse.Success
-            ? Result.Fail<UserProfileResponse?>(apiResponse.Error ?? Error.Failure("Unknown error"))
-            : Result.Ok(apiResponse.Data);
+        var apiResp = await response.Content.ReadFromJsonAsync<ApiResponse>(cancellationToken: cancellationToken);
+        if (apiResp is null)
+            return Result.Fail(Error.Failure("Invalid response format"));
+
+        return !apiResp.Success
+            ? Result.Fail(apiResp.Error ?? Error.Failure("Unknown error"))
+            : Result.Ok();
     }
 }

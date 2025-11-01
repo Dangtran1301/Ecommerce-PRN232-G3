@@ -15,7 +15,6 @@ public interface IUserService
 
     Task<Result> UpdateStatusUserAsync(Guid id, UpdateStatusAuthUserRequest request, CancellationToken cancellationToken = default);
 
-
     Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<Result<IReadOnlyList<AuthUserResponse>>> FilterBySpecification(UserFilterRequest filter, CancellationToken cancellationToken = default);
