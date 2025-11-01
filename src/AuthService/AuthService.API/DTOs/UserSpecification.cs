@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using AuthService.API.Models;
+﻿using AuthService.API.Models;
 using SharedKernel.Application.Common;
+using System.Linq.Expressions;
 
 namespace AuthService.API.DTOs;
 

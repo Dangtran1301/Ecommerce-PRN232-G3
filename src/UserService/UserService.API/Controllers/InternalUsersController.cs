@@ -17,6 +17,7 @@ public class InternalUsersController(IUserProfileService profileService) : Contr
         (await profileService.GetByIdAsync(id)).ToActionResult();
 
     [HttpPost]
+    [ActionName(nameof(CreateFromAuth))]
     public async Task<IActionResult> CreateFromAuth([FromBody] CreateUserProfileFromAuthRequest request, CancellationToken cancellationToken)
     {
         var result = await profileService.CreateFromAuthAsync(
@@ -26,4 +27,9 @@ public class InternalUsersController(IUserProfileService profileService) : Contr
             cancellationToken: cancellationToken);
         return result.ToActionResult();
     }
+
+    [HttpDelete("{id:guid}")]
+    [ActionName(nameof(DeleteFromAuth))]
+    public async Task<IActionResult> DeleteFromAuth(Guid id, CancellationToken cancellationToken) =>
+        (await profileService.DeleteAsync(id, cancellationToken)).ToActionResult();
 }
