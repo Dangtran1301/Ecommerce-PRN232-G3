@@ -7,10 +7,8 @@ using CatalogService.API.Services.Interfaces;
 
 namespace CatalogService.API.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]")]
-[ApiVersion("1.0")]
-[ApiController]
-public class ProductVariantsController(IProductVariantService service) : ControllerBase
+
+public class ProductVariantsController(IProductVariantService service) : CatalogControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
