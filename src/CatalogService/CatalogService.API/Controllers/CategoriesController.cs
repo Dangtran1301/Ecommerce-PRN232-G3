@@ -8,10 +8,7 @@ using CatalogService.Application.DTOs.Categories;
 
 namespace CatalogService.API.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]")]
-[ApiVersion("1.0")]
-[ApiController]
-public class CategoriesController(ICategoryService service) : ControllerBase
+public class CategoriesController(ICategoryService service) : CatalogControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
