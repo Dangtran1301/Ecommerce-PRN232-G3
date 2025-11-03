@@ -22,7 +22,7 @@ public class TokenService : ITokenService
         _refreshTokenLifetime = TimeSpan.FromDays(_config.GetValue<int>("Jwt:RefreshTokenLifetimeDays"));
     }
 
-    public (string accessToken, DateTime expiresAt) GenerateAccessToken(User user, UserServiceUserDto userProfile)
+    public (string accessToken, DateTime expiresAt) GenerateAccessToken(User user, UserProfileResponse userProfile)
     {
         var expiresAt = DateTime.UtcNow.Add(_accessTokenLifetime);
 

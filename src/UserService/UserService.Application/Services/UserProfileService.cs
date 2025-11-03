@@ -53,7 +53,7 @@ public class UserProfileService(
     public async Task<Result> CreateFromAuthAsync(Guid userId, string fullName, string? phoneNumber = null, Gender gender = Gender.Unknown,
         DateTime? dayOfBirth = null, string? address = null, string? avatar = null, CancellationToken cancellationToken = default)
     {
-        var existing = await repository.AnyAsync(x=>x.Id.Equals(userId), cancellationToken);
+        var existing = await repository.AnyAsync(x => x.Id.Equals(userId), cancellationToken);
         if (existing)
             return UserProfileErrors.UserIdTaken(userId);
 

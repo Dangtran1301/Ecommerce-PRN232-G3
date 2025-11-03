@@ -20,17 +20,17 @@ public class AuthService(
     IConfiguration configuration
     ) : IAuthService
 {
-    public async Task<Result<LoginResponseDto>> LoginAsync(LoginRequestDto loginRequestDto, CancellationToken cancellationToken = default)
+    public async Task<Result<LoginResponse>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
         var userQuery = userRepository.AsQueryable();
 
         var user = await userQuery.FirstOrDefaultAsync(x =>
-                x.Email.Equals(loginRequestDto.Username) ||
-                x.UserName.Equals(loginRequestDto.Username),
+                x.Email.Equals(loginRequest.Username) ||
+                x.UserName.Equals(loginRequest.Username),
             cancellationToken);
 
-        if (user is null || !BCrypt.Net.BCrypt.Verify(loginRequestDto.Password, user.PasswordHash))
-            return Result.Fail<LoginResponseDto>(AuthErrors.InvalidCredentials());
+        if (user is null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))
+            return Result.Fail<LoginResponse>(AuthErrors.InvalidCredentials());
 
         var userProfile = await userInternalClient.GetUserByIdAsync(user.Id, cancellationToken);
 
@@ -49,9 +49,9 @@ public class AuthService(
             CreatedByIp = GetClientIp()
         };
         await tokenRepository.AddAsync(refreshEntity, cancellationToken);
-        var authUser = mapper.Map<AuthUserDto>(user);
+        var authUser = mapper.Map<AuthUserResponse>(user);
         authUser.FullName = userProfile.Value.FullName;
-        var response = new LoginResponseDto
+        var response = new LoginResponse
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
@@ -62,10 +62,10 @@ public class AuthService(
         return Result.Ok(response);
     }
 
-    public async Task<Result<LoginResponseDto>> RefreshAsync(RefreshTokenRequestDto refreshTokenRequestDto, CancellationToken cancellationToken = default)
+    public async Task<Result<LoginResponse>> RefreshAsync(RefreshTokenRequest refreshTokenRequest, CancellationToken cancellationToken = default)
     {
         var existing = await tokenRepository.AsQueryable().FirstOrDefaultAsync(x =>
-            x.Token == refreshTokenRequestDto.RefreshToken, cancellationToken);
+            x.Token == refreshTokenRequest.RefreshToken, cancellationToken);
 
         if (existing is null)
             return AuthErrors.InvalidRefreshToken;
@@ -102,9 +102,9 @@ public class AuthService(
         };
         await tokenRepository.AddAsync(newEntity, cancellationToken);
 
-        var authUser = mapper.Map<AuthUserDto>(user);
+        var authUser = mapper.Map<AuthUserResponse>(user);
         authUser.FullName = userProfileResponse.Value.FullName;
-        var response = new LoginResponseDto
+        var response = new LoginResponse
         {
             AccessToken = accessToken,
             RefreshToken = newRefreshToken,
@@ -115,10 +115,10 @@ public class AuthService(
         return Result.Ok(response);
     }
 
-    public async Task<Result> LogoutAsync(RefreshTokenRequestDto refreshTokenRequestDto, CancellationToken cancellationToken = default)
+    public async Task<Result> LogoutAsync(RefreshTokenRequest refreshTokenRequest, CancellationToken cancellationToken = default)
     {
         var token = await tokenRepository.AsQueryable().AsNoTracking().FirstOrDefaultAsync(x =>
-            x.Token == refreshTokenRequestDto.RefreshToken, cancellationToken);
+            x.Token == refreshTokenRequest.RefreshToken, cancellationToken);
 
         if (token is null)
             return AuthErrors.InvalidRefreshToken;
@@ -132,7 +132,7 @@ public class AuthService(
         return Result.Ok();
     }
 
-    public async Task<Result<UserServiceUserDto>> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken = default)
+    public async Task<Result<UserProfileResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
         if (await userRepository.AnyAsync(u => u.UserName == request.UserName, cancellationToken))
             return AuthErrors.UsernameAlreadyExisted;
@@ -142,11 +142,10 @@ public class AuthService(
 
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-        var user = new User(request.UserName, request.Email, passwordHash);
-        await userRepository.AddAsync(user, cancellationToken);
+        var newUser = new User(request.UserName, request.Email, passwordHash);
 
         var profileResult = await userInternalClient.CreateUserProfileAsync(new CreateUserProfileInternalRequest(
-            user.Id,
+            newUser.Id,
             request.FullName,
             request.PhoneNumber,
             request.Gender,
@@ -154,9 +153,12 @@ public class AuthService(
             request.Address,
             request.Avatar), cancellationToken);
 
-        return !profileResult.IsSuccess
-            ? Result.Fail<UserServiceUserDto>(Error.Failure("Failed to create user profile"))
-            : Result.Ok(profileResult.Value!);
+        if (!profileResult.IsSuccess)
+            return Result.Fail<UserProfileResponse>(Error.Failure("Failed to create user profile"));
+
+        await userRepository.AddAsync(newUser, cancellationToken);
+
+        return Result.Ok(profileResult.Value!);
     }
 
     public async Task<Result> ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest, CancellationToken cancellationToken = default)

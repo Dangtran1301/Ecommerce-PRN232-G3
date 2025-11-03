@@ -7,10 +7,7 @@ using CatalogService.API.Services.Interfaces;
 
 namespace CatalogService.API.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]")]
-[ApiVersion("1.0")]
-[ApiController]
-public class ProductAttributesController(IProductAttributeService service) : ControllerBase
+public class ProductAttributesController(IProductAttributeService service) : CatalogControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)

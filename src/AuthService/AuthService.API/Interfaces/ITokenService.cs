@@ -5,7 +5,7 @@ namespace AuthService.API.Interfaces;
 
 public interface ITokenService
 {
-    (string accessToken, DateTime expiresAt) GenerateAccessToken(User user, UserServiceUserDto userProfileDto);
+    (string accessToken, DateTime expiresAt) GenerateAccessToken(User user, UserProfileResponse userProfileDto);
 
     (string token, DateTime expiresAt) GenerateRefreshToken();
 }

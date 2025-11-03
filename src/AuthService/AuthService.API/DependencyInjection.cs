@@ -138,12 +138,20 @@ public static class DependencyInjection
         services.AddScoped<IDbContext, AuthDbContext>();
         services.AddScoped<AuthDbContext>();
 
+        // Claim Service
+        services.AddScoped<IClaimsService, ClaimsService>();
+
+        // User Service
+        services.AddScoped<IUserService, UserService>();
+
         // AutoMapper
         services.AddAutoMapper(typeof(AuthProfile));
 
         // Repository
         services.AddScoped<IRepository<RefreshToken, int>, AuthRepository>();
         services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
+        services.AddScoped(typeof(ISpecificationRepository<>), typeof(SpecificationRepository<>));
+
         // Token + Auth Services
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAuthService, AuthService.API.Services.AuthService>();

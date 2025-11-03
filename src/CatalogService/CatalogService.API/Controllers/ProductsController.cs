@@ -4,13 +4,11 @@ using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
 using CatalogService.API.DTOs;
 using CatalogService.API.Services.Interfaces;
+using CatalogService.API.Controllers;
 
 namespace ProductService.API.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]")]
-[ApiVersion("1.0")]
-[ApiController]
-public class ProductsController(IProductService service) : ControllerBase
+public class ProductsController(IProductService service) : CatalogControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
