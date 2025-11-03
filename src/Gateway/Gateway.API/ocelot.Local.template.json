@@ -1,8 +1,8 @@
 {
-  "AuthenticationOptions": {
-    "AuthenticationProviderKey": "Bearer",
-    "AllowedScopes": []
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7000"
   },
+
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/Auth/{everything}",
@@ -10,7 +10,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7224
+          "Port": "${AUTH_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/auth/{everything}",
@@ -23,7 +23,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7198
+          "Port": "${USER_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/users/{everything}",
@@ -36,7 +36,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7120
+          "Port": "${PRODUCT_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/products/{everything}",
@@ -49,7 +49,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7080
+          "Port": "${CATALOG_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/catalog/{everything}",
@@ -62,7 +62,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7080
+          "Port": "${CATALOG_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/categories/{everything}",
@@ -75,7 +75,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7080
+          "Port": "${CATALOG_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/odata/categories",
@@ -88,7 +88,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7080
+          "Port": "${CATALOG_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/brands/{everything}",
@@ -101,7 +101,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7080
+          "Port": "${CATALOG_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/odata/brands",
@@ -114,7 +114,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7018
+          "Port": "${CART_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/cart/{everything}",
@@ -127,7 +127,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7099
+          "Port": "${ORDER_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/orders/{everything}",
@@ -140,7 +140,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7230
+          "Port": "${PAYMENT_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/payment/{everything}",
@@ -153,12 +153,95 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7089
+          "Port": "${STOCK_PORT}"
         }
       ],
       "UpstreamPathTemplate": "/stock/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "SwaggerKey": "stock"
+    }
+  ],
+
+  "SwaggerEndPoints": [
+    {
+      "Key": "auth",
+      "Config": [
+        {
+          "Name": "Auth Service",
+          "Version": "v1",
+          "Url": "https://localhost:${AUTH_PORT}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "user",
+      "Config": [
+        {
+          "Name": "User Service",
+          "Version": "v1",
+          "Url": "https://localhost:${USER_PORT}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "product",
+      "Config": [
+        {
+          "Name": "Product Service",
+          "Version": "v1",
+          "Url": "https://localhost:${PRODUCT_PORT}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "catalog",
+      "Config": [
+        {
+          "Name": "Catalog Service",
+          "Version": "v1",
+          "Url": "https://localhost:${CATALOG_PORT}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "cart",
+      "Config": [
+        {
+          "Name": "Cart Service",
+          "Version": "v1",
+          "Url": "https://localhost:${CART_PORT}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "order",
+      "Config": [
+        {
+          "Name": "Order Service",
+          "Version": "v1",
+          "Url": "https://localhost:${ORDER_PORT}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "payment",
+      "Config": [
+        {
+          "Name": "Payment Service",
+          "Version": "v1",
+          "Url": "https://localhost:${PAYMENT_PORT}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "stock",
+      "Config": [
+        {
+          "Name": "Stock Service",
+          "Version": "v1",
+          "Url": "https://localhost:${STOCK_PORT}/swagger/v1/swagger.json"
+        }
+      ]
     }
   ]
 }

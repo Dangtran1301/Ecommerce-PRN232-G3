@@ -1,0 +1,73 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: ..
+      dockerfile: src/Gateway/Gateway.API/Dockerfile
+    container_name: gateway
+    ports:
+      - "8000:8080"
+    depends_on:
+      - authservice
+      - userservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - AuthService__BaseUrl=http://authservice:8080
+      - UserService__BaseUrl=http://userservice:8080
+    networks:
+      - appnet
+
+  authservice:
+    build:
+      context: ..
+      dockerfile: src/AuthService/AuthService.API/Dockerfile
+    container_name: authservice
+    ports:
+      - "8001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__AuthDb=Server=db,1433;Database=AuthDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+  userservice:
+    build:
+      context: ..
+      dockerfile: src/UserService/UserService.API/Dockerfile
+    container_name: userservice
+    ports:
+      - "8002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__UserDb=Server=db,1433;Database=UserDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@ssword
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - appnet
+
+# ⚙️ Network chung cho các service
+networks:
+  appnet:
+    driver: bridge
+
+volumes:
+  sql_data:

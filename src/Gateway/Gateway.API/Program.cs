@@ -9,11 +9,9 @@ using Gateway.API;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+var environment = builder.Environment.EnvironmentName;
 
-builder.Configuration
-    .AddJsonFile("ocelot.routes.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("ocelot.swagger.json", optional: false, reloadOnChange: true)
-    .AddEnvironmentVariables();
+builder.Configuration.AddJsonFile($"ocelot.{environment}.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddOcelot(builder.Configuration)
     .AddDelegatingHandler<NoBufferingHandler>(true);
@@ -21,7 +19,11 @@ builder.Services.AddOcelot(builder.Configuration)
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer("Bearer", options =>
     {
@@ -39,16 +41,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddHealthChecks()
-    .AddUrlGroup(new Uri($"https://localhost:{config["AUTH_PORT"]}/health"), name: "auth-service")
-    .AddUrlGroup(new Uri($"https://localhost:{config["USER_PORT"]}/health"), name: "user-service")
-    .AddUrlGroup(new Uri($"https://localhost:{config["PRODUCT_PORT"]}/health"), name: "product-service")
-    .AddUrlGroup(new Uri($"https://localhost:{config["CATALOG_PORT"]}/health"), name: "catalog-service")
-    .AddUrlGroup(new Uri($"https://localhost:{config["CART_PORT"]}/health"), name: "cart-service")
-    .AddUrlGroup(new Uri($"https://localhost:{config["ORDER_PORT"]}/health"), name: "order-service")
-    .AddUrlGroup(new Uri($"https://localhost:{config["PAYMENT_PORT"]}/health"), name: "payment-service")
-    .AddUrlGroup(new Uri($"https://localhost:{config["STOCK_PORT"]}/health"), name: "stock-service");
-
 var app = builder.Build();
 
 app.Use((context, next) =>
@@ -57,7 +49,7 @@ app.Use((context, next) =>
     return next();
 });
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))
 {
     app.UseSwagger();
     app.UseSwaggerForOcelotUI(opt =>
@@ -66,11 +58,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.MapHealthChecks("/health", new HealthCheckOptions
-{
-    Predicate = _ => true,
-    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-});
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
