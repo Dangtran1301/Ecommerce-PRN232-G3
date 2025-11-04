@@ -57,19 +57,19 @@ namespace OrderService.API.DTOs
 
     public record OrderFilterDto
     {
-        public string? Keyword { get; set; }                     
-        public Guid? CustomerId { get; set; }                   
+        public string? Keyword { get; set; }
+        public Guid? CustomerId { get; set; }
 
-        public decimal? MinTotalAmount { get; set; }             
-        public decimal? MaxTotalAmount { get; set; }             
+        public decimal? MinTotalAmount { get; set; }
+        public decimal? MaxTotalAmount { get; set; }
 
-        public DateTime? StartDate { get; set; }                 
-        public DateTime? EndDate { get; set; }                   
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-        public string? OrderBy { get; set; }                     
-        public bool Descending { get; set; } = false;            
+        public string? OrderBy { get; set; }
+        public bool Descending { get; set; } = false;
 
-        public int? PageIndex { get; set; } = 1;                 
-        public int? PageSize { get; set; } = 10;                 
+        public int? PageIndex { get; set; } = 1;
+        public int? PageSize { get; set; } = 10;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using OrderService.API.DTOs;
 using OrderService.API.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OrderService.API.Mappings
 {

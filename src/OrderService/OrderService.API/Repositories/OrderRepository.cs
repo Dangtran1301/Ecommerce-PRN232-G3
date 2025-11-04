@@ -3,7 +3,6 @@ using OrderService.API.Data;
 using OrderService.API.Models;
 using OrderService.API.Repositories.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
-using System.Linq.Expressions;
 
 namespace OrderService.API.Repositories.Implementations
 {

@@ -1,5 +1,5 @@
-﻿using CatalogService.Entities;
-using CatalogService.API.DTOs;
+﻿using CatalogService.API.DTOs;
+using CatalogService.Entities;
 using SharedKernel.Application.Common;
 
 namespace CatalogService.API.Specifications

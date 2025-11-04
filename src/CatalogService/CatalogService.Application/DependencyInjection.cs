@@ -1,13 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
-using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
-using CatalogService.Application.Services.Interfaces;
-using CatalogService.Entities;
-using CatalogService.API.Mappings;
+﻿using CatalogService.API.Mappings;
+using CatalogService.API.Services;
+using CatalogService.API.Services.Interfaces;
 using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.DTOs.Categories;
-using CatalogService.API.Services.Interfaces;
-using CatalogService.API.Services;
+using CatalogService.Application.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
+using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
 namespace CatalogService.Application;
 

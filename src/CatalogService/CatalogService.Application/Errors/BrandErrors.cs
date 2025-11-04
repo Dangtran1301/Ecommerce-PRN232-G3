@@ -13,6 +13,7 @@ namespace CatalogService.Application.Errors
 
         public static Error InvalidData(string? message = null) =>
             Error.Failure(ErrorCodes.BadRequest, message ?? "Invalid brand data");
+
         public static Error HasProducts(Guid brandId) =>
            Error.Conflict($"Cannot delete brand {brandId} because it still contains products.");
     }

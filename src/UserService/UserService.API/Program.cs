@@ -30,9 +30,23 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("D
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+    app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
 
+    if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))
+    {
+        await db.Database.EnsureDeletedAsync();
+        await db.Database.MigrateAsync();
+    }
+    else
+    {
+        await db.Database.MigrateAsync();
+    }
+}
 app.UseAuthorization();
 
 app.MapControllers();

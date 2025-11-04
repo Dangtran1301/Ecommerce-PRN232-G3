@@ -4,7 +4,6 @@ using CatalogService.Application.DTOs.Categories;
 using CatalogService.Application.Errors;
 using CatalogService.Application.Services.Interfaces;
 using CatalogService.Domain.Entities;
-using CatalogService.Infrastructure.Repositories;
 using CatalogService.Infrastructure.Repositories.Interfaces;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
@@ -66,10 +65,11 @@ namespace CatalogService.Application.Services
                 return CategoryErrors.NotFound(id);
             bool hasProducts = await productRepository.AnyAsync(p => p.CategoryId == id);
             if (hasProducts)
-                return CategoryErrors.HasProducts(id); 
+                return CategoryErrors.HasProducts(id);
             await categoryRepository.Remove(category);
             return true;
         }
+
         public async Task<Result<IReadOnlyList<CategoryDto>>> FilterBySpecification(CategoryFilterDto filter)
         {
             var spec = new CategoryFilterSpecification(filter);
@@ -83,6 +83,7 @@ namespace CatalogService.Application.Services
             var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
             return Result.Ok(dto);
         }
+
         public IQueryable<CategoryDto> AsQueryable()
         {
             return categoryRepository.GetQueryable().Select(c => new CategoryDto

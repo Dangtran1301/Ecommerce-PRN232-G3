@@ -7,7 +7,7 @@ namespace CatalogService.Entities
         public Guid ProductId { get; set; }
         public Product Product { get; set; } = null!;
 
-        public string AttributeName { get; set; } = null!;  
-        public string AttributeValue { get; set; } = null!; 
+        public string AttributeName { get; set; } = null!;
+        public string AttributeValue { get; set; } = null!;
     }
 }
