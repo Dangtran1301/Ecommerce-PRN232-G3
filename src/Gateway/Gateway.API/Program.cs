@@ -1,11 +1,9 @@
-﻿using HealthChecks.UI.Client;
+﻿using Gateway.API;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using System.Text;
-using Gateway.API;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

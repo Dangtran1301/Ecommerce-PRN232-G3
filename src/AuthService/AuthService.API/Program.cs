@@ -1,5 +1,6 @@
-using AuthService.API;
+﻿using AuthService.API;
 using AuthService.API.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -22,8 +23,23 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("D
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+    app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+
+    if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))
+    {
+        await db.Database.EnsureDeletedAsync();
+        await db.Database.MigrateAsync();
+    }
+    else
+    {
+        await db.Database.MigrateAsync();
+    }
+}
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

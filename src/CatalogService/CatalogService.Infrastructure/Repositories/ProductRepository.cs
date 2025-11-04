@@ -11,7 +11,6 @@ namespace CatalogService.API.Repositories
     {
         private readonly DbSet<Product> _products = dbContext.Set<Product>();
 
-
         //Add temp
         public async Task<IReadOnlyList<Product>> GetAllWithRelationsAsync(CancellationToken cancellationToken = default)
         {
@@ -32,16 +31,6 @@ namespace CatalogService.API.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
         }
-
-
-
-
-
-
-
-
-
-
 
         public async Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
         {

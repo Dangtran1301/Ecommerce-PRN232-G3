@@ -13,6 +13,7 @@ namespace CatalogService.API.Errors
 
         public static Error InvalidData(string? message = null) =>
             Error.Failure(ErrorCodes.BadRequest, message ?? "Invalid product attribute data");
+
         public static Error NameTaken(string attributeName) =>
             Error.Conflict($"Attribute name '{attributeName}' is already taken");
     }

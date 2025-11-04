@@ -1,6 +1,6 @@
-﻿using SharedKernel.Application.Common;
+﻿using CatalogService.Application.DTOs.Brands;
+using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
-using CatalogService.Application.DTOs.Brands;
 
 namespace CatalogService.Application.Services.Interfaces
 {
@@ -19,6 +19,7 @@ namespace CatalogService.Application.Services.Interfaces
         Task<Result<IReadOnlyList<BrandDto>>> FilterBySpecification(BrandFilterDto filter);
 
         Task<Result<PagedResult<BrandDto>>> FilterPaged(PagedRequest request);
+
         IQueryable<BrandDto> AsQueryable();
     }
 }

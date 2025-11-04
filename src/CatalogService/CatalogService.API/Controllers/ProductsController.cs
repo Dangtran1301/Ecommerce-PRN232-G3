@@ -1,10 +1,9 @@
-﻿using Asp.Versioning;
+﻿using CatalogService.API.Controllers;
+using CatalogService.API.DTOs;
+using CatalogService.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
-using CatalogService.API.DTOs;
-using CatalogService.API.Services.Interfaces;
-using CatalogService.API.Controllers;
 
 namespace ProductService.API.Controllers;
 
