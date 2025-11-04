@@ -17,7 +17,7 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - AuthService__BaseUrl=http://authservice:8080
       - UserService__BaseUrl=http://userservice:8080
-      - CatalogService__BaseUrl=http://userservice:8080
+      - CatalogService__BaseUrl=http://catalogservice:8080
     networks:
       - appnet
 
