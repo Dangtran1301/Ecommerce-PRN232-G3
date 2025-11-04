@@ -1,5 +1,4 @@
 using AuthService.API;
-using AuthService.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

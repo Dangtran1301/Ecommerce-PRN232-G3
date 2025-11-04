@@ -1,6 +1,6 @@
-﻿using SharedKernel.Application.Common;
+﻿using CatalogService.Application.DTOs.Categories;
+using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
-using CatalogService.Application.DTOs.Categories;
 
 namespace CatalogService.Application.Services.Interfaces
 {

@@ -1,10 +1,10 @@
-﻿using CatalogService.API.Repositories.Interfaces;
-using CatalogService.Entities;
+﻿using CatalogService.Entities;
+using CatalogService.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
-namespace CatalogService.API.Repositories
+namespace CatalogService.Infrastructure.Repositories
 {
     public class ProductAttributeRepository(IDbContext dbContext)
         : EfRepository<ProductAttribute, Guid>(dbContext), IProductAttributeRepository
@@ -19,10 +19,9 @@ namespace CatalogService.API.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<ProductAttribute?> GetByNameAsync(Guid productId, string attributeName, CancellationToken cancellationToken = default)
+        public IQueryable<ProductAttribute> GetQueryable()
         {
-            return await _attributes
-                .FirstOrDefaultAsync(a => a.ProductId == productId && a.AttributeName == attributeName, cancellationToken);
+            return _attributes.AsNoTracking();
         }
     }
 }

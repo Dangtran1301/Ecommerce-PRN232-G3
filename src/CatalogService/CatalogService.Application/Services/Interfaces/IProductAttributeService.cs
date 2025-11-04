@@ -1,6 +1,5 @@
 ﻿using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
-using CatalogService.API.DTOs;
 
 namespace CatalogService.API.Services.Interfaces
 {

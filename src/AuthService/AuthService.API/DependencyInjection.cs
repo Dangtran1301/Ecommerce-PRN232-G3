@@ -1,4 +1,5 @@
-﻿using Asp.Versioning;
+﻿using System.Text;
+using Asp.Versioning;
 using AuthService.API.Data;
 using AuthService.API.Data.UnitOfWorks;
 using AuthService.API.DTOs;
@@ -14,7 +15,6 @@ using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
-using System.Text;
 
 namespace AuthService.API;
 

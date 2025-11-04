@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using CatalogService.API.Repositories.Interfaces;
 using CatalogService.Application.DTOs.Categories;
 using CatalogService.Application.Errors;
 using CatalogService.Application.Services.Interfaces;
 using CatalogService.Domain.Entities;
-using CatalogService.Infrastructure.Repositories;
 using CatalogService.Infrastructure.Repositories.Interfaces;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
@@ -66,7 +64,7 @@ namespace CatalogService.Application.Services
                 return CategoryErrors.NotFound(id);
             bool hasProducts = await productRepository.AnyAsync(p => p.CategoryId == id);
             if (hasProducts)
-                return CategoryErrors.HasProducts(id); 
+                return CategoryErrors.HasProducts(id);
             await categoryRepository.Remove(category);
             return true;
         }

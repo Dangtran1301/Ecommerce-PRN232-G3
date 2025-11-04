@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using CatalogService.API.DTOs;
 using CatalogService.Entities;
 
-namespace CatalogService.API.Mappings
+namespace CatalogService.Application.DTOs.ProductAttributes
 {
     public class ProductAttributeProfile : Profile
     {
@@ -15,4 +14,3 @@ namespace CatalogService.API.Mappings
         }
     }
 }
- 
