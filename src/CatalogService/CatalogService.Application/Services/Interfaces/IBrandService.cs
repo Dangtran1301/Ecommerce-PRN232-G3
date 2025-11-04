@@ -15,6 +15,10 @@ namespace CatalogService.Application.Services.Interfaces
         Task<Result> UpdateAsync(Guid id, UpdateBrandRequest request);
 
         Task<Result> DeleteAsync(Guid id);
+
+        Task<Result<IReadOnlyList<BrandDto>>> FilterBySpecification(BrandFilterDto filter);
+
+        Task<Result<PagedResult<BrandDto>>> FilterPaged(PagedRequest request);
         IQueryable<BrandDto> AsQueryable();
     }
 }
