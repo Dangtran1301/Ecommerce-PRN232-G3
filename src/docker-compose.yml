@@ -11,11 +11,13 @@ services:
     depends_on:
       - authservice
       - userservice
+      - catalogservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:8080
       - AuthService__BaseUrl=http://authservice:8080
       - UserService__BaseUrl=http://userservice:8080
+      - CatalogService__BaseUrl=http://catalogservice:8080
     networks:
       - appnet
 
@@ -46,6 +48,22 @@ services:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__UserDb=Server=db,1433;Database=UserDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+  catalogservice:
+    build:
+      context: ..
+      dockerfile: src/CatalogService/CatalogService.API/Dockerfile
+    container_name: catalogservice
+    ports:
+      - "8003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__CatalogDb=Server=db,1433;Database=CatalogDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
     depends_on:
       - db
     networks:
