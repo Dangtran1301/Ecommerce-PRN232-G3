@@ -63,7 +63,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__UserDb=Server=db,1433;Database=CatalogDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
+      - ConnectionStrings__CatalogDb=Server=db,1433;Database=CatalogDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
     depends_on:
       - db
     networks:

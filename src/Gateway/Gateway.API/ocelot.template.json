@@ -57,7 +57,7 @@
       "SwaggerKey": "catalog"
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Categories/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Catalog/Categories/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -83,7 +83,7 @@
       "SwaggerKey": "catalog-odata"
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Brands/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Catalog/Brands/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {

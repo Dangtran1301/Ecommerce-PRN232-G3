@@ -57,7 +57,7 @@
       "SwaggerKey": "catalog"
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Categories/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Catalog/Categories/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -65,7 +65,20 @@
           "Port": "${CATALOG_PORT}"
         }
       ],
-      "UpstreamPathTemplate": "/categories/{everything}",
+      "UpstreamPathTemplate": "/catalog/categories/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Catalog/Brands/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "${CATALOG_PORT}"
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/brands/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "SwaggerKey": "catalog"
     },
@@ -81,19 +94,6 @@
       "UpstreamPathTemplate": "/odata/categories",
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "catalog-odata"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Brands/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "${CATALOG_PORT}"
-        }
-      ],
-      "UpstreamPathTemplate": "/brands/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "catalog"
     },
     {
       "DownstreamPathTemplate": "/odata/ODataBrands",

@@ -119,7 +119,7 @@
             ],
             "UpstreamPathTemplate": "/odata/categories",
             "UpstreamHttpMethod": [ "GET" ],
-            "SwaggerKey": "catalog-odata"
+            "SwaggerKey": "category-odata"
         },
         {
             "DownstreamPathTemplate": "/odata/ODataBrands",
@@ -132,7 +132,7 @@
             ],
             "UpstreamPathTemplate": "/odata/brands",
             "UpstreamHttpMethod": [ "GET" ],
-            "SwaggerKey": "catalog-odata"
+            "SwaggerKey": "brand-odata"
         },
         {
             "DownstreamPathTemplate": "/api/v1/Cart/{everything}",

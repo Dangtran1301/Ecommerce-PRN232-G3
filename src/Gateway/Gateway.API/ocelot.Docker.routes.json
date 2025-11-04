@@ -31,20 +31,7 @@
       "SwaggerKey": "user"
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Products/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7120
-        }
-      ],
-      "UpstreamPathTemplate": "/products/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "product"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Catalog/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Catalog/Brands/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -52,12 +39,12 @@
           "Port": 7080
         }
       ],
-      "UpstreamPathTemplate": "/catalog/{everything}",
+      "UpstreamPathTemplate": "/brands/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "SwaggerKey": "catalog"
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Categories/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Catalog/Categories/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -80,20 +67,7 @@
       ],
       "UpstreamPathTemplate": "/odata/categories",
       "UpstreamHttpMethod": [ "GET" ],
-      "SwaggerKey": "catalog-odata"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Brands/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7080
-        }
-      ],
-      "UpstreamPathTemplate": "/brands/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "catalog"
+      "SwaggerKey": "category-odata"
     },
     {
       "DownstreamPathTemplate": "/odata/ODataBrands",
@@ -106,7 +80,7 @@
       ],
       "UpstreamPathTemplate": "/odata/brands",
       "UpstreamHttpMethod": [ "GET" ],
-      "SwaggerKey": "catalog-odata"
+      "SwaggerKey": "brand-odata"
     },
     {
       "DownstreamPathTemplate": "/api/v1/Cart/{everything}",
