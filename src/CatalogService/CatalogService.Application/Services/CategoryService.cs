@@ -70,19 +70,6 @@ namespace CatalogService.Application.Services
             await categoryRepository.Remove(category);
             return true;
         }
-        public async Task<Result<IReadOnlyList<CategoryDto>>> FilterBySpecification(CategoryFilterDto filter)
-        {
-            var spec = new CategoryFilterSpecification(filter);
-            var categories = await specificationRepository.ListAsync(spec);
-            return Result.Ok(mapper.Map<IReadOnlyList<CategoryDto>>(categories));
-        }
-
-        public async Task<Result<PagedResult<CategoryDto>>> FilterPaged(PagedRequest request)
-        {
-            var result = await categoryRepository.GetPagedAsync(request);
-            var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
-            return Result.Ok(dto);
-        }
         public IQueryable<CategoryDto> AsQueryable()
         {
             return categoryRepository.GetQueryable().Select(c => new CategoryDto

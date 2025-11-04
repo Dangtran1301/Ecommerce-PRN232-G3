@@ -73,20 +73,6 @@ namespace CatalogService.Application.Services
             await brandRepository.Remove(brand);
             return true;
         }
-
-        public async Task<Result<IReadOnlyList<BrandDto>>> FilterBySpecification(BrandFilterDto filter)
-        {
-            var spec = new BrandFilterSpecification(filter);
-            var brands = await specificationRepository.ListAsync(spec);
-            return Result.Ok(mapper.Map<IReadOnlyList<BrandDto>>(brands));
-        }
-
-        public async Task<Result<PagedResult<BrandDto>>> FilterPaged(PagedRequest request)
-        {
-            var result = await brandRepository.GetPagedAsync(request);
-            var dto = result.Map(mapper.Map<IReadOnlyList<BrandDto>>(result.Items));
-            return Result.Ok(dto);
-        }
         public IQueryable<BrandDto> AsQueryable()
         {
             return brandRepository.GetQueryable().Select(b => new BrandDto
