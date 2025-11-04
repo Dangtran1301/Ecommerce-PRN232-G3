@@ -117,7 +117,7 @@ public static class DependencyInjection
 
                 var error = Error.Validation(
                     "One or more validation errors occurred",
-                    System.Text.Json.JsonSerializer.Serialize(errors)
+                    errors
                 );
 
                 var response = new ApiResponse { Error = error };
