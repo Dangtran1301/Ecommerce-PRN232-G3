@@ -7,7 +7,6 @@ using CatalogService.Infrastructure.Data;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -42,17 +41,25 @@ services.AddControllers()
 
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//using (var scope = app.Services.CreateScope())
-//{
-//    var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-//    db.Database.Migrate();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+
+    if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))
+    {
+        await db.Database.EnsureDeletedAsync();
+        await db.Database.MigrateAsync();
+    }
+    else
+    {
+        await db.Database.MigrateAsync();
+    }
+}
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -1,4 +1,5 @@
-﻿using CatalogService.API.Services;
+﻿using CatalogService.API.Mappings;
+using CatalogService.API.Services;
 using CatalogService.API.Services.Interfaces;
 using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.DTOs.Categories;

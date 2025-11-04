@@ -8,7 +8,7 @@ public class Result
     protected Result(bool success, Error? error)
     {
         IsSuccess = success;
-        Error = error;
+        Error = error ?? Error.Internal("Internal Server Error");
     }
 
     public static Result Ok() => new(true, Error.None);

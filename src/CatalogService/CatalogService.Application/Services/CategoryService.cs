@@ -68,6 +68,7 @@ namespace CatalogService.Application.Services
             await categoryRepository.Remove(category);
             return true;
         }
+
         public async Task<Result<IReadOnlyList<CategoryDto>>> FilterBySpecification(CategoryFilterDto filter)
         {
             var spec = new CategoryFilterSpecification(filter);
@@ -81,6 +82,7 @@ namespace CatalogService.Application.Services
             var dto = result.Map(mapper.Map<IReadOnlyList<CategoryDto>>(result.Items));
             return Result.Ok(dto);
         }
+
         public IQueryable<CategoryDto> AsQueryable()
         {
             return categoryRepository.GetQueryable().Select(c => new CategoryDto

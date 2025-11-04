@@ -6,15 +6,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["src/CatalogService/CatalogService.API/CatalogService.API.csproj", "src/CatalogService/CatalogService.API/"]
-COPY ["src/CatalogService/CatalogService.Application/CatalogService.Application.csproj", "src/CatalogService/CatalogService.Application/"]
-COPY ["src/CatalogService/CatalogService.Domain/CatalogService.Domain.csproj", "src/CatalogService/CatalogService.Domain/"]
-COPY ["src/CatalogService/CatalogService.Infrastructure/CatalogService.Infrastructure.csproj", "src/CatalogService/CatalogService.Infrastructure/"]
-COPY ["src/SharedKernel/SharedKernel.csproj", "src/SharedKernel/"]
+COPY ["CatalogService/CatalogService.API/CatalogService.API.csproj", "CatalogService/CatalogService.API/"]
+COPY ["CatalogService/CatalogService.Application/CatalogService.Application.csproj", "CatalogService/CatalogService.Application/"]
+COPY ["CatalogService/CatalogService.Domain/CatalogService.Domain.csproj", "CatalogService/CatalogService.Domain/"]
+COPY ["CatalogService/CatalogService.Infrastructure/CatalogService.Infrastructure.csproj", "CatalogService/CatalogService.Infrastructure/"]
+COPY ["SharedKernel/SharedKernel.csproj", "SharedKernel/"]
 
-RUN dotnet restore "src/CatalogService/CatalogService.API/CatalogService.API.csproj"
+RUN dotnet restore "CatalogService/CatalogService.API/CatalogService.API.csproj"
 COPY . .
-WORKDIR "/src/src/CatalogService/CatalogService.API"
+WORKDIR "/src/CatalogService/CatalogService.API"
 RUN dotnet publish "CatalogService.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final

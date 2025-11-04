@@ -1,10 +1,8 @@
-version: "3.9"
-
-services:
+﻿services:
   gateway:
     build:
-      context: ..
-      dockerfile: src/Gateway/Gateway.API/Dockerfile
+      context: .
+      dockerfile: Gateway/Gateway.API/Dockerfile
     container_name: gateway
     ports:
       - "8000:8080"
@@ -23,8 +21,8 @@ services:
 
   authservice:
     build:
-      context: ..
-      dockerfile: src/AuthService/AuthService.API/Dockerfile
+      context: .
+      dockerfile: AuthService/AuthService.API/Dockerfile
     container_name: authservice
     ports:
       - "8001:8080"
@@ -39,8 +37,8 @@ services:
 
   userservice:
     build:
-      context: ..
-      dockerfile: src/UserService/UserService.API/Dockerfile
+      context: .
+      dockerfile: UserService/UserService.API/Dockerfile
     container_name: userservice
     ports:
       - "8002:8080"
@@ -55,8 +53,8 @@ services:
 
   catalogservice:
     build:
-      context: ..
-      dockerfile: src/CatalogService/CatalogService.API/Dockerfile
+      context: .
+      dockerfile: CatalogService/CatalogService.API/Dockerfile
     container_name: catalogservice
     ports:
       - "8003:8080"
@@ -81,8 +79,13 @@ services:
       - sql_data:/var/opt/mssql
     networks:
       - appnet
+    healthcheck:
+      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "P@ssword", "-Q", "SELECT 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 
-# ⚙️ Network chung cho các service
 networks:
   appnet:
     driver: bridge

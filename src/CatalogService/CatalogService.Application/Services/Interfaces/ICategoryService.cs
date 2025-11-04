@@ -19,6 +19,7 @@ namespace CatalogService.Application.Services.Interfaces
         Task<Result<IReadOnlyList<CategoryDto>>> FilterBySpecification(CategoryFilterDto filter);
 
         Task<Result<PagedResult<CategoryDto>>> FilterPaged(PagedRequest request);
+
         IQueryable<CategoryDto> AsQueryable();
     }
 }

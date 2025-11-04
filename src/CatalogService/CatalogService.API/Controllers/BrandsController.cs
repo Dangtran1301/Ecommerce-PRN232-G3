@@ -1,11 +1,11 @@
-﻿using Asp.Versioning;
+﻿using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
-using CatalogService.Application.DTOs.Brands;
 
 namespace CatalogService.API.Controllers;
+
 public class BrandsController(IBrandService service) : CatalogControllerBase
 {
     [HttpGet("{id:guid}")]
