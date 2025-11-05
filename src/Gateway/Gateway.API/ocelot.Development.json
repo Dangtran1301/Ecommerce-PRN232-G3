@@ -22,11 +22,25 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
+          "Host": "authservice",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/auth-users/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "auth"
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/UserProfiles/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
           "Host": "userservice",
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/users/{everything}",
+      "UpstreamPathTemplate": "/user-profiles/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "SwaggerKey": "user"
     },
@@ -84,6 +98,7 @@
       "UpstreamHttpMethod": [ "GET" ],
       "SwaggerKey": "brand-odata"
     },
+
     {
       "DownstreamPathTemplate": "/api/v1/Cart/{everything}",
       "DownstreamScheme": "http",
@@ -153,7 +168,17 @@
       "Key": "user",
       "Config": [
         {
-          "Name": "User Service",
+          "Name": "User Profile Service",
+          "Version": "v1",
+          "Url": "http://userservice:8080/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "user-internal",
+      "Config": [
+        {
+          "Name": "Internal User Service",
           "Version": "v1",
           "Url": "http://userservice:8080/swagger/v1/swagger.json"
         }
