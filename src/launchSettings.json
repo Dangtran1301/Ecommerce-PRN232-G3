@@ -5,9 +5,9 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "gateway": "StartDebugging",
-        "authservice": "StartWithoutDebugging",
-        "userservice": "StartWithoutDebugging",
-        "catalogservice": "StartWithoutDebugging"
+        "authservice": "StartDebugging",
+        "userservice": "StartDebugging",
+        "catalogservice": "StartDebugging"
       }
     }
   }
