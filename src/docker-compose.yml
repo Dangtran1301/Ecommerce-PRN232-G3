@@ -1,4 +1,6 @@
-﻿services:
+﻿name: server_api
+
+services:
   gateway:
     build:
       context: .
@@ -11,11 +13,11 @@
       - userservice
       - catalogservice
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_URLS=http://+:8080
-      - AuthService__BaseUrl=http://authservice:8080
-      - UserService__BaseUrl=http://userservice:8080
-      - CatalogService__BaseUrl=http://catalogservice:8080
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - AuthService__BaseUrl=${AuthService__BaseUrl}
+      - UserService__BaseUrl=${UserService__BaseUrl}
+      - CatalogService__BaseUrl=${CatalogService__BaseUrl}
     networks:
       - appnet
 
@@ -27,9 +29,9 @@
     ports:
       - "8001:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__AuthDb=Server=db,1433;Database=AuthDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ConnectionStrings__AuthDb=${AuthDb_Connection}
     depends_on:
       - db
     networks:
@@ -43,9 +45,9 @@
     ports:
       - "8002:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__UserDb=Server=db,1433;Database=UserDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ConnectionStrings__UserDb=${UserDb_Connection}
     depends_on:
       - db
     networks:
@@ -59,9 +61,9 @@
     ports:
       - "8003:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__CatalogDb=Server=db,1433;Database=CatalogDb;User Id=sa;Password=P@ssword;TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ConnectionStrings__CatalogDb=${CatalogDb_Connection}
     depends_on:
       - db
     networks:
@@ -74,13 +76,13 @@
       - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=P@ssword
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
     volumes:
       - sql_data:/var/opt/mssql
     networks:
       - appnet
     healthcheck:
-      test: [ "CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "P@ssword", "-Q", "SELECT 1" ]
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD}", "-Q", "SELECT 1"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -89,6 +91,7 @@
 networks:
   appnet:
     driver: bridge
+    external: true
 
 volumes:
   sql_data:

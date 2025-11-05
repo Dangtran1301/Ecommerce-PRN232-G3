@@ -6,13 +6,14 @@
     <DockerPublishLocally>False</DockerPublishLocally>
   </PropertyGroup>
   <ItemGroup>
+    <None Include=".env" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <DockerComposeProjectPath Include="docker-compose.yml" />
     <Service Include="gateway">
       <Context>Gateway/Gateway.API</Context>
