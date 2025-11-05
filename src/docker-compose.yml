@@ -1,4 +1,6 @@
-﻿services:
+﻿name: server_api
+
+services:
   gateway:
     build:
       context: .
@@ -88,6 +90,7 @@
 
 networks:
   appnet:
+    driver: bridge
     external: true
 
 volumes:
