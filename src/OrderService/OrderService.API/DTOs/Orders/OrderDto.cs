@@ -18,6 +18,7 @@ namespace OrderService.API.DTOs
     {
         [Required(ErrorMessage = "Customer ID is required")]
         public Guid CustomerId { get; set; }
+        public Guid ProductId { get; set; }
 
         [Required(ErrorMessage = "At least one order item is required")]
         public List<CreateOrderItemRequest> Items { get; set; } = new();

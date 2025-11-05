@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using OrderService.API.Clients;
+using OrderService.API.Clients.Interfaces;
 using OrderService.API.Data;
 using OrderService.API.Repositories.Interfaces;
 using OrderService.API.Services.Interfaces;
@@ -18,6 +20,10 @@ builder.Services.AddScoped<SharedKernel.Infrastructure.Data.Interfaces.IDbContex
 builder.Services.AddScoped<IOrderRepository, OrderService.API.Repositories.Implementations.OrderRepository>();
 builder.Services.AddScoped(typeof(ISpecificationRepository<>), typeof(SpecificationRepository<>));
 builder.Services.AddScoped(typeof(IDynamicRepository<>), typeof(DynamicRepository<>));
+builder.Services.AddHttpClient<IProductClient, ProductClient>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7080/api/v1/Catalog/products/");
+});
 
 builder.Services.AddScoped<IOrderService, OrderService.API.Services.OrderService>();
 
@@ -39,7 +45,7 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddVersionedApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
-    options.SubstituteApiVersionInUrl = true;
+    options.SubstituteApiVersionInUrl = false;
 });
 
 // Swagger

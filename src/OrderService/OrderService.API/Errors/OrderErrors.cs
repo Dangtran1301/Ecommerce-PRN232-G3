@@ -14,6 +14,9 @@ namespace OrderService.API.Errors
         public static Error CustomerNotFound(Guid customerId) =>
             Error.Failure(ErrorCodes.BadRequest, $"Customer not found with ID: {customerId}");
 
+        public static Error ProductNotFound(Guid productId) => 
+            Error.Failure("Order.ProductNotFound", $"Product with ID '{productId}' was not found.");
+
         public static Error EmptyOrderItems() =>
             Error.Failure(ErrorCodes.BadRequest, "Order must contain at least one order item");
 
