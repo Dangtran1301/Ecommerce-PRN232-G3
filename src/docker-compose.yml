@@ -1,0 +1,94 @@
+﻿services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Gateway.API/Dockerfile
+    container_name: gateway
+    ports:
+      - "8000:8080"
+    depends_on:
+      - authservice
+      - userservice
+      - catalogservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - AuthService__BaseUrl=${AuthService__BaseUrl}
+      - UserService__BaseUrl=${UserService__BaseUrl}
+      - CatalogService__BaseUrl=${CatalogService__BaseUrl}
+    networks:
+      - appnet
+
+  authservice:
+    build:
+      context: .
+      dockerfile: AuthService/AuthService.API/Dockerfile
+    container_name: authservice
+    ports:
+      - "8001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ConnectionStrings__AuthDb=${AuthDb_Connection}
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+  userservice:
+    build:
+      context: .
+      dockerfile: UserService/UserService.API/Dockerfile
+    container_name: userservice
+    ports:
+      - "8002:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ConnectionStrings__UserDb=${UserDb_Connection}
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+  catalogservice:
+    build:
+      context: .
+      dockerfile: CatalogService/CatalogService.API/Dockerfile
+    container_name: catalogservice
+    ports:
+      - "8003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+      - ConnectionStrings__CatalogDb=${CatalogDb_Connection}
+    depends_on:
+      - db
+    networks:
+      - appnet
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - appnet
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD}", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+networks:
+  appnet:
+    external: true
+
+volumes:
+  sql_data:
