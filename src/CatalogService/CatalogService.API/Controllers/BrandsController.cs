@@ -1,16 +1,12 @@
-﻿using Asp.Versioning;
+﻿using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
-using CatalogService.Application.DTOs.Brands;
 
 namespace CatalogService.API.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]")]
-[ApiVersion("1.0")]
-[ApiController]
-public class BrandsController(IBrandService service) : ControllerBase
+public class BrandsController(IBrandService service) : CatalogControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)

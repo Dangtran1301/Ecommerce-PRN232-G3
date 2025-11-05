@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CatalogService.API.DTOs;
 using CatalogService.API.Errors;
-using CatalogService.API.Repositories;
 using CatalogService.API.Repositories.Interfaces;
 using CatalogService.API.Services.Interfaces;
 using CatalogService.API.Specifications;
@@ -36,7 +35,6 @@ namespace CatalogService.API.Services
 
         //public async Task<Result> CreateAsync(CreateProductRequest request)
         //{
-
         //    if (await repository.AnyAsync(p => p.ProductName == request.ProductName))
         //        return ProductErrors.NameTaken(request.ProductName);
 
@@ -59,8 +57,6 @@ namespace CatalogService.API.Services
             await repository.AddAsync(entity);
             return Result.Ok();
         }
-
-
 
         public async Task<Result> UpdateAsync(Guid id, UpdateProductRequest request)
         {

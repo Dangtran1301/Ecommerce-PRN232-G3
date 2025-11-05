@@ -1,11 +1,11 @@
-using System.Reflection;
 using CatalogService.Domain.Entities;
+using CatalogService.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Domain.Common.Events;
 using SharedKernel.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using CatalogService.Entities;
+using System.Reflection;
 
 namespace CatalogService.Infrastructure.Data
 {
@@ -18,6 +18,7 @@ namespace CatalogService.Infrastructure.Data
         public DbSet<Stock> Stocks { get; set; } = null!;
         public DbSet<ProductVariant> ProductVariants { get; set; } = null!;
         public DbSet<ProductAttribute> ProductAttributes { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

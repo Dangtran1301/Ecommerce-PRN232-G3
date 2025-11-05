@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using OrderService.API.Data;
 using OrderService.API.Repositories.Interfaces;
 using OrderService.API.Services.Interfaces;
@@ -22,7 +20,6 @@ builder.Services.AddScoped(typeof(IDynamicRepository<>), typeof(DynamicRepositor
 builder.Services.AddScoped<IOrderService, OrderService.API.Services.OrderService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning(options =>

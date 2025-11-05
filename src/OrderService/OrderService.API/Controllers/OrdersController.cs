@@ -1,9 +1,7 @@
-﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Mvc;
-using SharedKernel.Application.Common;
-using SharedKernel.Application.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 using OrderService.API.DTOs;
 using OrderService.API.Services.Interfaces;
+using SharedKernel.Application.Extensions;
 
 namespace OrderService.API.Controllers;
 

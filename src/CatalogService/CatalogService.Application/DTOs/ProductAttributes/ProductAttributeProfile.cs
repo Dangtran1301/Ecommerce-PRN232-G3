@@ -15,4 +15,3 @@ namespace CatalogService.API.Mappings
         }
     }
 }
- 
