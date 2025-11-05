@@ -39,11 +39,6 @@ using (var scope = app.Services.CreateScope())
 
     if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))
     {
-        await db.Database.EnsureDeletedAsync();
-        await db.Database.MigrateAsync();
-    }
-    else
-    {
         await db.Database.MigrateAsync();
     }
 }

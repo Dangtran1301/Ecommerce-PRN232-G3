@@ -8,10 +8,9 @@
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "serviceActions": {
         "gateway": "StartDebugging",
-        "authservice": "StartWithoutDebugging",
-        "userservice": "StartWithoutDebugging",
-        "catalogservice": "StartWithoutDebugging",
-        "db": "StartWithoutDebugging"
+        "authservice": "StartDebugging",
+        "userservice": "StartDebugging",
+        "catalogservice": "StartDebugging"
       }
     }
   }

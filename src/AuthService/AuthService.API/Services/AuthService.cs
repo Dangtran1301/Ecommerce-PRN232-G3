@@ -132,7 +132,7 @@ public class AuthService(
         return Result.Ok();
     }
 
-    public async Task<Result<UserProfileResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
         if (await userRepository.AnyAsync(u => u.UserName == request.UserName, cancellationToken))
             return AuthErrors.UsernameAlreadyExisted;
@@ -158,7 +158,7 @@ public class AuthService(
 
         await userRepository.AddAsync(newUser, cancellationToken);
 
-        return Result.Ok(profileResult.Value!);
+        return Result.Ok();
     }
 
     public async Task<Result> ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest, CancellationToken cancellationToken = default)

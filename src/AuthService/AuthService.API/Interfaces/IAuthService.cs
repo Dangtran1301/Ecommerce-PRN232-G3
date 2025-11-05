@@ -11,7 +11,7 @@ public interface IAuthService
 
     Task<Result> LogoutAsync(RefreshTokenRequest refreshTokenRequest, CancellationToken cancellationToken = default);
 
-    Task<Result<UserProfileResponse>> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
+    Task<Result> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
 
     Task<Result> ForgotPasswordAsync(ForgotPasswordRequest forgotPasswordRequest, CancellationToken cancellationToken = default);
 
