@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CatalogService.API.Repositories.Interfaces;
 using CatalogService.Application.DTOs.Categories;
 using CatalogService.Application.Errors;
 using CatalogService.Application.Services.Interfaces;

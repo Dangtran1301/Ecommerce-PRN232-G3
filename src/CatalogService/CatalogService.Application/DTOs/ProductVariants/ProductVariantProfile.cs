@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using CatalogService.API.DTOs;
 using CatalogService.Entities;
 
-namespace CatalogService.API.Mappings
+namespace CatalogService.Application.DTOs.ProductVariants
 {
     public class ProductVariantProfile : Profile
     {

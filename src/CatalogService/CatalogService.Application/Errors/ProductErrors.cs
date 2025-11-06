@@ -1,7 +1,7 @@
 ﻿using SharedKernel.Application.Common.Enums;
 using SharedKernel.Domain.Common.Results;
 
-namespace CatalogService.API.Errors
+namespace CatalogService.Application.Errors
 {
     public static class ProductErrors
     {
