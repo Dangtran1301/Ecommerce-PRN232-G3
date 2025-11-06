@@ -126,9 +126,11 @@ public record UpdateStatusAuthUserRequest(
 );
 
 public record ForgotPasswordRequest(
-    [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Invalid email address")]
-        string Email
+    [Required(ErrorMessage = "Email is required")] 
+    [EmailAddress(ErrorMessage = "Invalid email address")] 
+    string Email,
+    [Url(ErrorMessage = "Invalid URL format")]
+    string ClientUri
 );
 
 public record ResetPasswordRequest(
@@ -138,6 +140,11 @@ public record ResetPasswordRequest(
     [Required(ErrorMessage = "New password is required")]
         [MinLength(6, ErrorMessage = "New password must be at least 6 characters long")]
         string NewPassword
+);
+
+public record ChangePasswordRequest(
+    [Required] string OldPassword,
+    [Required, MinLength(6)] string NewPassword
 );
 
 public class UserFilterRequest
