@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CatalogService.API.DTOs;
+using CatalogService.Domain.Entities;
 using CatalogService.Entities;
 
-namespace CatalogService.API.Mappings
+namespace CatalogService.Application.DTOs.Stocks
 {
     public class StockProfile : Profile
     {

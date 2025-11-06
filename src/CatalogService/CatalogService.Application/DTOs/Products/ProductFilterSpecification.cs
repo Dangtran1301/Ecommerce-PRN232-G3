@@ -1,8 +1,8 @@
-﻿using CatalogService.API.DTOs;
+﻿using CatalogService.Domain.Entities;
 using CatalogService.Entities;
 using SharedKernel.Application.Common;
 
-namespace CatalogService.API.Specifications
+namespace CatalogService.Application.DTOs.Products
 {
     public class ProductFilterSpecification : BaseSpecification<Product>
     {
@@ -17,23 +17,20 @@ namespace CatalogService.API.Specifications
 
             AddInclude(p => p.Brand);
             AddInclude(p => p.Category);
-            AddInclude(p => p.Stock);
 
             if (!string.IsNullOrEmpty(filter.OrderBy))
             {
                 switch (filter.OrderBy.ToLower())
                 {
-                    case "name":
-                    case "productname":
-                        if (filter.Descending) ApplyOrderByDescending(p => p.ProductName);
-                        else ApplyOrderBy(p => p.ProductName);
-                        break;
-
                     case "price":
                         if (filter.Descending) ApplyOrderByDescending(p => p.Price);
                         else ApplyOrderBy(p => p.Price);
                         break;
-
+                    case "productname":
+                    case "name":
+                        if (filter.Descending) ApplyOrderByDescending(p => p.ProductName);
+                        else ApplyOrderBy(p => p.ProductName);
+                        break;
                     default:
                         if (filter.Descending) ApplyOrderByDescending(p => p.CreatedAt);
                         else ApplyOrderBy(p => p.CreatedAt);
@@ -41,15 +38,13 @@ namespace CatalogService.API.Specifications
                 }
             }
 
-            if (filter is { PageIndex: not null, PageSize: not null })
+            if (filter.PageIndex.HasValue && filter.PageSize.HasValue)
             {
-                var skip = (filter.PageIndex.Value - 1) * filter.PageSize.Value;
-                var take = filter.PageSize.Value;
-                ApplyPaging(skip, take);
+                ApplyPaging((filter.PageIndex.Value - 1) * filter.PageSize.Value, filter.PageSize.Value);
             }
         }
 
         public static implicit operator ProductFilterSpecification(ProductFilterDto filter)
-            => new ProductFilterSpecification(filter);
+            => new(filter);
     }
 }

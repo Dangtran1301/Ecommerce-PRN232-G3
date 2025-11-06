@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CatalogService.API.DTOs;
+using CatalogService.Domain.Entities;
 using CatalogService.Entities;
 
-namespace CatalogService.API.Mappings
+namespace CatalogService.Application.DTOs.Products
 {
     public class ProductProfile : Profile
     {
@@ -10,8 +10,7 @@ namespace CatalogService.API.Mappings
         {
             CreateMap<Product, ProductDto>()
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand.BrandName))
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
-                .ForMember(dest => dest.StockQuantity, opt => opt.MapFrom(src => src.Stock.Quantity));
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName));
 
             CreateMap<CreateProductRequest, Product>();
             CreateMap<UpdateProductRequest, Product>()

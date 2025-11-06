@@ -1,6 +1,4 @@
-﻿using CatalogService.API.Repositories;
-using CatalogService.API.Repositories.Interfaces;
-using CatalogService.Infrastructure.Data;
+﻿using CatalogService.Infrastructure.Data;
 using CatalogService.Infrastructure.Repositories;
 using CatalogService.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;

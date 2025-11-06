@@ -1,10 +1,10 @@
-﻿using CatalogService.API.Repositories.Interfaces;
-using CatalogService.Entities;
+﻿using CatalogService.Entities;
+using CatalogService.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
-namespace CatalogService.API.Repositories
+namespace CatalogService.Infrastructure.Repositories
 {
     public class ProductVariantRepository(IDbContext dbContext)
         : EfRepository<ProductVariant, Guid>(dbContext), IProductVariantRepository
@@ -19,10 +19,11 @@ namespace CatalogService.API.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<ProductVariant?> GetByNameAsync(Guid productId, string variantName, CancellationToken cancellationToken = default)
+        public IQueryable<ProductVariant> GetQueryable()
         {
-            return await _variants
-                .FirstOrDefaultAsync(v => v.ProductId == productId && v.VariantName == variantName, cancellationToken);
+            return _variants
+                .Include(v => v.Product)
+                .AsNoTracking();
         }
     }
 }

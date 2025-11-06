@@ -1,10 +1,10 @@
-﻿using CatalogService.API.Repositories.Interfaces;
-using CatalogService.Entities;
+﻿using CatalogService.Entities;
+using CatalogService.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
 
-namespace CatalogService.API.Repositories
+namespace CatalogService.Infrastructure.Repositories
 {
     public class StockRepository(IDbContext dbContext)
         : EfRepository<Stock, Guid>(dbContext), IStockRepository
@@ -18,10 +18,11 @@ namespace CatalogService.API.Repositories
                 .FirstOrDefaultAsync(s => s.ProductId == productId, cancellationToken);
         }
 
-        public async Task<bool> HasEnoughStockAsync(Guid productId, int requiredQuantity, CancellationToken cancellationToken = default)
+        public IQueryable<Stock> GetQueryable()
         {
-            var stock = await _stocks.FirstOrDefaultAsync(s => s.ProductId == productId, cancellationToken);
-            return stock != null && stock.Quantity >= requiredQuantity;
+            return _stocks
+                .Include(s => s.Product)
+                .AsNoTracking();
         }
     }
 }
