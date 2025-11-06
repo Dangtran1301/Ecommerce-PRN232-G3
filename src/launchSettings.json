@@ -6,13 +6,12 @@
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "gateway",
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
-        "serviceActions": {
-            "gateway": "StartDebugging",
-            "authservice": "StartDebugging",
-            "userservice": "StartDebugging",
-            "catalogservice": "StartDebugging",
-            "db": "StartDebugging"
-        }
+      "serviceActions": {
+        "gateway": "StartDebugging",
+        "authservice": "StartDebugging",
+        "userservice": "StartDebugging",
+        "catalogservice": "StartDebugging"
+      }
     }
   }
 }
