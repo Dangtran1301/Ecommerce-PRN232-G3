@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <DockerPublishLocally>False</DockerPublishLocally>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".env" />
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <DockerComposeProjectPath Include="docker-compose.yml" />
+    <Service Include="gateway">
+      <Context>Gateway/Gateway.API</Context>
+      <Dockerfile>Gateway/Gateway.API/Dockerfile</Dockerfile>
+    </Service>
+    <Service Include="authservice">
+      <Context>AuthService/AuthService.API</Context>
+      <Dockerfile>AuthService/AuthService.API/Dockerfile</Dockerfile>
+    </Service>
+    <Service Include="userservice">
+      <Context>UserService/UserService.API</Context>
+      <Dockerfile>UserService/UserService.API/Dockerfile</Dockerfile>
+    </Service>
+    <Service Include="catalogservice">
+      <Context>CatalogService/CatalogService.API</Context>
+      <Dockerfile>CatalogService/CatalogService.API/Dockerfile</Dockerfile>
+    </Service>
+    <Service Include="cartservice">
+      <Context>CartService/CartService.API</Context>
+      <Dockerfile>CartService/CartService.API/Dockerfile</Dockerfile>
+    </Service>
+  </ItemGroup>
+</Project>
