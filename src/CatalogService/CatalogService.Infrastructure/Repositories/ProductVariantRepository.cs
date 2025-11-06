@@ -21,7 +21,9 @@ namespace CatalogService.Infrastructure.Repositories
 
         public IQueryable<ProductVariant> GetQueryable()
         {
-            return _variants.AsNoTracking();
+            return _variants
+                .Include(v => v.Product)
+                .AsNoTracking();
         }
     }
 }

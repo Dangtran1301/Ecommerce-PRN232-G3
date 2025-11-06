@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CatalogService.Domain.Entities;
 using CatalogService.Entities;
 
 namespace CatalogService.Application.DTOs.Stocks

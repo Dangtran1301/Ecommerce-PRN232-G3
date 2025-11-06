@@ -20,7 +20,9 @@ namespace CatalogService.Infrastructure.Repositories
 
         public IQueryable<Stock> GetQueryable()
         {
-            return _stocks.AsNoTracking();
+            return _stocks
+                .Include(s => s.Product)
+                .AsNoTracking();
         }
     }
 }

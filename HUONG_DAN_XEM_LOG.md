@@ -1,0 +1,407 @@
+# HƯỚNG DẪN XEM LOG CHI TIẾT - CATALOG SERVICE API
+
+## MỤC LỤC
+1. [Xem log từ Visual Studio](#1-xem-log-từ-visual-studio)
+2. [Xem log từ Terminal/PowerShell](#2-xem-log-từ-terminalpowershell)
+3. [Xem log từ Browser Console](#3-xem-log-từ-browser-console)
+4. [Xem log từ Network Tab](#4-xem-log-từ-network-tab)
+5. [Test API trực tiếp (bỏ qua Swagger)](#5-test-api-trực-tiếp-bỏ-qua-swagger)
+6. [Các loại lỗi thường gặp](#6-các-loại-lỗi-thường-gặp)
+
+---
+
+## 1. XEM LOG TỪ VISUAL STUDIO
+
+### Cách 1: Output Window (Khuyến nghị)
+
+1. **Mở Output Window:**
+   - Menu: `View` → `Output` (hoặc `Ctrl + Alt + O`)
+   - Hoặc: `View` → `Other Windows` → `Output`
+
+2. **Chọn nguồn log:**
+   - Dropdown "Show output from:" ở đầu Output window
+   - Chọn một trong các options:
+     - **"Debug"** - Log từ debugger
+     - **"CatalogService.API"** - Log từ ứng dụng
+     - **"Build"** - Log từ quá trình build
+
+3. **Chạy ứng dụng:**
+   - Nhấn `F5` (Start Debugging)
+   - Hoặc `Ctrl + F5` (Start Without Debugging)
+
+4. **Xem log:**
+   - Log sẽ hiển thị real-time trong Output window
+   - Tìm các dòng có:
+     - `error:` - Lỗi
+     - `fail:` - Thất bại
+     - `exception:` - Exception
+     - `warn:` - Cảnh báo
+
+### Cách 2: Debug Console
+
+1. **Mở Debug Console:**
+   - Menu: `Debug` → `Windows` → `Output`
+   - Hoặc: `View` → `Other Windows` → `Output`
+
+2. **Filter log:**
+   - Click vào icon filter (🔍) trong Output window
+   - Tìm kiếm: `error`, `exception`, `fail`
+
+### Cách 3: Error List
+
+1. **Mở Error List:**
+   - Menu: `View` → `Error List` (hoặc `Ctrl + \, E`)
+
+2. **Xem errors:**
+   - Tất cả errors, warnings sẽ hiển thị ở đây
+   - Click vào error để jump đến code
+
+---
+
+## 2. XEM LOG TỪ TERMINAL/POWERSHELL
+
+### Bước 1: Mở PowerShell/CMD
+
+Mở PowerShell hoặc Command Prompt trong thư mục project.
+
+### Bước 2: Di chuyển đến thư mục API
+
+```powershell
+cd D:\KY_8\PRN232\GitNew\src\CatalogService\CatalogService.API
+```
+
+### Bước 3: Chạy ứng dụng và xem log
+
+**Cách A: Chạy với profile HTTPS (khuyến nghị)**
+```powershell
+dotnet run --launch-profile https
+```
+
+**Cách B: Chạy với profile HTTP**
+```powershell
+dotnet run --launch-profile http
+```
+
+**Cách C: Chạy với environment cụ thể**
+```powershell
+$env:ASPNETCORE_ENVIRONMENT="Development"
+dotnet run
+```
+
+### Bước 4: Quan sát log output
+
+Log sẽ hiển thị theo format:
+
+```
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://localhost:7080
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5173
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+```
+
+**Các loại log quan trọng:**
+
+1. **Startup logs:**
+   ```
+   info: Microsoft.Hosting.Lifetime[0]
+         Application started
+   ```
+
+2. **Database logs:**
+   ```
+   info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+         Executed DbCommand...
+   ```
+
+3. **Error logs:**
+   ```
+   fail: Microsoft.AspNetCore.Server.Kestrel[13]
+         Connection id "..." bad request
+   ```
+
+4. **Exception logs:**
+   ```
+   fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+         An unhandled exception has occurred...
+   ```
+
+### Bước 5: Lưu log vào file (Tùy chọn)
+
+```powershell
+# Lưu log vào file
+dotnet run --launch-profile https 2>&1 | Tee-Object -FilePath "app_log.txt"
+
+# Hoặc chỉ lưu errors
+dotnet run --launch-profile https 2>&1 | Select-String -Pattern "error|exception|fail" | Tee-Object -FilePath "errors.txt"
+```
+
+---
+
+## 3. XEM LOG TỪ BROWSER CONSOLE
+
+### Bước 1: Mở Swagger UI
+
+1. Chạy ứng dụng
+2. Mở browser: `https://localhost:7080/swagger`
+3. Mở Developer Tools:
+   - `F12` hoặc `Ctrl + Shift + I`
+   - Hoặc: Right-click → `Inspect`
+
+### Bước 2: Xem Console Tab
+
+1. Click tab **"Console"**
+2. Tìm các lỗi JavaScript:
+   ```
+   GET https://localhost:7080/swagger/v1/swagger.json 500 (Internal Server Error)
+   Fetch error: response status is 500
+   ```
+
+### Bước 3: Xem chi tiết lỗi
+
+- Click vào error message để xem stack trace
+- Xem thông tin request/response
+
+---
+
+## 4. XEM LOG TỪ NETWORK TAB
+
+### Bước 1: Mở Network Tab
+
+1. Mở Developer Tools (`F12`)
+2. Click tab **"Network"**
+3. Refresh trang Swagger (`F5`)
+
+### Bước 2: Tìm request Swagger JSON
+
+1. Trong danh sách requests, tìm:
+   - `swagger.json`
+   - `swagger/v1/swagger.json`
+
+2. Click vào request đó
+
+### Bước 3: Xem Response
+
+1. Click tab **"Response"**
+2. Xem chi tiết lỗi:
+   ```json
+   {
+     "type": "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+     "title": "An error occurred while processing your request.",
+     "status": 500,
+     "detail": "Chi tiết lỗi ở đây..."
+   }
+   ```
+
+### Bước 4: Xem Headers
+
+1. Click tab **"Headers"**
+2. Xem:
+   - Request URL
+   - Request Method
+   - Status Code
+   - Response Headers
+
+### Bước 5: Xem Preview
+
+1. Click tab **"Preview"**
+2. Xem JSON response đã format (nếu có)
+
+---
+
+## 5. TEST API TRỰC TIẾP (BỎ QUA SWAGGER)
+
+### Cách 1: Sử dụng Browser
+
+Mở trực tiếp URL trong browser:
+
+```
+https://localhost:7080/api/v1/catalog/categories
+https://localhost:7080/api/v1/catalog/brands
+https://localhost:7080/api/v1/catalog/products
+```
+
+### Cách 2: Sử dụng PowerShell (Invoke-WebRequest)
+
+```powershell
+# Test Categories endpoint
+Invoke-WebRequest -Uri "https://localhost:7080/api/v1/catalog/categories" -SkipCertificateCheck
+
+# Test với method GET
+$response = Invoke-WebRequest -Uri "https://localhost:7080/api/v1/catalog/categories" -SkipCertificateCheck
+$response.Content
+
+# Test với error handling
+try {
+    $response = Invoke-WebRequest -Uri "https://localhost:7080/api/v1/catalog/categories" -SkipCertificateCheck
+    Write-Host "Success: $($response.StatusCode)"
+    $response.Content
+} catch {
+    Write-Host "Error: $($_.Exception.Message)"
+    $_.Exception.Response
+}
+```
+
+### Cách 3: Sử dụng curl
+
+```powershell
+# Windows PowerShell (curl là alias của Invoke-WebRequest)
+curl.exe -k https://localhost:7080/api/v1/catalog/categories
+
+# Hoặc với verbose
+curl.exe -k -v https://localhost:7080/api/v1/catalog/categories
+```
+
+### Cách 4: Sử dụng Visual Studio HTTP File
+
+1. Mở file: `src/CatalogService/CatalogService.API/CatalogService.http`
+2. Cập nhật URL:
+   ```http
+   @CatalogService_HostAddress = https://localhost:7080
+   
+   ### Get Categories
+   GET {{CatalogService_HostAddress}}/api/v1/catalog/categories
+   Accept: application/json
+   
+   ### Get Brands
+   GET {{CatalogService_HostAddress}}/api/v1/catalog/brands
+   Accept: application/json
+   ```
+3. Click "Send Request" (▶️) bên cạnh mỗi request
+
+---
+
+## 6. CÁC LOẠI LỖI THƯỜNG GẶP
+
+### Lỗi 1: Database Connection Error
+
+**Dấu hiệu:**
+```
+fail: Microsoft.EntityFrameworkCore.Database.Connection[20004]
+      An error occurred using the connection to database 'CatalogDb'
+System.Data.SqlClient.SqlException: A network-related or instance-specific error occurred...
+```
+
+**Cách kiểm tra:**
+1. Kiểm tra SQL Server service đang chạy
+2. Kiểm tra connection string trong `appsettings.Development.json`
+3. Test connection bằng SSMS
+
+### Lỗi 2: Migration Error
+
+**Dấu hiệu:**
+```
+fail: Microsoft.EntityFrameworkCore.Migrations[20000]
+      Failed executing DbCommand
+System.Data.SqlClient.SqlException: Invalid column name...
+```
+
+**Cách kiểm tra:**
+1. Xem migration files trong `CatalogService.Infrastructure/Migrations/`
+2. Kiểm tra database schema
+
+### Lỗi 3: Swagger Generation Error
+
+**Dấu hiệu:**
+```
+GET https://localhost:7080/swagger/v1/swagger.json 500
+```
+
+**Cách kiểm tra:**
+1. Xem Network tab để xem response chi tiết
+2. Xem log trong Output window khi request đến
+3. Kiểm tra controllers có vấn đề không
+
+### Lỗi 4: Dependency Injection Error
+
+**Dấu hiệu:**
+```
+System.InvalidOperationException: Unable to resolve service for type...
+```
+
+**Cách kiểm tra:**
+1. Kiểm tra `DependencyInjection.cs` files
+2. Kiểm tra services đã được register chưa
+
+### Lỗi 5: SSL Certificate Error
+
+**Dấu hiệu:**
+```
+fail: Microsoft.AspNetCore.Server.Kestrel[0]
+      Unable to start Kestrel.
+System.InvalidOperationException: Unable to configure HTTPS endpoint...
+```
+
+**Cách xử lý:**
+```powershell
+dotnet dev-certs https --trust
+```
+
+---
+
+## CHECKLIST DEBUG
+
+Khi gặp lỗi 500 Swagger, làm theo thứ tự:
+
+- [ ] 1. Dừng ứng dụng đang chạy (nếu có)
+- [ ] 2. Mở Output window trong Visual Studio
+- [ ] 3. Chạy ứng dụng lại (F5)
+- [ ] 4. Xem log trong Output window
+- [ ] 5. Mở Swagger UI trong browser
+- [ ] 6. Mở Developer Tools (F12)
+- [ ] 7. Xem Console tab để tìm lỗi JavaScript
+- [ ] 8. Xem Network tab → tìm request `swagger.json`
+- [ ] 9. Click vào request → xem Response tab
+- [ ] 10. Copy toàn bộ error message
+- [ ] 11. Test API trực tiếp (bỏ qua Swagger)
+- [ ] 12. Ghi lại tất cả thông tin để phân tích
+
+---
+
+## LƯU Ý
+
+1. **Log level:** Có thể thay đổi trong `appsettings.Development.json`:
+   ```json
+   "Logging": {
+     "LogLevel": {
+       "Default": "Information",
+       "Microsoft.AspNetCore": "Warning",
+       "Microsoft.EntityFrameworkCore": "Information"
+     }
+   }
+   ```
+
+2. **Verbose logging:** Để xem log chi tiết hơn, set log level thành "Debug":
+   ```json
+   "LogLevel": {
+     "Default": "Debug"
+   }
+   ```
+
+3. **Log file:** Nếu muốn lưu log vào file, có thể dùng `Serilog` hoặc `NLog` (cần cấu hình thêm)
+
+---
+
+## MẪU LOG ĐỂ PHÂN TÍCH
+
+Khi gặp lỗi, copy các thông tin sau:
+
+1. **Từ Output window:**
+   - Tất cả dòng có `error`, `fail`, `exception`
+   - Stack trace đầy đủ
+
+2. **Từ Browser Console:**
+   - Error message
+   - Stack trace (nếu có)
+
+3. **Từ Network Tab:**
+   - Request URL
+   - Status Code
+   - Response body (tab Response)
+
+4. **Thông tin môi trường:**
+   - .NET version
+   - SQL Server version
+   - OS version
+

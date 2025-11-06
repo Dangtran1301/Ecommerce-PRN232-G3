@@ -40,4 +40,14 @@ namespace CatalogService.Application.DTOs.ProductVariants
         public string? Sku { get; set; }
         [Url] public string? ImageUrl { get; set; }
     }
+
+    public class ProductVariantFilterDto
+    {
+        public string? Keyword { get; set; }
+        public Guid? ProductId { get; set; }
+        public int? PageIndex { get; set; } = 1;
+        public int? PageSize { get; set; } = 25;
+        public string? OrderBy { get; set; } = "CreatedAt";
+        public bool Descending { get; set; } = false;
+    }
 }

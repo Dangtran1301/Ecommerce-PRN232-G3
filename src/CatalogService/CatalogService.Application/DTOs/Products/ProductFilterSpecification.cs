@@ -1,4 +1,4 @@
-﻿using CatalogService.API.DTOs;
+﻿using CatalogService.Domain.Entities;
 using CatalogService.Entities;
 using SharedKernel.Application.Common;
 
@@ -17,26 +17,28 @@ namespace CatalogService.Application.DTOs.Products
 
             AddInclude(p => p.Brand);
             AddInclude(p => p.Category);
-            AddInclude(p => p.Stock);
 
-            switch (filter.OrderBy?.ToLower())
+            if (!string.IsNullOrEmpty(filter.OrderBy))
             {
-                case "name":
-                case "productname":
-                    if (filter.Descending) ApplyOrderByDescending(p => p.ProductName);
-                    else ApplyOrderBy(p => p.ProductName);
-                    break;
-                case "price":
-                    if (filter.Descending) ApplyOrderByDescending(p => p.Price);
-                    else ApplyOrderBy(p => p.Price);
-                    break;
-                default:
-                    if (filter.Descending) ApplyOrderByDescending(p => p.CreatedAt);
-                    else ApplyOrderBy(p => p.CreatedAt);
-                    break;
+                switch (filter.OrderBy.ToLower())
+                {
+                    case "price":
+                        if (filter.Descending) ApplyOrderByDescending(p => p.Price);
+                        else ApplyOrderBy(p => p.Price);
+                        break;
+                    case "productname":
+                    case "name":
+                        if (filter.Descending) ApplyOrderByDescending(p => p.ProductName);
+                        else ApplyOrderBy(p => p.ProductName);
+                        break;
+                    default:
+                        if (filter.Descending) ApplyOrderByDescending(p => p.CreatedAt);
+                        else ApplyOrderBy(p => p.CreatedAt);
+                        break;
+                }
             }
 
-            if (filter.PageIndex is not null && filter.PageSize is not null)
+            if (filter.PageIndex.HasValue && filter.PageSize.HasValue)
             {
                 ApplyPaging((filter.PageIndex.Value - 1) * filter.PageSize.Value, filter.PageSize.Value);
             }

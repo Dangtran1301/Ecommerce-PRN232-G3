@@ -1,95 +1,100 @@
 ﻿using AutoMapper;
-using CatalogService.API.Errors;
 using CatalogService.Application.DTOs.Products;
+using CatalogService.Application.Errors;
 using CatalogService.Application.Services.Interfaces;
+using CatalogService.Domain.Entities;
 using CatalogService.Entities;
 using CatalogService.Infrastructure.Repositories.Interfaces;
-using Microsoft.Extensions.Logging;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
+using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 
 namespace CatalogService.Application.Services
 {
-    public class ProductAppService : IProductService
+    public class ProductAppService(
+        IProductRepository productRepository,
+        ISpecificationRepository<Product> specificationRepository,
+        IDynamicRepository<Product> dynamicRepository,
+        IMapper mapper
+    ) : IProductService
     {
-        private readonly IProductRepository _repository;
-        private readonly IMapper _mapper;
-        private readonly ILogger<ProductAppService> _logger;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ProductAppService(
-            IProductRepository repository,
-            IMapper mapper,
-            ILogger<ProductAppService> logger,
-            IUnitOfWork unitOfWork)
+        public async Task<Result<ProductDto>> GetByIdAsync(Guid id)
         {
-            _repository = repository;
-            _mapper = mapper;
-            _logger = logger;
-            _unitOfWork = unitOfWork;
+            var product = await productRepository.GetByIdAsync(id);
+            return product is null
+                ? ProductErrors.NotFound(id)
+                : mapper.Map<ProductDto>(product);
         }
 
-        public async Task<Result<ProductDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Result<IReadOnlyList<ProductDto>>> GetAllAsync()
         {
-            var entity = await _repository.GetByIdAsync(id, cancellationToken);
-            if (entity == null)
-                return Result.Failure<ProductDto>(ProductErrors.NotFound);
-
-            return Result.Ok(_mapper.Map<ProductDto>(entity));
+            var products = await productRepository.GetAllAsync();
+            return Result.Ok(mapper.Map<IReadOnlyList<ProductDto>>(products));
         }
 
-        public async Task<Result<IReadOnlyList<ProductDto>>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<Result> CreateAsync(CreateProductRequest request)
         {
-            var entities = await _repository.GetAllAsync(cancellationToken);
-            return Result.Ok(_mapper.Map<IReadOnlyList<ProductDto>>(entities));
+            request.ProductName = request.ProductName.Trim();
+            if (await productRepository.AnyAsync(p => p.ProductName == request.ProductName))
+                return ProductErrors.NameTaken(request.ProductName);
+
+            var product = mapper.Map<Product>(request);
+            await productRepository.AddAsync(product);
+            return true;
         }
 
-        public async Task<Result<ProductDto>> CreateAsync(ProductDto dto, CancellationToken cancellationToken = default)
+        public async Task<Result> UpdateAsync(Guid id, UpdateProductRequest request)
         {
-            var entity = _mapper.Map<Product>(dto);
-            await _repository.AddAsync(entity, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Ok(_mapper.Map<ProductDto>(entity));
+            var product = await productRepository.GetByIdAsync(id);
+            if (product is null)
+                return ProductErrors.NotFound(id);
+
+            request.ProductName = request.ProductName.Trim();
+            mapper.Map(request, product);
+            await productRepository.Update(product);
+            return true;
         }
 
-        public async Task<Result<ProductDto>> UpdateAsync(ProductDto dto, CancellationToken cancellationToken = default)
+        public async Task<Result> DeleteAsync(Guid id)
         {
-            var entity = await _repository.GetByIdAsync(dto.Id, cancellationToken);
-            if (entity == null)
-                return Result.Failure<ProductDto>(ProductErrors.NotFound);
+            var product = await productRepository.GetByIdAsync(id);
+            if (product is null)
+                return ProductErrors.NotFound(id);
 
-            _mapper.Map(dto, entity);
-            await _repository.Update(entity, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Ok(_mapper.Map<ProductDto>(entity));
+            await productRepository.Remove(product);
+            return true;
         }
 
-
-
-
-
-        public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Result<IReadOnlyList<ProductDto>>> FilterBySpecification(ProductFilterDto filter)
         {
-            var entity = await _repository.GetByIdAsync(id, cancellationToken);
-            if (entity == null)
-                return Result.Fail(ProductErrors.NotFound(id));
-
-
-            await _repository.Remove(entity, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Ok();
+            var spec = new ProductFilterSpecification(filter);
+            var products = await specificationRepository.ListAsync(spec);
+            return Result.Ok(mapper.Map<IReadOnlyList<ProductDto>>(products));
         }
 
-        public async Task<PagedResult<ProductDto>> GetPagedAsync(PagedRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<PagedResult<ProductDto>>> FilterPaged(PagedRequest request)
         {
-            var result = await _repository.GetPagedAsync(request, cancellationToken);
-            return new PagedResult<ProductDto>(
-                _mapper.Map<IReadOnlyList<ProductDto>>(result.Items),
-                result.TotalCount,
-                result.PageNumber,
-                result.PageSize);
+            var result = await productRepository.GetPagedAsync(request);
+            var dto = result.Map(mapper.Map<IReadOnlyList<ProductDto>>(result.Items));
+            return Result.Ok(dto);
         }
 
-        public IQueryable<Product> GetQueryable() => _repository.GetQueryable();
+        public IQueryable<ProductDto> AsQueryable()
+        {
+            return productRepository.GetQueryable().Select(p => new ProductDto
+            {
+                Id = p.Id,
+                ProductName = p.ProductName,
+                Description = p.Description,
+                Price = p.Price,
+                Sku = p.Sku,
+                ImageUrl = p.ImageUrl,
+                Specifications = p.Specifications,
+                BrandId = p.BrandId,
+                BrandName = p.Brand.BrandName,
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category.CategoryName
+            });
+        }
     }
 }
