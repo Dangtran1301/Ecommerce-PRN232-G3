@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CatalogService.Entities;
 using SharedKernel.Application.Common;
-using CatalogService.Domain.Entities;
-using CatalogService.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CatalogService.Application.DTOs.Stocks
 {
@@ -57,10 +56,12 @@ namespace CatalogService.Application.DTOs.Stocks
                     if (filter.Descending) ApplyOrderByDescending(s => s.Quantity);
                     else ApplyOrderBy(s => s.Quantity);
                     break;
+
                 case "location":
                     if (filter.Descending) ApplyOrderByDescending(s => s.Location);
                     else ApplyOrderBy(s => s.Location);
                     break;
+
                 default:
                     if (filter.Descending) ApplyOrderByDescending(s => s.CreatedAt);
                     else ApplyOrderBy(s => s.CreatedAt);

@@ -1,5 +1,4 @@
-﻿
-using CatalogService.Application.DTOs.Brands;
+﻿using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.DTOs.Categories;
 using CatalogService.Application.DTOs.Products;
 using CatalogService.Application.DTOs.ProductVariants;
@@ -19,7 +18,7 @@ public static class DependencyInjection
         // AutoMapper
         services.AddAutoMapper(typeof(BrandProfile).Assembly);
         services.AddAutoMapper(typeof(CategoryProfile).Assembly);
-       // services.AddAutoMapper(typeof(ProductAttributeProfile).Assembly);
+        // services.AddAutoMapper(typeof(ProductAttributeProfile).Assembly);
         services.AddAutoMapper(typeof(ProductProfile).Assembly);
         services.AddAutoMapper(typeof(ProductVariantProfile).Assembly);
         services.AddAutoMapper(typeof(StockProfile).Assembly);

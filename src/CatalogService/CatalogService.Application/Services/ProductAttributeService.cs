@@ -35,10 +35,10 @@ public class ProductAttributeService(
     {
         request.AttributeName = request.AttributeName.Trim();
         request.AttributeValue = request.AttributeValue.Trim();
-        
-        if (await productAttributeRepository.AnyAsync(a => 
-            a.ProductId == request.ProductId && 
-            a.AttributeName == request.AttributeName, 
+
+        if (await productAttributeRepository.AnyAsync(a =>
+            a.ProductId == request.ProductId &&
+            a.AttributeName == request.AttributeName,
             cancellationToken))
             return ProductAttributeErrors.NameTaken(request.AttributeName);
 
@@ -55,7 +55,7 @@ public class ProductAttributeService(
 
         request.AttributeName = request.AttributeName.Trim();
         request.AttributeValue = request.AttributeValue.Trim();
-        
+
         mapper.Map(request, productAttribute);
         await productAttributeRepository.Update(productAttribute, cancellationToken);
         return true;
