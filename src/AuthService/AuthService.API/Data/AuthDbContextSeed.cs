@@ -1,9 +1,10 @@
 ﻿using AuthService.API.Models;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Domain.Common.Entities;
 
 namespace AuthService.API.Data;
 
-public class AuthDbContextSeed
+public static class AuthDbContextSeed
 {
     public static async Task SeedAdminAsync(AuthDbContext context)
     {
@@ -16,10 +17,11 @@ public class AuthDbContextSeed
                 BCrypt.Net.BCrypt.HashPassword("Admin@123"),
                 Role.Admin
             );
-            {
-                admin.GetType().GetProperty("Id")!.SetValue(admin, adminId);
-            }
-            ;
+            // Use reflection to set the protected Id property
+            typeof(Entity<Guid>)
+                .GetProperty("Id", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)
+                ?.SetValue(admin, adminId);
+
             admin.SetCreated("system");
 
             await context.Users.AddAsync(admin);

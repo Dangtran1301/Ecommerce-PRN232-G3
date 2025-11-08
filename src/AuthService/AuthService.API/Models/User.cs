@@ -1,5 +1,5 @@
-﻿using System.Security.Cryptography;
-using SharedKernel.Domain.Common.Entities;
+﻿using SharedKernel.Domain.Common.Entities;
+using System.Security.Cryptography;
 
 namespace AuthService.API.Models;
 

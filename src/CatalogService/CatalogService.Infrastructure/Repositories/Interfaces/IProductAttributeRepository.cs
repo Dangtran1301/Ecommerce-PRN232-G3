@@ -6,5 +6,6 @@ namespace CatalogService.Infrastructure.Repositories.Interfaces;
 public interface IProductAttributeRepository : IRepository<ProductAttribute, Guid>
 {
     IQueryable<ProductAttribute> GetQueryable();
+
     Task<IReadOnlyList<ProductAttribute>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default);
 }

@@ -16,8 +16,7 @@ public class AuthService(
     ITokenService tokenService,
     IMapper mapper,
     IHttpContextAccessor httpContextAccessor,
-    IEmailService emailService,
-    IConfiguration configuration
+    IEmailService emailService
     ) : IAuthService
 {
     public async Task<Result<LoginResponse>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
