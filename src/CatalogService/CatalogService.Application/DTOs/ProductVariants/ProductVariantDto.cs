@@ -1,29 +1,28 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CatalogService.API.DTOs
+namespace CatalogService.Application.DTOs.ProductVariants
 {
     public record CreateProductVariantRequest
     {
-        [Required(ErrorMessage = "Variant name is required")]
-        [StringLength(255, ErrorMessage = "Variant name must not exceed 255 characters")]
+        [Required]
+        public Guid ProductId { get; set; }
+
+        [Required, StringLength(255)]
         public string VariantName { get; set; } = null!;
 
-        [Range(0, double.MaxValue, ErrorMessage = "Price must be positive")]
+        [Range(0.01, double.MaxValue)]
         public decimal Price { get; set; }
 
-        [StringLength(100, ErrorMessage = "SKU must not exceed 100 characters")]
         public string? Sku { get; set; }
 
-        [StringLength(255, ErrorMessage = "Image URL must not exceed 255 characters")]
+        [Url]
         public string? ImageUrl { get; set; }
-
-        [Required(ErrorMessage = "Product ID is required")]
-        public Guid ProductId { get; set; }
     }
 
     public record ProductVariantDto
     {
         public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
         public string VariantName { get; set; } = null!;
         public decimal Price { get; set; }
         public string? Sku { get; set; }
@@ -32,10 +31,14 @@ namespace CatalogService.API.DTOs
 
     public record UpdateProductVariantRequest
     {
-        [StringLength(255)] public string? VariantName { get; set; }
-        [Range(0, double.MaxValue)] public decimal? Price { get; set; }
-        [StringLength(100)] public string? Sku { get; set; }
-        [StringLength(255)] public string? ImageUrl { get; set; }
+        [Required, StringLength(255)]
+        public string VariantName { get; set; } = null!;
+
+        [Range(0.01, double.MaxValue)]
+        public decimal Price { get; set; }
+
+        public string? Sku { get; set; }
+        [Url] public string? ImageUrl { get; set; }
     }
 
     public class ProductVariantFilterDto

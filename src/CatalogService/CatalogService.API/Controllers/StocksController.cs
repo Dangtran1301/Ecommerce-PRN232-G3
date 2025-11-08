@@ -1,5 +1,5 @@
-﻿using CatalogService.API.DTOs;
-using CatalogService.API.Services.Interfaces;
+﻿using CatalogService.Application.DTOs.Stocks;
+using CatalogService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
@@ -21,22 +21,55 @@ public class StocksController(IStockService service) : CatalogControllerBase
         => (await service.CreateAsync(request)).ToActionResult();
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateStockRequest request)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateStockRequest request)
         => (await service.UpdateAsync(id, request)).ToActionResult();
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
         => (await service.DeleteAsync(id)).ToActionResult();
 
-    //[HttpGet("filter/spec")]
-    //public async Task<IActionResult> FilterBySpec([FromQuery] StockFilterDto filter)
-    //    => (await service.FilterBySpecification(filter)).ToActionResult();
-
-    [HttpPost("filter/dynamic")]
-    public async Task<IActionResult> FilterDynamic([FromBody] DynamicQuery query)
-        => (await service.FilterByDynamic(query)).ToActionResult();
+    [HttpGet("filter/spec")]
+    public async Task<IActionResult> FilterBySpec([FromQuery] StockFilterDto filter)
+        => (await service.FilterBySpecification(filter)).ToActionResult();
 
     [HttpGet("filter/paged")]
     public async Task<IActionResult> FilterPaged([FromQuery] PagedRequest request)
         => (await service.FilterPaged(request)).ToActionResult();
+
+    [HttpGet("specification/metadata")]
+    public IActionResult GetSpecificationFilterMetadata()
+    {
+        return Ok(new
+        {
+            entity = "Stock",
+            filterableFields = new[]
+            {
+                new { name = "ProductId", type = "Guid" },
+                new { name = "Quantity", type = "int" },
+                new { name = "Location", type = "string" }
+            },
+            sortableFields = new[]
+            {
+                "Quantity",
+                "Location",
+                "CreatedAt"
+            }
+        });
+    }
+
+    [HttpGet("paged/metadata")]
+    public IActionResult GetPagedMetadata()
+    {
+        return Ok(new
+        {
+            defaultPageSize = 10,
+            maxPageSize = 100,
+            sortableFields = new[]
+            {
+                "Quantity",
+                "Location",
+                "CreatedAt"
+            }
+        });
+    }
 }

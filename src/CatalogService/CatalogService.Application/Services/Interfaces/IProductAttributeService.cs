@@ -1,24 +1,24 @@
-﻿using CatalogService.API.DTOs;
+﻿using CatalogService.Application.DTOs.ProductAttributes;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 
-namespace CatalogService.API.Services.Interfaces
+namespace CatalogService.Application.Services.Interfaces;
+
+public interface IProductAttributeService
 {
-    public interface IProductAttributeService
-    {
-        Task<Result<ProductAttributeDto>> GetByIdAsync(Guid id);
+    Task<Result<ProductAttributeDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<Result<IReadOnlyList<ProductAttributeDto>>> GetAllAsync();
+    Task<Result<IReadOnlyList<ProductAttributeDto>>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<Result> CreateAsync(CreateProductAttributeRequest request);
+    Task<Result> CreateAsync(CreateProductAttributeRequest request, CancellationToken cancellationToken = default);
 
-        Task<Result> UpdateAsync(Guid id, UpdateProductAttributeRequest request);
+    Task<Result> UpdateAsync(Guid id, UpdateProductAttributeRequest request, CancellationToken cancellationToken = default);
 
-        Task<Result> DeleteAsync(Guid id);
+    Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-        //Task<Result<IReadOnlyList<ProductAttributeDto>>> FilterBySpecification(ProductAttributeFilterDto filter);
-        Task<Result<PagedResult<ProductAttributeDto>>> FilterByDynamic(DynamicQuery query);
+    Task<Result<IReadOnlyList<ProductAttributeDto>>> FilterBySpecification(ProductAttributeFilterDto filter, CancellationToken cancellationToken = default);
 
-        Task<Result<PagedResult<ProductAttributeDto>>> FilterPaged(PagedRequest request);
-    }
+    Task<Result<PagedResult<ProductAttributeDto>>> FilterPaged(PagedRequest request, CancellationToken cancellationToken = default);
+
+    IQueryable<ProductAttributeDto> AsQueryable();
 }

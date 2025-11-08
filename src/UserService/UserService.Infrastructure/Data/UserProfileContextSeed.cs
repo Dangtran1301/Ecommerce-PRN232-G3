@@ -4,7 +4,7 @@ using UserService.Domain.Entities.Enums;
 
 namespace UserService.Infrastructure.Data;
 
-public class UserProfileContextSeed
+public static class UserProfileContextSeed
 {
     public static async Task SeedAdminAsync(UserDbContext context)
     {

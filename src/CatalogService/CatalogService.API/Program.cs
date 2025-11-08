@@ -2,6 +2,10 @@
 using CatalogService.Application;
 using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.DTOs.Categories;
+using CatalogService.Application.DTOs.ProductAttributes;
+using CatalogService.Application.DTOs.Products;
+using CatalogService.Application.DTOs.ProductVariants;
+using CatalogService.Application.DTOs.Stocks;
 using CatalogService.Infrastructure;
 using CatalogService.Infrastructure.Data;
 using Microsoft.AspNetCore.OData;
@@ -28,6 +32,10 @@ services.AddControllers()
         var modelBuilder = new ODataConventionModelBuilder();
         modelBuilder.EntitySet<CategoryDto>("ODataCategories");
         modelBuilder.EntitySet<BrandDto>("ODataBrands");
+        modelBuilder.EntitySet<ProductDto>("ODataProducts");
+        modelBuilder.EntitySet<ProductVariantDto>("ODataProductVariants");
+        modelBuilder.EntitySet<ProductAttributeDto>("ODataProductAttributes");
+        modelBuilder.EntitySet<StockDto>("ODataStockDto");
 
         opt.AddRouteComponents("odata", modelBuilder.GetEdmModel())
            .Filter()
@@ -52,7 +60,7 @@ using (var scope = app.Services.CreateScope())
 
     if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))
     {
-        await db.Database.EnsureDeletedAsync();
+        //await db.Database.EnsureDeletedAsync();
         await db.Database.MigrateAsync();
     }
     else

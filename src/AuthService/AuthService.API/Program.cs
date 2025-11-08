@@ -35,7 +35,6 @@ using (var scope = app.Services.CreateScope())
         await db.Database.MigrateAsync();
     }
     await AuthDbContextSeed.SeedAdminAsync(db);
-
 }
 app.UseAuthentication();
 app.UseAuthorization();

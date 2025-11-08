@@ -1,5 +1,5 @@
-﻿using CatalogService.API.DTOs;
-using CatalogService.API.Services.Interfaces;
+﻿using CatalogService.Application.DTOs.ProductVariants;
+using CatalogService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
 using SharedKernel.Application.Extensions;
@@ -21,7 +21,7 @@ public class ProductVariantsController(IProductVariantService service) : Catalog
         => (await service.CreateAsync(request)).ToActionResult();
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductVariantRequest request)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProductVariantRequest request)
         => (await service.UpdateAsync(id, request)).ToActionResult();
 
     [HttpDelete("{id:guid}")]
@@ -32,11 +32,45 @@ public class ProductVariantsController(IProductVariantService service) : Catalog
     public async Task<IActionResult> FilterBySpec([FromQuery] ProductVariantFilterDto filter)
         => (await service.FilterBySpecification(filter)).ToActionResult();
 
-    [HttpPost("filter/dynamic")]
-    public async Task<IActionResult> FilterDynamic([FromBody] DynamicQuery query)
-        => (await service.FilterByDynamic(query)).ToActionResult();
-
     [HttpGet("filter/paged")]
     public async Task<IActionResult> FilterPaged([FromQuery] PagedRequest request)
         => (await service.FilterPaged(request)).ToActionResult();
+
+    [HttpGet("specification/metadata")]
+    public IActionResult GetSpecificationFilterMetadata()
+    {
+        return Ok(new
+        {
+            entity = "ProductVariant",
+            filterableFields = new[]
+            {
+                new { name = "ProductId", type = "Guid" },
+                new { name = "VariantName", type = "string" },
+                new { name = "Sku", type = "string" },
+                new { name = "Price", type = "decimal" }
+            },
+            sortableFields = new[]
+            {
+                "VariantName",
+                "Price",
+                "CreatedAt"
+            }
+        });
+    }
+
+    [HttpGet("paged/metadata")]
+    public IActionResult GetPagedMetadata()
+    {
+        return Ok(new
+        {
+            defaultPageSize = 10,
+            maxPageSize = 100,
+            sortableFields = new[]
+            {
+                "VariantName",
+                "Price",
+                "CreatedAt"
+            }
+        });
+    }
 }
