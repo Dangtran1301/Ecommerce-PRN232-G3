@@ -10,6 +10,7 @@ using OrderService.API.Repositories.Interfaces;
 using OrderService.API.Services.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
+using OrderService.API.BackgroundJobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +23,13 @@ builder.Services.AddScoped(typeof(ISpecificationRepository<>), typeof(Specificat
 builder.Services.AddScoped(typeof(IDynamicRepository<>), typeof(DynamicRepository<>));
 builder.Services.AddHttpClient<IProductClient, ProductClient>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7080/api/v1/Catalog/products/");
+    client.BaseAddress = new Uri("https://localhost:7080/api/v1/catalog/Products/");
 });
 
 builder.Services.AddScoped<IOrderService, OrderService.API.Services.OrderService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddHostedService<OutboxProcessor>();
 
 
 builder.Services.AddControllers();

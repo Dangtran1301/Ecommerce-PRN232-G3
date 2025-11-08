@@ -27,7 +27,7 @@ namespace OrderService.API.Clients
         {
             try
             {
-                var url = $"{_catalogBaseUrl}/api/v1/catalog/products/{productId}";
+                var url = $"{_catalogBaseUrl}/api/v1/catalog/Products/{productId}";
                 var response = await _httpClient.GetAsync(url);
 
                 if (!response.IsSuccessStatusCode)
@@ -45,6 +45,15 @@ namespace OrderService.API.Clients
                 _logger.LogError(ex, "Error calling CatalogService for product {ProductId}", productId);
                 return null;
             }
+        }
+
+        public async Task<int> GetStockAsync(Guid productId)
+        {
+            var response = await _httpClient.GetAsync($"{productId}/stock");
+            response.EnsureSuccessStatusCode();
+
+            var stockStr = await response.Content.ReadAsStringAsync();
+            return int.Parse(stockStr);
         }
     }
 }
