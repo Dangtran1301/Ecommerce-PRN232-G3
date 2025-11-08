@@ -1,4 +1,5 @@
-﻿using CatalogService.Application.DTOs.ProductAttributes;
+﻿using Asp.Versioning;
+using CatalogService.Application.DTOs.ProductAttributes;
 using CatalogService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
@@ -6,7 +7,10 @@ using SharedKernel.Application.Extensions;
 
 namespace CatalogService.API.Controllers;
 
-public class ProductAttributesController(IProductAttributeService service) : CatalogControllerBase
+[Route("api/v{version:apiVersion}/catalog/product-attributes")]
+[ApiController]
+[ApiVersion("1.0")]
+public class ProductAttributesController(IProductAttributeService service) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)

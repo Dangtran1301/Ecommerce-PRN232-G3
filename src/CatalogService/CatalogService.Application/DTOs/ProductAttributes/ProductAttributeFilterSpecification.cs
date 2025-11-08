@@ -48,3 +48,6 @@ public class ProductAttributeFilterSpecification : BaseSpecification<ProductAttr
         => new ProductAttributeFilterSpecification(filter);
 }
 
+
+
+
