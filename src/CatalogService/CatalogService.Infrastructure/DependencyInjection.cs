@@ -1,14 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CatalogService.Infrastructure.Data;
+using CatalogService.Infrastructure.Repositories;
+using CatalogService.Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Infrastructure.Data.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 using SharedKernel.Infrastructure.UnitOfWorks.Repositories;
-using CatalogService.Infrastructure.Data;
-using CatalogService.Infrastructure.Repositories.Interfaces;
-using CatalogService.Infrastructure.Repositories;
-using CatalogService.API.Repositories;
-using CatalogService.API.Repositories.Interfaces;
 
 namespace CatalogService.Infrastructure;
 

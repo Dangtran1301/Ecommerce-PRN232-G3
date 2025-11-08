@@ -1,8 +1,8 @@
-﻿using SharedKernel.Application.Common;
+﻿using CatalogService.Application.DTOs.Products;
+using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
-using CatalogService.API.DTOs;
 
-namespace CatalogService.API.Services.Interfaces
+namespace CatalogService.Application.Services.Interfaces
 {
     public interface IProductService
     {
@@ -18,8 +18,8 @@ namespace CatalogService.API.Services.Interfaces
 
         Task<Result<IReadOnlyList<ProductDto>>> FilterBySpecification(ProductFilterDto filter);
 
-        Task<Result<PagedResult<ProductDto>>> FilterByDynamic(DynamicQuery query);
-
         Task<Result<PagedResult<ProductDto>>> FilterPaged(PagedRequest request);
+
+        IQueryable<ProductDto> AsQueryable();
     }
 }

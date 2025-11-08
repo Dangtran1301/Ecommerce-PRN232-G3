@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using AuthService.API.DTOs;
 using AuthService.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Extensions;
 
@@ -24,12 +25,14 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpPost("refresh")]
+    [Authorize]
     public async Task<IActionResult> Refresh(RefreshTokenRequest refreshTokenRequest)
     {
         return (await authService.RefreshAsync(refreshTokenRequest)).ToActionResult();
     }
 
     [HttpPost("logout")]
+    [Authorize]
     public async Task<IActionResult> Logout(RefreshTokenRequest refreshTokenRequest)
     {
         return (await authService.LogoutAsync(refreshTokenRequest)).ToActionResult();
@@ -45,5 +48,13 @@ public class AuthController(IAuthService authService) : ControllerBase
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
     {
         return (await authService.ResetPasswordAsync(request, cancellationToken: cancellationToken)).ToActionResult();
+    }
+
+    [HttpPut("{id:guid}/password")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword(Guid id, [FromBody] ChangePasswordRequest request)
+    {
+        var result = await authService.ChangePasswordAsync(id, request);
+        return result.ToActionResult();
     }
 }

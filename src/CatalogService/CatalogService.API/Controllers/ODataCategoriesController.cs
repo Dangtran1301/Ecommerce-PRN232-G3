@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.AspNetCore.OData.Query;
-using CatalogService.Application.DTOs.Categories;
+﻿using CatalogService.Application.DTOs.Categories;
 using CatalogService.Application.Services.Interfaces;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace CatalogService.API.ODataControllers;
 

@@ -10,7 +10,7 @@ namespace UserService.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiController]
-public class UsersController(IUserProfileService profileService) : ControllerBase
+public class UserProfilesController(IUserProfileService profileService) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)

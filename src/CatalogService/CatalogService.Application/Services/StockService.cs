@@ -1,88 +1,93 @@
 ﻿using AutoMapper;
-using CatalogService.API.DTOs;
-using CatalogService.API.Errors;
-using CatalogService.API.Repositories.Interfaces;
-using CatalogService.API.Services.Interfaces;
-using CatalogService.API.Specifications;
+using CatalogService.Application.DTOs.Stocks;
+using CatalogService.Application.Errors;
+using CatalogService.Application.Services.Interfaces;
 using CatalogService.Entities;
+using CatalogService.Infrastructure.Repositories.Interfaces;
 using SharedKernel.Application.Common;
 using SharedKernel.Domain.Common.Results;
 using SharedKernel.Infrastructure.UnitOfWorks.Interfaces;
 
-namespace CatalogService.API.Services
+namespace CatalogService.Application.Services
 {
     public class StockService(
-        IStockRepository repository,
+        IStockRepository stockRepository,
         ISpecificationRepository<Stock> specificationRepository,
         IDynamicRepository<Stock> dynamicRepository,
         IMapper mapper
     ) : IStockService
     {
-        public async Task<Result<StockDto>> GetByIdAsync(Guid id)
+        public async Task<Result<StockDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var stock = await repository.GetByIdAsync(id);
+            var stock = await stockRepository.GetByIdAsync(id, cancellationToken);
             return stock is null
                 ? StockErrors.NotFound(id)
                 : mapper.Map<StockDto>(stock);
         }
 
-        public async Task<Result<IReadOnlyList<StockDto>>> GetAllAsync()
+        public async Task<Result<IReadOnlyList<StockDto>>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var list = await repository.GetAllAsync();
-            return Result.Ok(mapper.Map<IReadOnlyList<StockDto>>(list));
+            var stocks = await stockRepository.GetAllAsync(cancellationToken);
+            return Result.Ok(mapper.Map<IReadOnlyList<StockDto>>(stocks));
         }
 
-        public async Task<Result> CreateAsync(CreateStockRequest request)
+        public async Task<Result> CreateAsync(CreateStockRequest request, CancellationToken cancellationToken = default)
         {
-            var existing = await repository.GetByProductIdAsync(request.ProductId);
-            if (existing is not null)
+            request.Location = request.Location?.Trim();
+
+            if (await stockRepository.AnyAsync(s => s.ProductId == request.ProductId, cancellationToken))
                 return StockErrors.DuplicateProduct(request.ProductId);
 
-            var entity = mapper.Map<Stock>(request);
-            await repository.AddAsync(entity);
+            var stock = mapper.Map<Stock>(request);
+            await stockRepository.AddAsync(stock, cancellationToken);
             return true;
         }
 
-        public async Task<Result> UpdateAsync(Guid id, UpdateStockRequest request)
+        public async Task<Result> UpdateAsync(Guid id, UpdateStockRequest request, CancellationToken cancellationToken = default)
         {
-            var entity = await repository.GetByIdAsync(id);
-            if (entity is null)
+            var stock = await stockRepository.GetByIdAsync(id, cancellationToken);
+            if (stock is null)
                 return StockErrors.NotFound(id);
 
-            mapper.Map(request, entity);
-            await repository.Update(entity);
+            request.Location = request.Location?.Trim();
+            mapper.Map(request, stock);
+            await stockRepository.Update(stock, cancellationToken);
             return true;
         }
 
-        public async Task<Result> DeleteAsync(Guid id)
+        public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var entity = await repository.GetByIdAsync(id);
-            if (entity is null)
+            var stock = await stockRepository.GetByIdAsync(id, cancellationToken);
+            if (stock is null)
                 return StockErrors.NotFound(id);
 
-            await repository.Remove(entity);
+            await stockRepository.Remove(stock, cancellationToken);
             return true;
         }
 
-        //public async Task<Result<IReadOnlyList<StockDto>>> FilterBySpecification(StockFilterDto filter)
-        //{
-        //    var spec = new StockFilterSpecification(filter);
-        //    var list = await specificationRepository.ListAsync(spec);
-        //    return Result.Success(mapper.Map<IReadOnlyList<StockDto>>(list));
-        //}
-
-        public async Task<Result<PagedResult<StockDto>>> FilterByDynamic(DynamicQuery query)
+        public async Task<Result<IReadOnlyList<StockDto>>> FilterBySpecification(StockFilterDto filter, CancellationToken cancellationToken = default)
         {
-            var result = await dynamicRepository.GetPagedAsync(query);
+            var spec = new StockFilterSpecification(filter);
+            var stocks = await specificationRepository.ListAsync(spec, cancellationToken);
+            return Result.Ok(mapper.Map<IReadOnlyList<StockDto>>(stocks));
+        }
+
+        public async Task<Result<PagedResult<StockDto>>> FilterPaged(PagedRequest request, CancellationToken cancellationToken = default)
+        {
+            var result = await stockRepository.GetPagedAsync(request, cancellationToken);
             var dto = result.Map(mapper.Map<IReadOnlyList<StockDto>>(result.Items));
             return Result.Ok(dto);
         }
 
-        public async Task<Result<PagedResult<StockDto>>> FilterPaged(PagedRequest request)
+        public IQueryable<StockDto> AsQueryable()
         {
-            var result = await repository.GetPagedAsync(request);
-            var dto = result.Map(mapper.Map<IReadOnlyList<StockDto>>(result.Items));
-            return Result.Ok(dto);
+            return stockRepository.GetQueryable().Select(s => new StockDto
+            {
+                Id = s.Id,
+                ProductId = s.ProductId,
+                Quantity = s.Quantity,
+                Location = s.Location
+            });
         }
     }
 }

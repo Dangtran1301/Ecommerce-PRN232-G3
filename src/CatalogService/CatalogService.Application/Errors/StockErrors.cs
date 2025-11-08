@@ -1,7 +1,7 @@
 ﻿using SharedKernel.Application.Common.Enums;
 using SharedKernel.Domain.Common.Results;
 
-namespace CatalogService.API.Errors
+namespace CatalogService.Application.Errors
 {
     public static class StockErrors
     {
@@ -14,6 +14,7 @@ namespace CatalogService.API.Errors
 
         public static Error InvalidData(string? message = null) =>
             Error.Failure(ErrorCodes.BadRequest, message ?? "Invalid stock data");
+
         public static Error DuplicateProduct(Guid productId) =>
             Error.Conflict($"A stock record for product {productId} already exists");
     }

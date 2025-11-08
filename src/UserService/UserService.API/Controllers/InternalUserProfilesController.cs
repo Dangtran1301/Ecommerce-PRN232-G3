@@ -9,7 +9,7 @@ namespace UserService.API.Controllers;
 [Route("api/internal/v{version:apiVersion}/users")]
 [ApiVersion("1.0")]
 [ApiController]
-public class InternalUsersController(IUserProfileService profileService) : ControllerBase
+public class InternalUserProfilesController(IUserProfileService profileService) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     [ActionName(nameof(GetUserProfileById))]
