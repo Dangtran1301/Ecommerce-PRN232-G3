@@ -1,5 +1,4 @@
-﻿using CatalogService.Domain.Entities;
-using CatalogService.Entities;
+﻿using CatalogService.Entities;
 using SharedKernel.Application.Common;
 
 namespace CatalogService.Application.DTOs.Products
@@ -33,11 +32,13 @@ namespace CatalogService.Application.DTOs.Products
                         if (filter.Descending) ApplyOrderByDescending(p => p.Price);
                         else ApplyOrderBy(p => p.Price);
                         break;
+
                     case "productname":
                     case "name":
                         if (filter.Descending) ApplyOrderByDescending(p => p.ProductName);
                         else ApplyOrderBy(p => p.ProductName);
                         break;
+
                     default:
                         if (filter.Descending) ApplyOrderByDescending(p => p.CreatedAt);
                         else ApplyOrderBy(p => p.CreatedAt);

@@ -1,5 +1,4 @@
-﻿
-using CatalogService.Application.DTOs.Brands;
+﻿using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.DTOs.Categories;
 using CatalogService.Application.DTOs.ProductAttributes;
 using CatalogService.Application.DTOs.Products;

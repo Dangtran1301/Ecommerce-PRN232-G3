@@ -6,7 +6,6 @@ using CatalogService.Application.DTOs.ProductAttributes;
 using CatalogService.Application.DTOs.Products;
 using CatalogService.Application.DTOs.ProductVariants;
 using CatalogService.Application.DTOs.Stocks;
-using CatalogService.Entities;
 using CatalogService.Infrastructure;
 using CatalogService.Infrastructure.Data;
 using Microsoft.AspNetCore.OData;

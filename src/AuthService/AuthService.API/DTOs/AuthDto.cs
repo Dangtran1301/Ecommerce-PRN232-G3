@@ -126,8 +126,8 @@ public record UpdateStatusAuthUserRequest(
 );
 
 public record ForgotPasswordRequest(
-    [Required(ErrorMessage = "Email is required")] 
-    [EmailAddress(ErrorMessage = "Invalid email address")] 
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email address")]
     string Email,
     [Url(ErrorMessage = "Invalid URL format")]
     string ClientUri

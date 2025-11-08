@@ -2,7 +2,6 @@
 using CatalogService.Application.DTOs.Products;
 using CatalogService.Application.Errors;
 using CatalogService.Application.Services.Interfaces;
-using CatalogService.Domain.Entities;
 using CatalogService.Entities;
 using CatalogService.Infrastructure.Repositories.Interfaces;
 using SharedKernel.Application.Common;

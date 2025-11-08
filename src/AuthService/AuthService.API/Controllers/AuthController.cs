@@ -57,5 +57,4 @@ public class AuthController(IAuthService authService) : ControllerBase
         var result = await authService.ChangePasswordAsync(id, request);
         return result.ToActionResult();
     }
-
 }
