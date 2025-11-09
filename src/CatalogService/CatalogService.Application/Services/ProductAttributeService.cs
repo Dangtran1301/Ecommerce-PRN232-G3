@@ -31,7 +31,7 @@ public class ProductAttributeService(
         return Result.Ok(mapper.Map<IReadOnlyList<ProductAttributeDto>>(productAttributes));
     }
 
-    public async Task<Result> CreateAsync(CreateProductAttributeRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<ProductAttributeDto>> CreateAsync(CreateProductAttributeRequest request, CancellationToken cancellationToken = default)
     {
         request.AttributeName = request.AttributeName.Trim();
         request.AttributeValue = request.AttributeValue.Trim();
@@ -44,10 +44,16 @@ public class ProductAttributeService(
 
         var productAttribute = mapper.Map<ProductAttribute>(request);
         await productAttributeRepository.AddAsync(productAttribute, cancellationToken);
-        return true;
+        
+        // Reload the created attribute to return it
+        var createdAttribute = await productAttributeRepository.GetByIdAsync(productAttribute.Id, cancellationToken);
+        if (createdAttribute == null)
+            return ProductAttributeErrors.NotFound(productAttribute.Id);
+        
+        return mapper.Map<ProductAttributeDto>(createdAttribute);
     }
 
-    public async Task<Result> UpdateAsync(Guid id, UpdateProductAttributeRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<ProductAttributeDto>> UpdateAsync(Guid id, UpdateProductAttributeRequest request, CancellationToken cancellationToken = default)
     {
         var productAttribute = await productAttributeRepository.GetByIdAsync(id, cancellationToken);
         if (productAttribute is null)
@@ -58,7 +64,13 @@ public class ProductAttributeService(
 
         mapper.Map(request, productAttribute);
         await productAttributeRepository.Update(productAttribute, cancellationToken);
-        return true;
+        
+        // Reload the updated attribute to return it
+        var updatedAttribute = await productAttributeRepository.GetByIdAsync(id, cancellationToken);
+        if (updatedAttribute == null)
+            return ProductAttributeErrors.NotFound(id);
+        
+        return mapper.Map<ProductAttributeDto>(updatedAttribute);
     }
 
     public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)

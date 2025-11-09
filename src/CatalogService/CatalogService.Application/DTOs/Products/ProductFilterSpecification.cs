@@ -10,12 +10,19 @@ namespace CatalogService.Application.DTOs.Products
             Criteria = p =>
                 (string.IsNullOrEmpty(filter.Keyword) ||
                  p.ProductName.Contains(filter.Keyword) ||
-                 (p.Description != null && p.Description.Contains(filter.Keyword))) &&
+                 (p.Description != null && p.Description.Contains(filter.Keyword)) ||
+                 p.Price.ToString().Contains(filter.Keyword) ||
+                 p.Variants.Any(v => v.VariantName.Contains(filter.Keyword) || 
+                                    (v.Sku != null && v.Sku.Contains(filter.Keyword))) ||
+                 p.Attributes.Any(a => a.AttributeName.Contains(filter.Keyword) || 
+                                      a.AttributeValue.Contains(filter.Keyword))) &&
                 (!filter.BrandId.HasValue || p.BrandId == filter.BrandId.Value) &&
                 (!filter.CategoryId.HasValue || p.CategoryId == filter.CategoryId.Value);
 
             AddInclude(p => p.Brand);
             AddInclude(p => p.Category);
+            AddInclude(p => p.Variants);
+            AddInclude(p => p.Attributes);
 
             if (!string.IsNullOrEmpty(filter.OrderBy))
             {

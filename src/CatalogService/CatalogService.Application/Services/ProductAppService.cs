@@ -31,7 +31,7 @@ namespace CatalogService.Application.Services
             return Result.Ok(mapper.Map<IReadOnlyList<ProductDto>>(products));
         }
 
-        public async Task<Result> CreateAsync(CreateProductRequest request)
+        public async Task<Result<ProductDto>> CreateAsync(CreateProductRequest request)
         {
             request.ProductName = request.ProductName.Trim();
             if (await productRepository.AnyAsync(p => p.ProductName == request.ProductName))
@@ -39,7 +39,13 @@ namespace CatalogService.Application.Services
 
             var product = mapper.Map<Product>(request);
             await productRepository.AddAsync(product);
-            return true;
+            
+            // Reload the product with related entities (Brand, Category) to get their names
+            var createdProduct = await productRepository.GetByIdAsync(product.Id);
+            if (createdProduct == null)
+                return ProductErrors.NotFound(product.Id);
+            
+            return mapper.Map<ProductDto>(createdProduct);
         }
 
         public async Task<Result> UpdateAsync(Guid id, UpdateProductRequest request)

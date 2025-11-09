@@ -9,11 +9,8 @@ public interface IProductAttributeService
     Task<Result<ProductAttributeDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<Result<IReadOnlyList<ProductAttributeDto>>> GetAllAsync(CancellationToken cancellationToken = default);
-
-    Task<Result> CreateAsync(CreateProductAttributeRequest request, CancellationToken cancellationToken = default);
-
-    Task<Result> UpdateAsync(Guid id, UpdateProductAttributeRequest request, CancellationToken cancellationToken = default);
-
+    Task<Result<ProductAttributeDto>> CreateAsync(CreateProductAttributeRequest request, CancellationToken cancellationToken = default);
+    Task<Result<ProductAttributeDto>> UpdateAsync(Guid id, UpdateProductAttributeRequest request, CancellationToken cancellationToken = default);
     Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<Result<IReadOnlyList<ProductAttributeDto>>> FilterBySpecification(ProductAttributeFilterDto filter, CancellationToken cancellationToken = default);

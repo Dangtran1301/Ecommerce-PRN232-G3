@@ -9,9 +9,7 @@ namespace CatalogService.Application.Services.Interfaces
         Task<Result<ProductDto>> GetByIdAsync(Guid id);
 
         Task<Result<IReadOnlyList<ProductDto>>> GetAllAsync();
-
-        Task<Result> CreateAsync(CreateProductRequest request);
-
+        Task<Result<ProductDto>> CreateAsync(CreateProductRequest request);
         Task<Result> UpdateAsync(Guid id, UpdateProductRequest request);
 
         Task<Result> DeleteAsync(Guid id);

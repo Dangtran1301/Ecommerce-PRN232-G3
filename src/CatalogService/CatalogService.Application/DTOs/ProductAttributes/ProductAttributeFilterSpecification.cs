@@ -47,3 +47,7 @@ public class ProductAttributeFilterSpecification : BaseSpecification<ProductAttr
     public static implicit operator ProductAttributeFilterSpecification(ProductAttributeFilterDto filter)
         => new ProductAttributeFilterSpecification(filter);
 }
+
+
+
+

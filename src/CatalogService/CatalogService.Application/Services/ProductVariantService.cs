@@ -31,7 +31,7 @@ namespace CatalogService.Application.Services
             return Result.Ok(mapper.Map<IReadOnlyList<ProductVariantDto>>(productVariants));
         }
 
-        public async Task<Result> CreateAsync(CreateProductVariantRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<ProductVariantDto>> CreateAsync(CreateProductVariantRequest request, CancellationToken cancellationToken = default)
         {
             request.VariantName = request.VariantName.Trim();
             request.Sku = request.Sku?.Trim();
@@ -39,10 +39,16 @@ namespace CatalogService.Application.Services
 
             var productVariant = mapper.Map<ProductVariant>(request);
             await productVariantRepository.AddAsync(productVariant, cancellationToken);
-            return true;
+            
+            // Reload the created variant to return it
+            var createdVariant = await productVariantRepository.GetByIdAsync(productVariant.Id, cancellationToken);
+            if (createdVariant == null)
+                return ProductVariantErrors.NotFound(productVariant.Id);
+            
+            return mapper.Map<ProductVariantDto>(createdVariant);
         }
 
-        public async Task<Result> UpdateAsync(Guid id, UpdateProductVariantRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result<ProductVariantDto>> UpdateAsync(Guid id, UpdateProductVariantRequest request, CancellationToken cancellationToken = default)
         {
             var productVariant = await productVariantRepository.GetByIdAsync(id, cancellationToken);
             if (productVariant is null)
@@ -54,7 +60,13 @@ namespace CatalogService.Application.Services
 
             mapper.Map(request, productVariant);
             await productVariantRepository.Update(productVariant, cancellationToken);
-            return true;
+            
+            // Reload the updated variant to return it
+            var updatedVariant = await productVariantRepository.GetByIdAsync(id, cancellationToken);
+            if (updatedVariant == null)
+                return ProductVariantErrors.NotFound(id);
+            
+            return mapper.Map<ProductVariantDto>(updatedVariant);
         }
 
         public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
