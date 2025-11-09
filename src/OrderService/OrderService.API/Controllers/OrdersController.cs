@@ -5,7 +5,7 @@ using SharedKernel.Application.Extensions;
 
 namespace OrderService.API.Controllers;
 
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/[controller]")]
 [Asp.Versioning.ApiVersion("1.0")]
 [ApiController]
 public class OrdersController(IOrderService service) : ControllerBase
