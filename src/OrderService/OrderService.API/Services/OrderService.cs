@@ -59,9 +59,8 @@ namespace OrderService.API.Services
 
             foreach (var item in request.Items)
             {
-                var product = await _productClient.GetProductByIdAsync(item.ProductId);
-                if (product == null)
-                    return OrderErrors.ProductNotFound(item.ProductId);
+                var product = await _productClient.GetProductByIdAsync(item.ProductId)
+              ?? new ProductDto { Id = item.ProductId, ProductName = "Mock", Price = item.Price };
 
                 var price = product.Price;
                 totalAmount += price * item.Quantity;
@@ -90,11 +89,15 @@ namespace OrderService.API.Services
         public async Task<Result> UpdateAsync(Guid id, UpdateOrderRequest request)
         {
             var entity = await _repository.GetByIdAsync(id);
-            if (entity is null)
+            if (entity == null)
                 return OrderErrors.NotFound(id);
 
-            _mapper.Map(request, entity);
+            if (!request.Status.HasValue || !Enum.IsDefined(typeof(OrderStatus), request.Status.Value))
+                return Error.Validation("Invalid order status"); // <-- thay cho Result.Failure()
+
+            entity.Status = (OrderStatus)request.Status.Value;
             await _repository.Update(entity);
+
             return Result.Ok();
         }
 
