@@ -35,7 +35,7 @@ services.AddControllers()
         modelBuilder.EntitySet<ProductDto>("ODataProducts");
         modelBuilder.EntitySet<ProductVariantDto>("ODataProductVariants");
         modelBuilder.EntitySet<ProductAttributeDto>("ODataProductAttributes");
-        modelBuilder.EntitySet<StockDto>("ODataStockDto");
+        modelBuilder.EntitySet<StockDto>("ODataStocks");
 
         opt.AddRouteComponents("odata", modelBuilder.GetEdmModel())
            .Filter()

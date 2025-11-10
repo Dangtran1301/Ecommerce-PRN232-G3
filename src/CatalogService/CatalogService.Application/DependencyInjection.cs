@@ -1,5 +1,6 @@
 ﻿using CatalogService.Application.DTOs.Brands;
 using CatalogService.Application.DTOs.Categories;
+using CatalogService.Application.DTOs.ProductAttributes;
 using CatalogService.Application.DTOs.Products;
 using CatalogService.Application.DTOs.ProductVariants;
 using CatalogService.Application.DTOs.Stocks;
@@ -18,7 +19,7 @@ public static class DependencyInjection
         // AutoMapper
         services.AddAutoMapper(typeof(BrandProfile).Assembly);
         services.AddAutoMapper(typeof(CategoryProfile).Assembly);
-        // services.AddAutoMapper(typeof(ProductAttributeProfile).Assembly);
+        services.AddAutoMapper(typeof(ProductAttributeProfile).Assembly);
         services.AddAutoMapper(typeof(ProductProfile).Assembly);
         services.AddAutoMapper(typeof(ProductVariantProfile).Assembly);
         services.AddAutoMapper(typeof(StockProfile).Assembly);
@@ -27,9 +28,9 @@ public static class DependencyInjection
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IProductService, ProductAppService>();
-        //services.AddScoped<IProductVariantService, ProductVariantService>();
+        services.AddScoped<IProductVariantService, ProductVariantService>();
         services.AddScoped<IProductAttributeService, ProductAttributeService>();
-        //services.AddScoped<IStockService, StockService>();
+        services.AddScoped<IStockService, StockService>();
         services.AddScoped(typeof(ISpecificationRepository<>), typeof(SpecificationRepository<>));
 
         services.AddScoped(typeof(IDynamicRepository<>), typeof(DynamicRepository<>));

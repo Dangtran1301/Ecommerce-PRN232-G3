@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using OrderService.API.BackgroundJobs;
+using OrderService.API.Clients;
+using OrderService.API.Clients.Interfaces;
+using OrderService.API.Clients.Mocks;
 using OrderService.API.Data;
 using OrderService.API.Repositories.Interfaces;
 using OrderService.API.Services.Interfaces;
@@ -16,10 +21,16 @@ builder.Services.AddScoped<SharedKernel.Infrastructure.Data.Interfaces.IDbContex
 builder.Services.AddScoped<IOrderRepository, OrderService.API.Repositories.Implementations.OrderRepository>();
 builder.Services.AddScoped(typeof(ISpecificationRepository<>), typeof(SpecificationRepository<>));
 builder.Services.AddScoped(typeof(IDynamicRepository<>), typeof(DynamicRepository<>));
+//builder.Services.AddHttpClient<IProductClient, MockProductClient>(client =>
+//{
+//    client.BaseAddress = new Uri("https://localhost:7080/api/v1/catalog/Products/");
+//});
+builder.Services.AddSingleton<IProductClient, MockProductClient>();
 
 builder.Services.AddScoped<IOrderService, OrderService.API.Services.OrderService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddHostedService<OutboxProcessor>();
 
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning(options =>
@@ -36,7 +47,7 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddVersionedApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
-    options.SubstituteApiVersionInUrl = true;
+    options.SubstituteApiVersionInUrl = false;
 });
 
 // Swagger

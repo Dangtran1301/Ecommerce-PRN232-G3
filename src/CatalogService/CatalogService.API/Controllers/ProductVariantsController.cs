@@ -1,4 +1,5 @@
-﻿using CatalogService.Application.DTOs.ProductVariants;
+﻿using Asp.Versioning;
+using CatalogService.Application.DTOs.ProductVariants;
 using CatalogService.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Application.Common;
@@ -6,7 +7,10 @@ using SharedKernel.Application.Extensions;
 
 namespace CatalogService.API.Controllers;
 
-public class ProductVariantsController(IProductVariantService service) : CatalogControllerBase
+[Route("api/v{version:apiVersion}/catalog/product-variants")]
+[ApiController]
+[ApiVersion("1.0")]
+public class ProductVariantsController(IProductVariantService service) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
