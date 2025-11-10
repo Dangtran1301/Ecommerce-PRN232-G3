@@ -13,34 +13,31 @@ public class ProductVariantFilterSpecification : BaseSpecification<ProductVarian
              (v.Sku != null && v.Sku.Contains(filter.Keyword))) &&
             (!filter.ProductId.HasValue || v.ProductId == filter.ProductId.Value);
 
-        if (!string.IsNullOrEmpty(filter.OrderBy))
+        switch (filter.OrderBy?.ToLower())
         {
-            switch (filter.OrderBy.ToLower())
-            {
-                case "name":
-                case "variantname":
-                    if (filter.Descending) ApplyOrderByDescending(v => v.VariantName);
-                    else ApplyOrderBy(v => v.VariantName);
-                    break;
+            case "name":
+            case "variantname":
+                if (filter.Descending) ApplyOrderByDescending(v => v.VariantName);
+                else ApplyOrderBy(v => v.VariantName);
+                break;
 
-                case "price":
-                    if (filter.Descending) ApplyOrderByDescending(v => v.Price);
-                    else ApplyOrderBy(v => v.Price);
-                    break;
+            case "price":
+                if (filter.Descending) ApplyOrderByDescending(v => v.Price);
+                else ApplyOrderBy(v => v.Price);
+                break;
 
-                case "sku":
-                    if (filter.Descending) ApplyOrderByDescending(v => v.Sku);
-                    else ApplyOrderBy(v => v.Sku);
-                    break;
+            case "sku":
+                if (filter.Descending) ApplyOrderByDescending(v => v.Sku ?? string.Empty);
+                else ApplyOrderBy(v => v.Sku ?? string.Empty);
+                break;
 
-                default:
-                    if (filter.Descending) ApplyOrderByDescending(v => v.CreatedAt);
-                    else ApplyOrderBy(v => v.CreatedAt);
-                    break;
-            }
+            default:
+                if (filter.Descending) ApplyOrderByDescending(v => v.CreatedAt);
+                else ApplyOrderBy(v => v.CreatedAt);
+                break;
         }
 
-        if (filter is { PageIndex: not null, PageSize: not null })
+        if (filter.PageIndex is not null && filter.PageSize is not null)
         {
             var skip = (filter.PageIndex.Value - 1) * filter.PageSize.Value;
             var take = filter.PageSize.Value;
