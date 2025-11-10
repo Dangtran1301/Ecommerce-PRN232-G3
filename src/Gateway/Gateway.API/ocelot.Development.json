@@ -1,238 +1,317 @@
 {
-  "GlobalConfiguration": {
-    "BaseUrl": "http://gateway:8080"
-  },
-
-  "Routes": [
-    {
-      "DownstreamPathTemplate": "/api/v1/Auth/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "authservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/auth/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "auth"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Users/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "authservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/auth-users/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "auth"
+    "GlobalConfiguration": {
+        "BaseUrl": "http://gateway:8080"
     },
 
-    {
-      "DownstreamPathTemplate": "/api/v1/UserProfiles/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+    "Routes": [
         {
-          "Host": "userservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/user-profiles/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "user"
-    },
+            "DownstreamPathTemplate": "/api/v1/Auth/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "authservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/auth/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "auth"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Users/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "userservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/users/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "user"
+        },
 
-    {
-      "DownstreamPathTemplate": "/api/v1/Catalog/Brands/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
         {
-          "Host": "catalogservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/brands/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "catalog"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Catalog/Categories/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "DownstreamPathTemplate": "/api/v1/Catalog/Brands/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/brands/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "catalog"
+        },
         {
-          "Host": "catalogservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/categories/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "catalog"
-    },
+            "DownstreamPathTemplate": "/api/v1/Catalog/Categories/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/categories/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "catalog"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Catalog/Products/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/products/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "catalog"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Catalog/product-variants/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/product-variants/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "catalog"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Catalog/product-attributes/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/product-attributes/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "catalog"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Catalog/Stocks/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/stocks/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "catalog"
+        },
 
-    {
-      "DownstreamPathTemplate": "/odata/ODataCategories",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
         {
-          "Host": "catalogservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/odata/categories",
-      "UpstreamHttpMethod": [ "GET" ],
-      "SwaggerKey": "category-odata"
-    },
-    {
-      "DownstreamPathTemplate": "/odata/ODataBrands",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "DownstreamPathTemplate": "/odata/ODataCategories{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/odata/categories{everything}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "SwaggerKey": "category-odata"
+        },
         {
-          "Host": "catalogservice",
-          "Port": 8080
+            "DownstreamPathTemplate": "/odata/ODataBrands{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/odata/brands{everything}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "SwaggerKey": "brand-odata"
+        },
+        {
+            "DownstreamPathTemplate": "/odata/ODataProducts{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/odata/products{everything}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "SwaggerKey": "product-odata"
+        },
+        {
+            "DownstreamPathTemplate": "/odata/ODataProductVariants{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/odata/product-variants{everything}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "SwaggerKey": "product-variant-odata"
+        },
+        {
+            "DownstreamPathTemplate": "/odata/ODataProductAttributes{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/odata/product-attributes{everything}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "SwaggerKey": "product-attribute-odata"
+        },
+        {
+            "DownstreamPathTemplate": "/odata/ODataStocks{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "catalogservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/odata/stocks{everything}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "SwaggerKey": "stock-odata"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Cart/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "cartservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/cart/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "cart"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Orders/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "orderservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/orders/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "order"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Payment/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "paymentservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/payment/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "payment"
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/Stock/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "stockservice",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/stock/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "stock"
         }
-      ],
-      "UpstreamPathTemplate": "/odata/brands",
-      "UpstreamHttpMethod": [ "GET" ],
-      "SwaggerKey": "brand-odata"
-    },
+    ],
 
-    {
-      "DownstreamPathTemplate": "/api/v1/Cart/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+    "SwaggerEndPoints": [
         {
-          "Host": "cartservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/cart/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "cart"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Orders/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "Key": "auth",
+            "Config": [
+                {
+                    "Name": "Auth Service",
+                    "Version": "v1",
+                    "Url": "http://authservice:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
         {
-          "Host": "orderservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/orders/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "order"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Payment/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "Key": "user",
+            "Config": [
+                {
+                    "Name": "User Service",
+                    "Version": "v1",
+                    "Url": "http://userservice:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
         {
-          "Host": "paymentservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/payment/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "payment"
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Stock/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
+            "Key": "catalog",
+            "Config": [
+                {
+                    "Name": "Catalog Service",
+                    "Version": "v1",
+                    "Url": "http://catalogservice:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
         {
-          "Host": "stockservice",
-          "Port": 8080
-        }
-      ],
-      "UpstreamPathTemplate": "/stock/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "stock"
-    }
-  ],
-
-  "SwaggerEndPoints": [
-    {
-      "Key": "auth",
-      "Config": [
+            "Key": "cart",
+            "Config": [
+                {
+                    "Name": "Cart Service",
+                    "Version": "v1",
+                    "Url": "http://cartservice:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
         {
-          "Name": "Auth Service",
-          "Version": "v1",
-          "Url": "http://authservice:8080/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "user",
-      "Config": [
+            "Key": "order",
+            "Config": [
+                {
+                    "Name": "Order Service",
+                    "Version": "v1",
+                    "Url": "http://orderservice:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
         {
-          "Name": "User Profile Service",
-          "Version": "v1",
-          "Url": "http://userservice:8080/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "user-internal",
-      "Config": [
+            "Key": "payment",
+            "Config": [
+                {
+                    "Name": "Payment Service",
+                    "Version": "v1",
+                    "Url": "http://paymentservice:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
         {
-          "Name": "Internal User Service",
-          "Version": "v1",
-          "Url": "http://userservice:8080/swagger/v1/swagger.json"
+            "Key": "stock",
+            "Config": [
+                {
+                    "Name": "Stock Service",
+                    "Version": "v1",
+                    "Url": "http://stockservice:8080/swagger/v1/swagger.json"
+                }
+            ]
         }
-      ]
-    },
-    {
-      "Key": "catalog",
-      "Config": [
-        {
-          "Name": "Catalog Service",
-          "Version": "v1",
-          "Url": "http://catalogservice:8080/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "cart",
-      "Config": [
-        {
-          "Name": "Cart Service",
-          "Version": "v1",
-          "Url": "http://cartservice:8080/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "order",
-      "Config": [
-        {
-          "Name": "Order Service",
-          "Version": "v1",
-          "Url": "http://orderservice:8080/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "payment",
-      "Config": [
-        {
-          "Name": "Payment Service",
-          "Version": "v1",
-          "Url": "http://paymentservice:8080/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "stock",
-      "Config": [
-        {
-          "Name": "Stock Service",
-          "Version": "v1",
-          "Url": "http://stockservice:8080/swagger/v1/swagger.json"
-        }
-      ]
-    }
-  ]
+    ]
 }

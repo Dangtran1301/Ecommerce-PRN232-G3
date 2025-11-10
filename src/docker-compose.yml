@@ -7,7 +7,7 @@ services:
       dockerfile: Gateway/Gateway.API/Dockerfile
     container_name: gateway
     ports:
-      - "8000:8080"
+      - "5000:8080"
     depends_on:
       - authservice
       - userservice
